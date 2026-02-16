@@ -1,0 +1,45 @@
+name: mechta_flutter
+description: "mechta_flutter"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # State management
+  flutter_bloc: ^9.1.0
+  equatable: ^2.0.7
+
+  # Navigation
+  go_router: ^16.2.0
+
+  # Dependency injection
+  get_it: ^8.0.3
+
+  # Networking
+  dio: ^5.7.0
+
+  # Serialization (runtime annotations)
+  freezed_annotation: ^3.0.0
+  json_annotation: ^4.9.0
+
+  # Local storage
+  shared_preferences: ^2.3.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+  # Code generation
+  build_runner: ^2.4.14
+  freezed: ^3.0.0
+  json_serializable: ^6.9.4
+
+flutter:
+  uses-material-design: true
