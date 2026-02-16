@@ -33,7 +33,7 @@ class CatalogRemoteDataSourceImpl implements CatalogRemoteDataSource {
   Future<List<BrandModel>> getPopularBrands() async {
     try {
       final response = await dio.get('api/v3/popular/brands');
-      final List<dynamic> data = response.data['data'];
+      final List<dynamic> data = response.data;
       return data
           .map((json) => BrandModel.fromJson(json as Map<String, dynamic>))
           .toList();

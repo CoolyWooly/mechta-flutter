@@ -1,17 +1,33 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mechta_flutter/core/usecase/usecase.dart';
+import 'package:mechta_flutter/features/catalog/domain/entities/brand_entity.dart';
+import 'package:mechta_flutter/features/catalog/domain/usecases/get_popular_brands.dart';
 import 'package:mechta_flutter/features/home/domain/entities/banner_entity.dart';
+import 'package:mechta_flutter/features/home/domain/entities/news_entity.dart';
+import 'package:mechta_flutter/features/home/domain/entities/popular_category_entity.dart';
 import 'package:mechta_flutter/features/home/domain/usecases/get_banners.dart';
+import 'package:mechta_flutter/features/home/domain/usecases/get_news.dart';
+import 'package:mechta_flutter/features/home/domain/usecases/get_popular_categories.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetBannersUseCase _getBanners;
+  final GetPopularBrandsUseCase _getPopularBrands;
+  final GetPopularCategoriesUseCase _getPopularCategories;
+  final GetNewsUseCase _getNews;
 
-  HomeBloc({required GetBannersUseCase getBanners})
-      : _getBanners = getBanners,
+  HomeBloc({
+    required GetBannersUseCase getBanners,
+    required GetPopularBrandsUseCase getPopularBrands,
+    required GetPopularCategoriesUseCase getPopularCategories,
+    required GetNewsUseCase getNews,
+  })  : _getBanners = getBanners,
+        _getPopularBrands = getPopularBrands,
+        _getPopularCategories = getPopularCategories,
+        _getNews = getNews,
         super(const HomeState()) {
     on<HomeLoadRequested>(_onLoadRequested);
     on<HomeRefreshRequested>(_onRefreshRequested);
@@ -23,10 +39,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(state.copyWith(status: HomeStatus.loading));
     try {
-      final banners = await _getBanners(NoParams());
+      final results = await Future.wait([
+        _getBanners(NoParams()),
+        _getPopularBrands(NoParams()),
+        _getPopularCategories(NoParams()),
+        _getNews(NoParams()),
+      ]);
       emit(state.copyWith(
         status: HomeStatus.success,
-        banners: banners,
+        banners: results[0] as List<BannerEntity>,
+        brands: results[1] as List<BrandEntity>,
+        categories: results[2] as List<PopularCategoryEntity>,
+        news: results[3] as List<NewsEntity>,
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -41,10 +65,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) async {
     try {
-      final banners = await _getBanners(NoParams());
+      final results = await Future.wait([
+        _getBanners(NoParams()),
+        _getPopularBrands(NoParams()),
+        _getPopularCategories(NoParams()),
+        _getNews(NoParams()),
+      ]);
       emit(state.copyWith(
         status: HomeStatus.success,
-        banners: banners,
+        banners: results[0] as List<BannerEntity>,
+        brands: results[1] as List<BrandEntity>,
+        categories: results[2] as List<PopularCategoryEntity>,
+        news: results[3] as List<NewsEntity>,
       ));
     } catch (e) {
       emit(state.copyWith(

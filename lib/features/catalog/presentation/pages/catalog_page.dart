@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/features/catalog/domain/entities/brand_entity.dart';
@@ -41,40 +42,36 @@ class _CatalogView extends StatelessWidget {
             BlocBuilder<CatalogBloc, CatalogState>(
               builder: (context, state) {
                 return switch (state.status) {
-                  CatalogStatus.initial ||
-                  CatalogStatus.loading =>
-                    const Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                  CatalogStatus.initial || CatalogStatus.loading =>
+                    const Center(child: CircularProgressIndicator()),
                   CatalogStatus.failure => Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(state.errorMessage ?? 'Ошибка загрузки'),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () => context
-                                .read<CatalogBloc>()
-                                .add(const CatalogLoadRequested()),
-                            child: const Text('Повторить'),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(state.errorMessage ?? 'Ошибка загрузки'),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () => context.read<CatalogBloc>().add(
+                            const CatalogLoadRequested(),
                           ),
-                        ],
-                      ),
+                          child: const Text('Повторить'),
+                        ),
+                      ],
                     ),
+                  ),
                   CatalogStatus.success => GridView.builder(
-                      padding: const EdgeInsets.all(16),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 12,
-                        crossAxisSpacing: 12,
-                      ),
-                      itemCount: state.categories.length,
-                      itemBuilder: (context, index) {
-                        return _CategoryCard(
-                            category: state.categories[index]);
-                      },
-                    ),
+                    padding: const EdgeInsets.all(16),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 12,
+                        ),
+                    itemCount: state.categories.length,
+                    itemBuilder: (context, index) {
+                      return _CategoryCard(category: state.categories[index]);
+                    },
+                  ),
                 };
               },
             ),
@@ -82,32 +79,37 @@ class _CatalogView extends StatelessWidget {
             BlocBuilder<CatalogBloc, CatalogState>(
               builder: (context, state) {
                 return switch (state.status) {
-                  CatalogStatus.initial ||
-                  CatalogStatus.loading =>
-                    const Center(
-                      child: CircularProgressIndicator(),
-                    ),
+                  CatalogStatus.initial || CatalogStatus.loading =>
+                    const Center(child: CircularProgressIndicator()),
                   CatalogStatus.failure => Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(state.errorMessage ?? 'Ошибка загрузки'),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () => context
-                                .read<CatalogBloc>()
-                                .add(const CatalogLoadRequested()),
-                            child: const Text('Повторить'),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(state.errorMessage ?? 'Ошибка загрузки'),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () => context.read<CatalogBloc>().add(
+                            const CatalogLoadRequested(),
                           ),
-                        ],
-                      ),
+                          child: const Text('Повторить'),
+                        ),
+                      ],
                     ),
-                  CatalogStatus.success => ListView.builder(
-                      itemCount: state.brands.length,
-                      itemBuilder: (context, index) {
-                        return _BrandCard(brand: state.brands[index]);
-                      },
-                    ),
+                  ),
+                  CatalogStatus.success => GridView.builder(
+                    padding: const EdgeInsets.all(16),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 12,
+                          childAspectRatio: 2,
+                        ),
+                    itemCount: state.brands.length,
+                    itemBuilder: (context, index) {
+                      return _BrandCard(brand: state.brands[index]);
+                    },
+                  ),
                 };
               },
             ),
@@ -142,9 +144,9 @@ class _CategoryCard extends StatelessWidget {
               right: 48,
               child: Text(
                 category.name,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -177,26 +179,50 @@ class _BrandCard extends StatelessWidget {
 
   const _BrandCard({required this.brand});
 
+  Widget _buildBrandImage(String url, ColorScheme colorScheme) {
+    final isSvg = url.toLowerCase().endsWith('.svg');
+    if (isSvg) {
+      return SvgPicture.network(
+        url,
+        fit: BoxFit.contain,
+        placeholderBuilder: (_) =>
+            const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      );
+    }
+    return Image.network(
+      url,
+      fit: BoxFit.contain,
+      errorBuilder: (context, error, stackTrace) => Icon(
+        Icons.image_not_supported_outlined,
+        size: 32,
+        color: colorScheme.onSurfaceVariant,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final imageUrl = brand.image?.light ?? brand.image?.dark;
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: ListTile(
-        leading: imageUrl != null
-            ? Image.network(
-                imageUrl,
-                width: 50,
-                height: 50,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.image_not_supported_outlined),
-              )
-            : const Icon(Icons.business_center_outlined),
-        title: Text(brand.name),
+
+    return Material(
+      color: colorScheme.surfaceContainerLow,
+      borderRadius: BorderRadius.circular(12),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
         onTap: () {
           // TODO: Implement brand tap navigation
         },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: imageUrl != null
+              ? _buildBrandImage(imageUrl, colorScheme)
+              : Icon(
+                  Icons.business_center_outlined,
+                  size: 32,
+                  color: colorScheme.onSurfaceVariant,
+                ),
+        ),
       ),
     );
   }

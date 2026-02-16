@@ -8,6 +8,7 @@ import 'package:mechta_flutter/features/home/data/datasources/home_remote_data_s
 import 'package:mechta_flutter/features/home/data/repositories/home_repository_impl.dart';
 import 'package:mechta_flutter/features/home/domain/repositories/home_repository.dart';
 import 'package:mechta_flutter/features/home/domain/usecases/get_banners.dart';
+import 'package:mechta_flutter/features/home/domain/usecases/get_news.dart';
 import 'package:mechta_flutter/features/home/presentation/bloc/home_bloc.dart';
 
 // Catalog
@@ -16,6 +17,7 @@ import 'package:mechta_flutter/features/catalog/data/repositories/catalog_reposi
 import 'package:mechta_flutter/features/catalog/domain/repositories/catalog_repository.dart';
 import 'package:mechta_flutter/features/catalog/domain/usecases/get_categories.dart';
 import 'package:mechta_flutter/features/catalog/domain/usecases/get_popular_brands.dart';
+import 'package:mechta_flutter/features/home/domain/usecases/get_popular_categories.dart';
 import 'package:mechta_flutter/features/catalog/presentation/bloc/catalog_bloc.dart';
 
 // Cart
@@ -73,7 +75,14 @@ void _registerHomeFeature() {
     () => HomeRepositoryImpl(remoteDataSource: sl()),
   );
   sl.registerLazySingleton(() => GetBannersUseCase(sl()));
-  sl.registerFactory(() => HomeBloc(getBanners: sl()));
+  sl.registerLazySingleton(() => GetPopularCategoriesUseCase(sl()));
+  sl.registerLazySingleton(() => GetNewsUseCase(sl()));
+  sl.registerFactory(() => HomeBloc(
+        getBanners: sl(),
+        getPopularBrands: sl(),
+        getPopularCategories: sl(),
+        getNews: sl(),
+      ));
 }
 
 void _registerCatalogFeature() {

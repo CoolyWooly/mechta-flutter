@@ -24,6 +24,9 @@ dependencies:
   # Networking
   dio: ^5.7.0
 
+  # SVG
+  flutter_svg: ^2.0.17
+
   # Serialization (runtime annotations)
   freezed_annotation: ^3.0.0
   json_annotation: ^4.9.0
