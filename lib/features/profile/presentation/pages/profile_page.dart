@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mechta_flutter/app/di.dart';
+import 'package:mechta_flutter/features/auth/presentation/widgets/auth_bottom_sheet.dart';
 import 'package:mechta_flutter/features/profile/presentation/bloc/profile_bloc.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -88,7 +89,17 @@ class _ProfileView extends StatelessWidget {
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () {
-                            // TODO: navigate to login
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (_) => AuthBottomSheet(
+                                onSuccess: () {
+                                  context
+                                      .read<ProfileBloc>()
+                                      .add(const ProfileLoadRequested());
+                                },
+                              ),
+                            );
                           },
                           child: const Text('Войти'),
                         ),

@@ -40,6 +40,15 @@ import 'package:mechta_flutter/features/favorites/domain/repositories/favorites_
 import 'package:mechta_flutter/features/favorites/domain/usecases/get_favorites.dart';
 import 'package:mechta_flutter/features/favorites/presentation/bloc/favorites_bloc.dart';
 
+// Auth
+import 'package:mechta_flutter/features/auth/data/datasources/auth_local_data_source.dart';
+import 'package:mechta_flutter/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:mechta_flutter/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:mechta_flutter/features/auth/domain/repositories/auth_repository.dart';
+import 'package:mechta_flutter/features/auth/domain/usecases/login.dart';
+import 'package:mechta_flutter/features/auth/domain/usecases/send_sms.dart';
+import 'package:mechta_flutter/features/auth/presentation/bloc/auth_bloc.dart';
+
 // Profile
 import 'package:mechta_flutter/features/profile/data/datasources/profile_local_data_source.dart';
 import 'package:mechta_flutter/features/profile/data/repositories/profile_repository_impl.dart';
@@ -79,7 +88,9 @@ Future<void> configureDependencies() async {
 
   // ---- Core ----
   final deviceId = _getOrCreateDeviceId(sharedPreferences);
-  sl.registerLazySingleton<Dio>(() => createDio(deviceId: deviceId));
+  sl.registerLazySingleton<Dio>(
+    () => createDio(deviceId: deviceId, sharedPreferences: sharedPreferences),
+  );
   sl.registerLazySingleton<SeoRemoteDataSource>(
     () => SeoRemoteDataSourceImpl(dio: sl()),
   );
@@ -87,6 +98,7 @@ Future<void> configureDependencies() async {
   sl.registerLazySingleton(() => AppLinkHandler(seoNavigator: sl()));
 
   // ---- Features ----
+  _registerAuthFeature();
   _registerHomeFeature();
   _registerCatalogFeature();
   _registerSubcatalogFeature();
@@ -106,6 +118,24 @@ String _getOrCreateDeviceId(SharedPreferences prefs) {
     prefs.setString(_deviceIdKey, id);
   }
   return id;
+}
+
+void _registerAuthFeature() {
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSourceImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<AuthLocalDataSource>(
+    () => AuthLocalDataSourceImpl(sharedPreferences: sl()),
+  );
+  sl.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+    ),
+  );
+  sl.registerLazySingleton(() => SendSmsUseCase(sl()));
+  sl.registerLazySingleton(() => LoginUseCase(sl()));
+  sl.registerFactory(() => AuthBloc(sendSms: sl(), login: sl()));
 }
 
 void _registerHomeFeature() {
