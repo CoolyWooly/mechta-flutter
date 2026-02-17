@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 import 'package:mechta_flutter/core/network/dio_client.dart';
 
 // Home
@@ -9,6 +10,8 @@ import 'package:mechta_flutter/features/home/data/repositories/home_repository_i
 import 'package:mechta_flutter/features/home/domain/repositories/home_repository.dart';
 import 'package:mechta_flutter/features/home/domain/usecases/get_banners.dart';
 import 'package:mechta_flutter/features/home/domain/usecases/get_news.dart';
+import 'package:mechta_flutter/features/home/domain/usecases/get_socials.dart';
+import 'package:mechta_flutter/features/home/domain/usecases/get_top_categories.dart';
 import 'package:mechta_flutter/features/home/presentation/bloc/home_bloc.dart';
 
 // Catalog
@@ -56,7 +59,8 @@ Future<void> configureDependencies() async {
   sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
   // ---- Core ----
-  sl.registerLazySingleton<Dio>(() => createDio());
+  final deviceId = _getOrCreateDeviceId(sharedPreferences);
+  sl.registerLazySingleton<Dio>(() => createDio(deviceId: deviceId));
 
   // ---- Features ----
   _registerHomeFeature();
@@ -65,6 +69,17 @@ Future<void> configureDependencies() async {
   _registerFavoritesFeature();
   _registerProfileFeature();
   _registerProductFeature();
+}
+
+const _deviceIdKey = 'device_id';
+
+String _getOrCreateDeviceId(SharedPreferences prefs) {
+  var id = prefs.getString(_deviceIdKey);
+  if (id == null) {
+    id = const Uuid().v4();
+    prefs.setString(_deviceIdKey, id);
+  }
+  return id;
 }
 
 void _registerHomeFeature() {
@@ -77,11 +92,15 @@ void _registerHomeFeature() {
   sl.registerLazySingleton(() => GetBannersUseCase(sl()));
   sl.registerLazySingleton(() => GetPopularCategoriesUseCase(sl()));
   sl.registerLazySingleton(() => GetNewsUseCase(sl()));
+  sl.registerLazySingleton(() => GetTopCategoriesUseCase(sl()));
+  sl.registerLazySingleton(() => GetSocialsUseCase(sl()));
   sl.registerFactory(() => HomeBloc(
         getBanners: sl(),
         getPopularBrands: sl(),
         getPopularCategories: sl(),
         getNews: sl(),
+        getTopCategories: sl(),
+        getSocials: sl(),
       ));
 }
 

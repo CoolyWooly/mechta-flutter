@@ -8,6 +8,8 @@ class HomeState extends Equatable {
   final List<BrandEntity> brands;
   final List<PopularCategoryEntity> categories;
   final List<NewsEntity> news;
+  final List<TopCategoryEntity> topCategories;
+  final List<SocialEntity> socials;
   final String? errorMessage;
 
   const HomeState({
@@ -16,6 +18,8 @@ class HomeState extends Equatable {
     this.brands = const [],
     this.categories = const [],
     this.news = const [],
+    this.topCategories = const [],
+    this.socials = const [],
     this.errorMessage,
   });
 
@@ -25,6 +29,8 @@ class HomeState extends Equatable {
     List<BrandEntity>? brands,
     List<PopularCategoryEntity>? categories,
     List<NewsEntity>? news,
+    List<TopCategoryEntity>? topCategories,
+    List<SocialEntity>? socials,
     String? errorMessage,
   }) {
     return HomeState(
@@ -33,11 +39,13 @@ class HomeState extends Equatable {
       brands: brands ?? this.brands,
       categories: categories ?? this.categories,
       news: news ?? this.news,
+      topCategories: topCategories ?? this.topCategories,
+      socials: socials ?? this.socials,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
   List<Object?> get props =>
-      [status, banners, brands, categories, news, errorMessage];
+      [status, banners, brands, categories, news, topCategories, socials, errorMessage];
 }

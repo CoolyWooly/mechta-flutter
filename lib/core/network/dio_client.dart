@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:mechta_flutter/core/constants/api_constants.dart';
 
-Dio createDio() {
+Dio createDio({required String deviceId}) {
   final dio = Dio(
     BaseOptions(
       baseUrl: ApiConstants.baseUrl,
@@ -10,6 +10,8 @@ Dio createDio() {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'X-Mechta-App': 'android',
+        'X-Mechta-Device-Id': deviceId,
       },
     ),
   );

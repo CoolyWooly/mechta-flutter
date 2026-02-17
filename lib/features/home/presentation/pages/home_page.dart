@@ -7,8 +7,13 @@ import 'package:mechta_flutter/app/di.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/features/catalog/domain/entities/brand_entity.dart';
 import 'package:mechta_flutter/features/home/domain/entities/popular_category_entity.dart';
+import 'package:mechta_flutter/core/domain/entities/product_detail_entity.dart';
+import 'package:mechta_flutter/core/utils/picture_url_converter.dart';
 import 'package:mechta_flutter/features/home/domain/entities/banner_entity.dart';
 import 'package:mechta_flutter/features/home/domain/entities/news_entity.dart';
+import 'package:mechta_flutter/features/home/domain/entities/social_entity.dart';
+import 'package:mechta_flutter/features/home/domain/entities/top_category_entity.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:mechta_flutter/features/home/presentation/bloc/home_bloc.dart';
 
 class HomePage extends StatelessWidget {
@@ -63,8 +68,12 @@ class _HomeView extends StatelessWidget {
                     _CategoriesSection(categories: state.categories),
                   if (state.brands.isNotEmpty)
                     _BrandsSection(brands: state.brands),
+                  if (state.topCategories.isNotEmpty)
+                    _TopCategoriesSection(topCategories: state.topCategories),
                   if (state.news.isNotEmpty)
                     _NewsSection(news: state.news),
+                  if (state.socials.isNotEmpty)
+                    _SocialsSection(socials: state.socials),
                 ],
               ),
             ),
@@ -371,6 +380,164 @@ class _BrandTile extends StatelessWidget {
   }
 }
 
+class _TopCategoriesSection extends StatelessWidget {
+  final List<TopCategoryEntity> topCategories;
+
+  const _TopCategoriesSection({required this.topCategories});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        for (final topCategory in topCategories)
+          if (topCategory.products.isNotEmpty)
+            _TopCategoryBlock(topCategory: topCategory),
+      ],
+    );
+  }
+}
+
+class _TopCategoryBlock extends StatelessWidget {
+  final TopCategoryEntity topCategory;
+
+  const _TopCategoryBlock({required this.topCategory});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            topCategory.category?.name ?? '',
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(fontWeight: FontWeight.w600),
+          ),
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 260,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            itemCount: topCategory.products.length,
+            separatorBuilder: (_, _) => const SizedBox(width: 12),
+            itemBuilder: (context, index) {
+              return _ProductCard(product: topCategory.products[index]);
+            },
+          ),
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+}
+
+class _ProductCard extends StatelessWidget {
+  final ProductDetailEntity product;
+
+  const _ProductCard({required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final hasDiscount = product.prices?.basePrice != null &&
+        product.prices?.finalPrice != null &&
+        product.prices!.basePrice! > product.prices!.finalPrice!;
+
+    return SizedBox(
+      width: 150,
+      child: Material(
+        color: colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(12),
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: () {
+            if (product.code != null) {
+              context.go('/home/product/${product.code}');
+            }
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(12)),
+                child: Image.network(
+                  PictureUrlConverter.getCompressed(
+                    product.images.isNotEmpty ? product.images.first : null,
+                    300,
+                  ),
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    width: 150,
+                    height: 150,
+                    color: colorScheme.surfaceContainerHighest,
+                    child: Center(
+                      child: Icon(
+                        Icons.image_not_supported_outlined,
+                        size: 32,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (product.prices?.finalPrice != null)
+                      Text(
+                        '${_formatPrice(product.prices!.finalPrice!)} ₸',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                      ),
+                    if (hasDiscount)
+                      Text(
+                        '${_formatPrice(product.prices!.basePrice!)} ₸',
+                        style:
+                            Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                      ),
+                    const SizedBox(height: 4),
+                    Text(
+                      product.name ?? '',
+                      style: Theme.of(context).textTheme.labelSmall,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _formatPrice(int price) {
+    final str = price.toString();
+    final buffer = StringBuffer();
+    for (var i = 0; i < str.length; i++) {
+      if (i > 0 && (str.length - i) % 3 == 0) buffer.write(' ');
+      buffer.write(str[i]);
+    }
+    return buffer.toString();
+  }
+}
+
 class _NewsSection extends StatelessWidget {
   final List<NewsEntity> news;
 
@@ -458,6 +625,92 @@ class _NewsSection extends StatelessWidget {
         ),
         const SizedBox(height: 16),
       ],
+    );
+  }
+}
+
+class _SocialsSection extends StatelessWidget {
+  final List<SocialEntity> socials;
+
+  const _SocialsSection({required this.socials});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Мы в соцсетях',
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium
+                ?.copyWith(fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: socials.map((social) {
+              final iconUrl = social.icon?.light ?? social.icon?.dark;
+              return Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(24),
+                  onTap: () {
+                    if (social.url.isNotEmpty) {
+                      launchUrl(
+                        Uri.parse(social.url),
+                        mode: LaunchMode.externalApplication,
+                      );
+                    }
+                  },
+                  child: iconUrl != null && iconUrl.isNotEmpty
+                      ? _buildIcon(iconUrl, colorScheme)
+                      : CircleAvatar(
+                          radius: 24,
+                          backgroundColor: colorScheme.surfaceContainerHighest,
+                          child: Icon(
+                            Icons.link,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                ),
+              );
+            }).toList(),
+          ),
+          const SizedBox(height: 24),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildIcon(String url, ColorScheme colorScheme) {
+    if (url.toLowerCase().endsWith('.svg')) {
+      return SvgPicture.network(
+        url,
+        width: 48,
+        height: 48,
+        placeholderBuilder: (_) => const SizedBox(
+          width: 48,
+          height: 48,
+          child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+        ),
+      );
+    }
+    return ClipOval(
+      child: Image.network(
+        url,
+        width: 48,
+        height: 48,
+        fit: BoxFit.cover,
+        errorBuilder: (_, _, _) => CircleAvatar(
+          radius: 24,
+          backgroundColor: colorScheme.surfaceContainerHighest,
+          child: Icon(Icons.link, color: colorScheme.onSurfaceVariant),
+        ),
+      ),
     );
   }
 }
