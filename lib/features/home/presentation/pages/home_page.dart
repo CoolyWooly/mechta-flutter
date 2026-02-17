@@ -15,6 +15,7 @@ import 'package:mechta_flutter/features/home/domain/entities/news_entity.dart';
 import 'package:mechta_flutter/features/home/domain/entities/social_entity.dart';
 import 'package:mechta_flutter/features/home/domain/entities/top_category_entity.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:mechta_flutter/l10n/app_localizations.dart';
 import 'package:mechta_flutter/features/home/presentation/bloc/home_bloc.dart';
 
 class HomePage extends StatelessWidget {
@@ -34,8 +35,10 @@ class _HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Главная')),
+      appBar: AppBar(title: Text(l10n.home)),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           return switch (state.status) {
@@ -46,13 +49,13 @@ class _HomeView extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(state.errorMessage ?? 'Ошибка загрузки'),
+                  Text(state.errorMessage ?? l10n.loadingError),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () => context.read<HomeBloc>().add(
                       const HomeRefreshRequested(),
                     ),
-                    child: const Text('Повторить'),
+                    child: Text(l10n.retry),
                   ),
                 ],
               ),
@@ -217,7 +220,7 @@ class _CategoriesSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            'Популярные категории',
+            AppLocalizations.of(context)!.popularCategories,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
@@ -307,7 +310,7 @@ class _BrandsSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            'Популярные бренды',
+            AppLocalizations.of(context)!.popularBrands,
             style: Theme.of(
               context,
             ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
@@ -561,7 +564,7 @@ class _NewsSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            'Новости',
+            AppLocalizations.of(context)!.news,
             style: Theme.of(context)
                 .textTheme
                 .titleMedium
@@ -652,7 +655,7 @@ class _SocialsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Мы в соцсетях',
+            AppLocalizations.of(context)!.socialMedia,
             style: Theme.of(context)
                 .textTheme
                 .titleMedium

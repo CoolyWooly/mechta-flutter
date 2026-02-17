@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -21,8 +22,10 @@ class _CartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Корзина')),
+      appBar: AppBar(title: Text(l10n.cart)),
       body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
           return switch (state.status) {
@@ -33,13 +36,13 @@ class _CartView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(state.errorMessage ?? 'Ошибка загрузки'),
+                    Text(state.errorMessage ?? l10n.loadingError),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () => context
                           .read<CartBloc>()
                           .add(const CartLoadRequested()),
-                      child: const Text('Повторить'),
+                      child: Text(l10n.retry),
                     ),
                   ],
                 ),
@@ -53,7 +56,7 @@ class _CartView extends StatelessWidget {
                             size: 64, color: Colors.grey),
                         const SizedBox(height: 16),
                         Text(
-                          'Корзина пуста',
+                          l10n.emptyCart,
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],

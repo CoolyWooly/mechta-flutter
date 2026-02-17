@@ -1,24 +1,46 @@
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mechta_flutter/features/favorites/data/models/favorite_model.dart';
 
 abstract class FavoritesLocalDataSource {
-  Future<List<FavoriteModel>> getFavorites();
+  Set<String> getFavoriteIds();
+  Future<void> saveFavoriteIds(Set<String> ids);
+  bool isFavorite(String id);
+  Future<void> addId(String id);
+  Future<void> removeId(String id);
 }
 
 class FavoritesLocalDataSourceImpl implements FavoritesLocalDataSource {
+  static const _key = 'favorite_ids';
   final SharedPreferences sharedPreferences;
-  static const String _favoritesKey = 'favorites';
 
   FavoritesLocalDataSourceImpl({required this.sharedPreferences});
 
   @override
-  Future<List<FavoriteModel>> getFavorites() async {
-    final jsonString = sharedPreferences.getString(_favoritesKey);
-    if (jsonString == null) return [];
-    final List<dynamic> jsonList = json.decode(jsonString);
-    return jsonList
-        .map((json) => FavoriteModel.fromJson(json as Map<String, dynamic>))
-        .toList();
+  Set<String> getFavoriteIds() {
+    final list = sharedPreferences.getStringList(_key);
+    return list?.toSet() ?? {};
+  }
+
+  @override
+  Future<void> saveFavoriteIds(Set<String> ids) {
+    return sharedPreferences.setStringList(_key, ids.toList());
+  }
+
+  @override
+  bool isFavorite(String id) {
+    return getFavoriteIds().contains(id);
+  }
+
+  @override
+  Future<void> addId(String id) async {
+    final ids = getFavoriteIds();
+    ids.add(id);
+    await saveFavoriteIds(ids);
+  }
+
+  @override
+  Future<void> removeId(String id) async {
+    final ids = getFavoriteIds();
+    ids.remove(id);
+    await saveFavoriteIds(ids);
   }
 }

@@ -35,9 +35,12 @@ import 'package:mechta_flutter/features/cart/presentation/bloc/cart_bloc.dart';
 
 // Favorites
 import 'package:mechta_flutter/features/favorites/data/datasources/favorites_local_data_source.dart';
+import 'package:mechta_flutter/features/favorites/data/datasources/favorites_remote_data_source.dart';
 import 'package:mechta_flutter/features/favorites/data/repositories/favorites_repository_impl.dart';
 import 'package:mechta_flutter/features/favorites/domain/repositories/favorites_repository.dart';
 import 'package:mechta_flutter/features/favorites/domain/usecases/get_favorites.dart';
+import 'package:mechta_flutter/features/favorites/domain/usecases/is_favorite.dart';
+import 'package:mechta_flutter/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:mechta_flutter/features/favorites/presentation/bloc/favorites_bloc.dart';
 
 // Auth
@@ -49,11 +52,24 @@ import 'package:mechta_flutter/features/auth/domain/usecases/login.dart';
 import 'package:mechta_flutter/features/auth/domain/usecases/send_sms.dart';
 import 'package:mechta_flutter/features/auth/presentation/bloc/auth_bloc.dart';
 
+// City
+import 'package:mechta_flutter/features/city/data/datasources/city_local_data_source.dart';
+import 'package:mechta_flutter/features/city/data/datasources/city_remote_data_source.dart';
+import 'package:mechta_flutter/features/city/data/repositories/city_repository_impl.dart';
+import 'package:mechta_flutter/features/city/domain/repositories/city_repository.dart';
+import 'package:mechta_flutter/features/city/domain/usecases/get_cities.dart';
+import 'package:mechta_flutter/features/city/domain/usecases/get_selected_city.dart';
+import 'package:mechta_flutter/features/city/domain/usecases/save_city.dart';
+import 'package:mechta_flutter/features/city/presentation/bloc/city_bloc.dart';
+
 // Profile
 import 'package:mechta_flutter/features/profile/data/datasources/profile_local_data_source.dart';
+import 'package:mechta_flutter/features/profile/data/datasources/profile_remote_data_source.dart';
 import 'package:mechta_flutter/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:mechta_flutter/features/profile/domain/repositories/profile_repository.dart';
+import 'package:mechta_flutter/features/profile/domain/usecases/fetch_profile.dart';
 import 'package:mechta_flutter/features/profile/domain/usecases/get_profile.dart';
+import 'package:mechta_flutter/features/profile/domain/usecases/logout.dart';
 import 'package:mechta_flutter/features/profile/presentation/bloc/profile_bloc.dart';
 
 // Subcatalog
@@ -98,6 +114,7 @@ Future<void> configureDependencies() async {
   sl.registerLazySingleton(() => AppLinkHandler(seoNavigator: sl()));
 
   // ---- Features ----
+  _registerCityFeature();
   _registerAuthFeature();
   _registerHomeFeature();
   _registerCatalogFeature();
@@ -118,6 +135,29 @@ String _getOrCreateDeviceId(SharedPreferences prefs) {
     prefs.setString(_deviceIdKey, id);
   }
   return id;
+}
+
+void _registerCityFeature() {
+  sl.registerLazySingleton<CityRemoteDataSource>(
+    () => CityRemoteDataSourceImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<CityLocalDataSource>(
+    () => CityLocalDataSourceImpl(sharedPreferences: sl()),
+  );
+  sl.registerLazySingleton<CityRepository>(
+    () => CityRepositoryImpl(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+    ),
+  );
+  sl.registerLazySingleton(() => GetCitiesUseCase(sl()));
+  sl.registerLazySingleton(() => SaveCityUseCase(sl()));
+  sl.registerLazySingleton(() => GetSelectedCityUseCase(sl()));
+  sl.registerFactory(() => CityBloc(
+        getCities: sl(),
+        saveCity: sl(),
+        getSelectedCity: sl(),
+      ));
 }
 
 void _registerAuthFeature() {
@@ -188,22 +228,47 @@ void _registerFavoritesFeature() {
   sl.registerLazySingleton<FavoritesLocalDataSource>(
     () => FavoritesLocalDataSourceImpl(sharedPreferences: sl()),
   );
+  sl.registerLazySingleton<FavoritesRemoteDataSource>(
+    () => FavoritesRemoteDataSourceImpl(dio: sl()),
+  );
   sl.registerLazySingleton<FavoritesRepository>(
-    () => FavoritesRepositoryImpl(localDataSource: sl()),
+    () => FavoritesRepositoryImpl(
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+    ),
   );
   sl.registerLazySingleton(() => GetFavoritesUseCase(sl()));
-  sl.registerFactory(() => FavoritesBloc(getFavorites: sl()));
+  sl.registerLazySingleton(() => ToggleFavoriteUseCase(sl()));
+  sl.registerLazySingleton(() => IsFavoriteUseCase(sl()));
+  sl.registerFactory(() => FavoritesBloc(
+        getFavorites: sl(),
+        toggleFavorite: sl(),
+      ));
 }
 
 void _registerProfileFeature() {
   sl.registerLazySingleton<ProfileLocalDataSource>(
     () => ProfileLocalDataSourceImpl(sharedPreferences: sl()),
   );
+  sl.registerLazySingleton<ProfileRemoteDataSource>(
+    () => ProfileRemoteDataSourceImpl(dio: sl()),
+  );
   sl.registerLazySingleton<ProfileRepository>(
-    () => ProfileRepositoryImpl(localDataSource: sl()),
+    () => ProfileRepositoryImpl(
+      localDataSource: sl(),
+      remoteDataSource: sl(),
+      authLocalDataSource: sl(),
+      favoritesLocalDataSource: sl(),
+    ),
   );
   sl.registerLazySingleton(() => GetProfileUseCase(sl()));
-  sl.registerFactory(() => ProfileBloc(getProfile: sl()));
+  sl.registerLazySingleton(() => FetchProfileUseCase(sl()));
+  sl.registerLazySingleton(() => LogoutUseCase(sl()));
+  sl.registerFactory(() => ProfileBloc(
+        getProfile: sl(),
+        fetchProfile: sl(),
+        logout: sl(),
+      ));
 }
 
 void _registerSubcatalogFeature() {

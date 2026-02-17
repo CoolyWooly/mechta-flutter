@@ -15,13 +15,6 @@ import 'package:mechta_flutter/features/promotions/presentation/pages/promotion_
 import 'package:mechta_flutter/features/promotions/presentation/pages/promotions_page.dart';
 import 'package:mechta_flutter/core/navigation/seo_resolve_page.dart';
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
-final _catalogNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'catalog');
-final _cartNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'cart');
-final _favoritesNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'favorites');
-final _profileNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'profile');
-
 GoRoute _productRoute() => GoRoute(
       path: RoutePaths.product,
       builder: (context, state) {
@@ -96,126 +89,135 @@ String? _deepLinkRedirect(BuildContext context, GoRouterState state) {
   return RoutePaths.home;
 }
 
-final GoRouter appRouter = GoRouter(
-  navigatorKey: _rootNavigatorKey,
-  initialLocation: RoutePaths.splash,
-  debugLogDiagnostics: true,
-  redirect: _deepLinkRedirect,
-  routes: [
-    GoRoute(
-      path: RoutePaths.splash,
-      name: RouteNames.splash,
-      builder: (context, state) => const SplashPage(),
-    ),
-    GoRoute(
-      path: RoutePaths.onboarding,
-      name: RouteNames.onboarding,
-      builder: (context, state) => const OnboardingPage(),
-    ),
-    GoRoute(
-      path: RoutePaths.seoResolve,
-      builder: (context, state) {
-        final path = state.uri.queryParameters['path'] ?? '/';
-        return SeoResolvePage(path: path);
-      },
-    ),
-    StatefulShellRoute.indexedStack(
-      parentNavigatorKey: _rootNavigatorKey,
-      builder: (context, state, navigationShell) {
-        return MainPage(navigationShell: navigationShell);
-      },
-      branches: [
-        StatefulShellBranch(
-          navigatorKey: _homeNavigatorKey,
-          routes: [
-            GoRoute(
-              path: RoutePaths.home,
-              name: RouteNames.home,
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: HomePage(),
-              ),
-              routes: [
-                _productRoute(),
-                GoRoute(
-                  path: RoutePaths.promotions,
-                  name: RouteNames.promotions,
-                  builder: (context, state) => const PromotionsPage(),
-                  routes: [
-                    GoRoute(
-                      path: RoutePaths.promotionDetail,
-                      name: RouteNames.promotionDetail,
-                      builder: (context, state) {
-                        final code = state.pathParameters['code']!;
-                        return PromotionDetailPage(code: code);
-                      },
-                    ),
-                  ],
+GoRouter createAppRouter() {
+  final rootNavigatorKey = GlobalKey<NavigatorState>();
+  final homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
+  final catalogNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'catalog');
+  final cartNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'cart');
+  final favoritesNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'favorites');
+  final profileNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'profile');
+
+  return GoRouter(
+    navigatorKey: rootNavigatorKey,
+    initialLocation: RoutePaths.home,
+    debugLogDiagnostics: true,
+    redirect: _deepLinkRedirect,
+    routes: [
+      GoRoute(
+        path: RoutePaths.splash,
+        name: RouteNames.splash,
+        builder: (context, state) => const SplashPage(),
+      ),
+      GoRoute(
+        path: RoutePaths.onboarding,
+        name: RouteNames.onboarding,
+        builder: (context, state) => const OnboardingPage(),
+      ),
+      GoRoute(
+        path: RoutePaths.seoResolve,
+        builder: (context, state) {
+          final path = state.uri.queryParameters['path'] ?? '/';
+          return SeoResolvePage(path: path);
+        },
+      ),
+      StatefulShellRoute.indexedStack(
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state, navigationShell) {
+          return MainPage(navigationShell: navigationShell);
+        },
+        branches: [
+          StatefulShellBranch(
+            navigatorKey: homeNavigatorKey,
+            routes: [
+              GoRoute(
+                path: RoutePaths.home,
+                name: RouteNames.home,
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: HomePage(),
                 ),
-              ],
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          navigatorKey: _catalogNavigatorKey,
-          routes: [
-            GoRoute(
-              path: RoutePaths.catalog,
-              name: RouteNames.catalog,
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: CatalogPage(),
+                routes: [
+                  _productRoute(),
+                  GoRoute(
+                    path: RoutePaths.promotions,
+                    name: RouteNames.promotions,
+                    builder: (context, state) => const PromotionsPage(),
+                    routes: [
+                      GoRoute(
+                        path: RoutePaths.promotionDetail,
+                        name: RouteNames.promotionDetail,
+                        builder: (context, state) {
+                          final code = state.pathParameters['code']!;
+                          return PromotionDetailPage(code: code);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              routes: [
-                GoRoute(
-                  path: RoutePaths.subcatalog,
-                  name: RouteNames.subcatalog,
-                  builder: (context, state) => _buildSubcatalogPage(state),
-                  routes: [_productRoute()],
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: catalogNavigatorKey,
+            routes: [
+              GoRoute(
+                path: RoutePaths.catalog,
+                name: RouteNames.catalog,
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: CatalogPage(),
                 ),
-                _productRoute(),
-              ],
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          navigatorKey: _cartNavigatorKey,
-          routes: [
-            GoRoute(
-              path: RoutePaths.cart,
-              name: RouteNames.cart,
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: CartPage(),
+                routes: [
+                  GoRoute(
+                    path: RoutePaths.subcatalog,
+                    name: RouteNames.subcatalog,
+                    builder: (context, state) => _buildSubcatalogPage(state),
+                    routes: [_productRoute()],
+                  ),
+                  _productRoute(),
+                ],
               ),
-              routes: [_productRoute()],
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          navigatorKey: _favoritesNavigatorKey,
-          routes: [
-            GoRoute(
-              path: RoutePaths.favorites,
-              name: RouteNames.favorites,
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: FavoritesPage(),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: cartNavigatorKey,
+            routes: [
+              GoRoute(
+                path: RoutePaths.cart,
+                name: RouteNames.cart,
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: CartPage(),
+                ),
+                routes: [_productRoute()],
               ),
-              routes: [_productRoute()],
-            ),
-          ],
-        ),
-        StatefulShellBranch(
-          navigatorKey: _profileNavigatorKey,
-          routes: [
-            GoRoute(
-              path: RoutePaths.profile,
-              name: RouteNames.profile,
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: ProfilePage(),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: favoritesNavigatorKey,
+            routes: [
+              GoRoute(
+                path: RoutePaths.favorites,
+                name: RouteNames.favorites,
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: FavoritesPage(),
+                ),
+                routes: [_productRoute()],
               ),
-              routes: [_productRoute()],
-            ),
-          ],
-        ),
-      ],
-    ),
-  ],
-);
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: profileNavigatorKey,
+            routes: [
+              GoRoute(
+                path: RoutePaths.profile,
+                name: RouteNames.profile,
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: ProfilePage(),
+                ),
+                routes: [_productRoute()],
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  );
+}

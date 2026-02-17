@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/core/router/route_names.dart';
+import 'package:mechta_flutter/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class _OnboardingItem {
   final IconData icon;
-  final String title;
-  final String description;
+  final String Function(AppLocalizations l10n) title;
+  final String Function(AppLocalizations l10n) description;
 
   const _OnboardingItem({
     required this.icon,
@@ -16,21 +17,21 @@ class _OnboardingItem {
   });
 }
 
-const _pages = [
+final _pages = [
   _OnboardingItem(
     icon: Icons.shopping_bag_outlined,
-    title: 'Добро пожаловать в Mechta',
-    description: 'Тысячи товаров электроники и бытовой техники в одном приложении',
+    title: (l10n) => l10n.onboardingWelcomeTitle,
+    description: (l10n) => l10n.onboardingWelcomeDesc,
   ),
   _OnboardingItem(
     icon: Icons.local_shipping_outlined,
-    title: 'Быстрая доставка',
-    description: 'Доставим ваш заказ в удобное время по всему Казахстану',
+    title: (l10n) => l10n.onboardingDeliveryTitle,
+    description: (l10n) => l10n.onboardingDeliveryDesc,
   ),
   _OnboardingItem(
     icon: Icons.percent_outlined,
-    title: 'Выгодные предложения',
-    description: 'Скидки, акции и бонусная программа для постоянных клиентов',
+    title: (l10n) => l10n.onboardingOffersTitle,
+    description: (l10n) => l10n.onboardingOffersDesc,
   ),
 ];
 
@@ -61,6 +62,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SafeArea(
@@ -71,7 +73,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: _completeOnboarding,
-                child: const Text('Пропустить'),
+                child: Text(l10n.skip),
               ),
             ),
 
@@ -95,7 +97,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         ),
                         const SizedBox(height: 40),
                         Text(
-                          page.title,
+                          page.title(l10n),
                           style: theme.textTheme.headlineSmall?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -103,7 +105,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          page.description,
+                          page.description(l10n),
                           style: theme.textTheme.bodyLarge?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                           ),
@@ -157,7 +159,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     }
                   },
                   child: Text(
-                    _currentPage < _pages.length - 1 ? 'Далее' : 'Начать',
+                    _currentPage < _pages.length - 1 ? l10n.next : l10n.start,
                   ),
                 ),
               ),

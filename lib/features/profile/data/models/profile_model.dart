@@ -9,19 +9,27 @@ abstract class ProfileModel with _$ProfileModel {
   const ProfileModel._();
 
   const factory ProfileModel({
-    String? name,
-    String? email,
     String? phone,
-    @JsonKey(name: 'avatar_url') String? avatarUrl,
+    @JsonKey(name: 'full_name') String? fullName,
+    String? email,
+    @JsonKey(name: 'cohort_registration_year_month') String? registrationDate,
+    @JsonKey(name: 'cohort_first_order_year_month') String? firstOrderDate,
+    @JsonKey(name: 'client_age_range') String? ageRange,
+    @JsonKey(name: 'client_gender') String? gender,
+    @JsonKey(name: 'email_subscription') bool? isSubscribedEmail,
   }) = _ProfileModel;
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) =>
       _$ProfileModelFromJson(json);
 
   ProfileEntity toEntity() => ProfileEntity(
-        name: name,
-        email: email,
         phone: phone,
-        avatarUrl: avatarUrl,
+        fullName: fullName,
+        email: email,
+        registrationDate: registrationDate,
+        firstOrderDate: firstOrderDate,
+        ageRange: ageRange,
+        gender: gender,
+        isSubscribedEmail: isSubscribedEmail,
       );
 }

@@ -4,7 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
 import 'package:mechta_flutter/core/utils/picture_url_converter.dart';
+import 'package:mechta_flutter/features/favorites/domain/usecases/is_favorite.dart';
+import 'package:mechta_flutter/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/bloc/subcatalog_bloc.dart';
+import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class SubcatalogPage extends StatelessWidget {
   final String slug;
@@ -99,13 +102,13 @@ class _SubcatalogViewState extends State<_SubcatalogView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(state.errorMessage ?? 'Ошибка загрузки'),
+                    Text(state.errorMessage ?? AppLocalizations.of(context)!.loadingError),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () => context.read<SubcatalogBloc>().add(
                             SubcatalogLoadRequested(slug: state.slug),
                           ),
-                      child: const Text('Повторить'),
+                      child: Text(AppLocalizations.of(context)!.retry),
                     ),
                   ],
                 ),
@@ -139,13 +142,37 @@ class _SubcatalogViewState extends State<_SubcatalogView> {
   }
 }
 
-class _ProductCard extends StatelessWidget {
+class _ProductCard extends StatefulWidget {
   final ProductEntity product;
 
   const _ProductCard({required this.product});
 
   @override
+  State<_ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<_ProductCard> {
+  late bool _isFavorite;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavorite = widget.product.id != null && sl<IsFavoriteUseCase>()(widget.product.id!);
+  }
+
+  Future<void> _toggleFavorite() async {
+    if (widget.product.id == null) return;
+    setState(() => _isFavorite = !_isFavorite);
+    try {
+      await sl<ToggleFavoriteUseCase>()(widget.product.id!);
+    } catch (_) {
+      if (mounted) setState(() => _isFavorite = !_isFavorite);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final product = widget.product;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final hasDiscount = product.prices?.basePrice != null &&
@@ -166,22 +193,43 @@ class _ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Center(
-                child: imageUrl != null
-                    ? Image.network(
-                        PictureUrlConverter.getCompressed(imageUrl, 300),
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) => Icon(
-                          Icons.image_not_supported_outlined,
-                          size: 48,
-                          color: colorScheme.onSurfaceVariant,
-                        ),
-                      )
-                    : Icon(
-                        Icons.image_not_supported_outlined,
-                        size: 48,
-                        color: colorScheme.onSurfaceVariant,
+              child: Stack(
+                children: [
+                  Center(
+                    child: imageUrl != null
+                        ? Image.network(
+                            PictureUrlConverter.getCompressed(imageUrl, 300),
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) => Icon(
+                              Icons.image_not_supported_outlined,
+                              size: 48,
+                              color: colorScheme.onSurfaceVariant,
+                            ),
+                          )
+                        : Icon(
+                            Icons.image_not_supported_outlined,
+                            size: 48,
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                  ),
+                  Positioned(
+                    top: 4,
+                    right: 4,
+                    child: IconButton(
+                      icon: Icon(
+                        _isFavorite ? Icons.favorite : Icons.favorite_outline,
+                        color: _isFavorite ? Colors.red : colorScheme.onSurfaceVariant,
+                        size: 22,
                       ),
+                      onPressed: _toggleFavorite,
+                      style: IconButton.styleFrom(
+                        backgroundColor: colorScheme.surface.withValues(alpha: 0.8),
+                        padding: const EdgeInsets.all(6),
+                        minimumSize: const Size(34, 34),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Padding(

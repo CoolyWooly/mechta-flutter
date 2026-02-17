@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/features/promotions/domain/entities/promotion_entity.dart';
 import 'package:mechta_flutter/features/promotions/presentation/bloc/promotions_bloc.dart';
+import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class PromotionsPage extends StatelessWidget {
   const PromotionsPage({super.key});
@@ -57,7 +58,7 @@ class _ViewState extends State<_View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Акции')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.promotions)),
       body: BlocBuilder<PromotionsBloc, PromotionsState>(
         builder: (context, state) {
           return switch (state.status) {
@@ -68,13 +69,13 @@ class _ViewState extends State<_View> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(state.errorMessage ?? 'Ошибка загрузки'),
+                    Text(state.errorMessage ?? AppLocalizations.of(context)!.loadingError),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () => context
                           .read<PromotionsBloc>()
                           .add(const PromotionsLoadRequested()),
-                      child: const Text('Повторить'),
+                      child: Text(AppLocalizations.of(context)!.retry),
                     ),
                   ],
                 ),
@@ -153,7 +154,7 @@ class _PromotionCard extends StatelessWidget {
                       promotion.daysBeforeExpiration! > 0) ...[
                     const SizedBox(height: 8),
                     Text(
-                      'Осталось ${promotion.daysBeforeExpiration} дн.',
+                      AppLocalizations.of(context)!.daysLeft(promotion.daysBeforeExpiration!),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Theme.of(context).colorScheme.error,
                           ),

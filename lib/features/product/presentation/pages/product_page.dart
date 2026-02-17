@@ -7,7 +7,10 @@ import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
 import 'package:mechta_flutter/core/domain/entities/property_entity.dart';
 import 'package:mechta_flutter/core/domain/entities/sticker_entity.dart';
 import 'package:mechta_flutter/core/utils/picture_url_converter.dart';
+import 'package:mechta_flutter/features/favorites/domain/usecases/is_favorite.dart';
+import 'package:mechta_flutter/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:mechta_flutter/features/product/presentation/bloc/product_bloc.dart';
+import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class ProductPage extends StatelessWidget {
   final String slug;
@@ -26,18 +29,56 @@ class ProductPage extends StatelessWidget {
   }
 }
 
-class _ProductView extends StatelessWidget {
+class _ProductView extends StatefulWidget {
   final String slug;
 
   const _ProductView({required this.slug});
 
   @override
+  State<_ProductView> createState() => _ProductViewState();
+}
+
+class _ProductViewState extends State<_ProductView> {
+  bool _isFavorite = false;
+  String? _productId;
+
+  void _updateFavoriteState(ProductEntity product) {
+    if (_productId != product.id && product.id != null) {
+      _productId = product.id;
+      _isFavorite = sl<IsFavoriteUseCase>()(product.id!);
+    }
+  }
+
+  Future<void> _toggleFavorite() async {
+    if (_productId == null) return;
+    setState(() => _isFavorite = !_isFavorite);
+    try {
+      await sl<ToggleFavoriteUseCase>()(_productId!);
+    } catch (_) {
+      if (mounted) setState(() => _isFavorite = !_isFavorite);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
+        if (state.product != null) {
+          _updateFavoriteState(state.product!);
+        }
         return Scaffold(
           appBar: AppBar(
-            title: Text(state.product?.name ?? 'Товар'),
+            title: Text(state.product?.name ?? AppLocalizations.of(context)!.product),
+            actions: [
+              if (state.product?.id != null)
+                IconButton(
+                  icon: Icon(
+                    _isFavorite ? Icons.favorite : Icons.favorite_outline,
+                    color: _isFavorite ? Colors.red : null,
+                  ),
+                  onPressed: _toggleFavorite,
+                ),
+            ],
           ),
           body: switch (state.status) {
             ProductStatus.initial || ProductStatus.loading => const Center(
@@ -47,13 +88,13 @@ class _ProductView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(state.errorMessage ?? 'Ошибка загрузки'),
+                    Text(state.errorMessage ?? AppLocalizations.of(context)!.loadingError),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () => context
                           .read<ProductBloc>()
-                          .add(ProductLoadRequested(slug)),
-                      child: const Text('Повторить'),
+                          .add(ProductLoadRequested(widget.slug)),
+                      child: Text(AppLocalizations.of(context)!.retry),
                     ),
                   ],
                 ),
@@ -89,8 +130,8 @@ class _BottomBar extends StatelessWidget {
               : null,
           child: Text(
             isAvailable
-                ? 'В корзину — ${_formatPrice(product.prices?.finalPrice)} ₸'
-                : 'Нет в наличии',
+                ? AppLocalizations.of(context)!.addToCartWithPrice(_formatPrice(product.prices?.finalPrice))
+                : AppLocalizations.of(context)!.outOfStock,
           ),
         ),
       ),
@@ -147,7 +188,7 @@ class _ProductContent extends StatelessWidget {
               const SizedBox(height: 4),
               if (product.code != null)
                 Text(
-                  'Код: ${product.code}',
+                  AppLocalizations.of(context)!.productCode(product.code!),
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -195,7 +236,7 @@ class _ProductContent extends StatelessWidget {
                         color: Theme.of(context).colorScheme.primary),
                     const SizedBox(width: 4),
                     Text(
-                      'Доступен Trade-In',
+                      AppLocalizations.of(context)!.tradeInAvailable,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
@@ -208,7 +249,7 @@ class _ProductContent extends StatelessWidget {
               if (product.mainProperties.isNotEmpty) ...[
                 const SizedBox(height: 24),
                 Text(
-                  'Характеристики',
+                  AppLocalizations.of(context)!.specifications,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -222,7 +263,7 @@ class _ProductContent extends StatelessWidget {
               if (product.preview != null) ...[
                 const SizedBox(height: 24),
                 Text(
-                  'Описание',
+                  AppLocalizations.of(context)!.description,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -376,7 +417,7 @@ class _AvailabilityBadge extends StatelessWidget {
         ),
         const SizedBox(width: 4),
         Text(
-          isAvailable ? 'В наличии' : 'Нет в наличии',
+          isAvailable ? AppLocalizations.of(context)!.inStock : AppLocalizations.of(context)!.outOfStock,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: isAvailable ? Colors.green : colorScheme.error,
               ),

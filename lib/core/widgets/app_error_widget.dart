@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class AppErrorWidget extends StatelessWidget {
   final String message;
@@ -25,7 +26,7 @@ class AppErrorWidget extends StatelessWidget {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: onRetry,
-                child: const Text('Повторить'),
+                child: Text(AppLocalizations.of(context)!.retry),
               ),
             ],
           ],

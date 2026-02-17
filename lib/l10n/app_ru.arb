@@ -1,0 +1,90 @@
+{
+  "@@locale": "ru",
+
+  "home": "Главная",
+  "catalog": "Каталог",
+  "cart": "Корзина",
+  "favorites": "Избранное",
+  "profile": "Профиль",
+
+  "loadingError": "Ошибка загрузки",
+  "retry": "Повторить",
+
+  "onboardingWelcomeTitle": "Добро пожаловать в Mechta",
+  "onboardingWelcomeDesc": "Тысячи товаров электроники и бытовой техники в одном приложении",
+  "onboardingDeliveryTitle": "Быстрая доставка",
+  "onboardingDeliveryDesc": "Доставим ваш заказ в удобное время по всему Казахстану",
+  "onboardingOffersTitle": "Выгодные предложения",
+  "onboardingOffersDesc": "Скидки, акции и бонусная программа для постоянных клиентов",
+  "skip": "Пропустить",
+  "next": "Далее",
+  "start": "Начать",
+
+  "popularCategories": "Популярные категории",
+  "popularBrands": "Популярные бренды",
+  "news": "Новости",
+  "socialMedia": "Мы в соцсетях",
+
+  "brands": "Бренды",
+
+  "product": "Товар",
+  "addToCartWithPrice": "В корзину — {price} ₸",
+  "@addToCartWithPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "outOfStock": "Нет в наличии",
+  "inStock": "В наличии",
+  "productCode": "Код: {code}",
+  "@productCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "tradeInAvailable": "Доступен Trade-In",
+  "specifications": "Характеристики",
+  "description": "Описание",
+
+  "emptyCart": "Корзина пуста",
+
+  "noFavorites": "Нет избранных товаров",
+
+  "logout": "Выйти из аккаунта",
+  "logoutConfirmTitle": "Выход",
+  "logoutConfirmMessage": "Вы уверены, что хотите выйти из аккаунта?",
+  "cancel": "Отмена",
+  "logoutAction": "Выйти",
+  "signInPrompt": "Войдите в аккаунт",
+  "signIn": "Войти",
+
+  "selectCity": "Выберите город",
+  "city": "Город",
+
+  "promotions": "Акции",
+  "daysLeft": "Осталось {days} дн.",
+  "@daysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "details": "Подробнее",
+  "promotion": "Акция",
+
+  "enterSmsCode": "Введите код из СМС",
+  "signInTitle": "Вход",
+  "phoneNumber": "Номер телефона",
+  "getSms": "Получить СМС",
+  "smsCode": "Код из СМС",
+  "send": "Отправить",
+
+  "language": "Язык",
+  "russian": "Русский",
+  "kazakh": "Қазақша"
+}

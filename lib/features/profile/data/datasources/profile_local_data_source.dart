@@ -4,6 +4,8 @@ import 'package:mechta_flutter/features/profile/data/models/profile_model.dart';
 
 abstract class ProfileLocalDataSource {
   Future<ProfileModel> getProfile();
+  Future<void> saveProfile(ProfileModel profile);
+  Future<void> clearProfile();
 }
 
 class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
@@ -18,5 +20,15 @@ class ProfileLocalDataSourceImpl implements ProfileLocalDataSource {
     if (jsonString == null) return const ProfileModel();
     final json = jsonDecode(jsonString) as Map<String, dynamic>;
     return ProfileModel.fromJson(json);
+  }
+
+  @override
+  Future<void> saveProfile(ProfileModel profile) async {
+    await sharedPreferences.setString(_profileKey, jsonEncode(profile.toJson()));
+  }
+
+  @override
+  Future<void> clearProfile() async {
+    await sharedPreferences.remove(_profileKey);
   }
 }

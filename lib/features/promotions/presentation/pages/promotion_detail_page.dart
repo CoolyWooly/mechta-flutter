@@ -4,6 +4,7 @@ import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/core/navigation/app_link_handler.dart';
 import 'package:mechta_flutter/features/promotions/domain/entities/promotion_detail_entity.dart';
 import 'package:mechta_flutter/features/promotions/presentation/bloc/promotion_detail_bloc.dart';
+import 'package:mechta_flutter/l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PromotionDetailPage extends StatelessWidget {
@@ -30,7 +31,7 @@ class _View extends StatelessWidget {
       appBar: AppBar(
         title: BlocBuilder<PromotionDetailBloc, PromotionDetailState>(
           builder: (context, state) =>
-              Text(state.detail?.name ?? 'Акция'),
+              Text(state.detail?.name ?? AppLocalizations.of(context)!.promotion),
         ),
       ),
       body: BlocBuilder<PromotionDetailBloc, PromotionDetailState>(
@@ -43,7 +44,7 @@ class _View extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(state.errorMessage ?? 'Ошибка загрузки'),
+                    Text(state.errorMessage ?? AppLocalizations.of(context)!.loadingError),
                     const SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
@@ -54,7 +55,7 @@ class _View extends StatelessWidget {
                               PromotionDetailLoadRequested(code: code),
                             );
                       },
-                      child: const Text('Повторить'),
+                      child: Text(AppLocalizations.of(context)!.retry),
                     ),
                   ],
                 ),
@@ -108,7 +109,7 @@ class _DetailContent extends StatelessWidget {
                   detail.daysBeforeExpiration! > 0) ...[
                 const SizedBox(height: 8),
                 Text(
-                  'Осталось ${detail.daysBeforeExpiration} дн.',
+                  AppLocalizations.of(context)!.daysLeft(detail.daysBeforeExpiration!),
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Theme.of(context).colorScheme.error,
                       ),
@@ -145,7 +146,7 @@ class _DetailContent extends StatelessWidget {
                   width: double.infinity,
                   child: FilledButton(
                     onPressed: () => _onLinkTap(context),
-                    child: const Text('Подробнее'),
+                    child: Text(AppLocalizations.of(context)!.details),
                   ),
                 ),
               ],

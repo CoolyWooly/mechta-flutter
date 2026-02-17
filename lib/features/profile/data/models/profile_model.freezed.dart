@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProfileModel {
 
- String? get name; String? get email; String? get phone;@JsonKey(name: 'avatar_url') String? get avatarUrl;
+ String? get phone;@JsonKey(name: 'full_name') String? get fullName; String? get email;@JsonKey(name: 'cohort_registration_year_month') String? get registrationDate;@JsonKey(name: 'cohort_first_order_year_month') String? get firstOrderDate;@JsonKey(name: 'client_age_range') String? get ageRange;@JsonKey(name: 'client_gender') String? get gender;@JsonKey(name: 'email_subscription') bool? get isSubscribedEmail;
 /// Create a copy of ProfileModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ProfileModelCopyWith<ProfileModel> get copyWith => _$ProfileModelCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileModel&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileModel&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.registrationDate, registrationDate) || other.registrationDate == registrationDate)&&(identical(other.firstOrderDate, firstOrderDate) || other.firstOrderDate == firstOrderDate)&&(identical(other.ageRange, ageRange) || other.ageRange == ageRange)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.isSubscribedEmail, isSubscribedEmail) || other.isSubscribedEmail == isSubscribedEmail));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,email,phone,avatarUrl);
+int get hashCode => Object.hash(runtimeType,phone,fullName,email,registrationDate,firstOrderDate,ageRange,gender,isSubscribedEmail);
 
 @override
 String toString() {
-  return 'ProfileModel(name: $name, email: $email, phone: $phone, avatarUrl: $avatarUrl)';
+  return 'ProfileModel(phone: $phone, fullName: $fullName, email: $email, registrationDate: $registrationDate, firstOrderDate: $firstOrderDate, ageRange: $ageRange, gender: $gender, isSubscribedEmail: $isSubscribedEmail)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ProfileModelCopyWith<$Res>  {
   factory $ProfileModelCopyWith(ProfileModel value, $Res Function(ProfileModel) _then) = _$ProfileModelCopyWithImpl;
 @useResult
 $Res call({
- String? name, String? email, String? phone,@JsonKey(name: 'avatar_url') String? avatarUrl
+ String? phone,@JsonKey(name: 'full_name') String? fullName, String? email,@JsonKey(name: 'cohort_registration_year_month') String? registrationDate,@JsonKey(name: 'cohort_first_order_year_month') String? firstOrderDate,@JsonKey(name: 'client_age_range') String? ageRange,@JsonKey(name: 'client_gender') String? gender,@JsonKey(name: 'email_subscription') bool? isSubscribedEmail
 });
 
 
@@ -65,13 +65,17 @@ class _$ProfileModelCopyWithImpl<$Res>
 
 /// Create a copy of ProfileModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? email = freezed,Object? phone = freezed,Object? avatarUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? phone = freezed,Object? fullName = freezed,Object? email = freezed,Object? registrationDate = freezed,Object? firstOrderDate = freezed,Object? ageRange = freezed,Object? gender = freezed,Object? isSubscribedEmail = freezed,}) {
   return _then(_self.copyWith(
-name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String?,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
-as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,registrationDate: freezed == registrationDate ? _self.registrationDate : registrationDate // ignore: cast_nullable_to_non_nullable
+as String?,firstOrderDate: freezed == firstOrderDate ? _self.firstOrderDate : firstOrderDate // ignore: cast_nullable_to_non_nullable
+as String?,ageRange: freezed == ageRange ? _self.ageRange : ageRange // ignore: cast_nullable_to_non_nullable
+as String?,gender: freezed == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
+as String?,isSubscribedEmail: freezed == isSubscribedEmail ? _self.isSubscribedEmail : isSubscribedEmail // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 
@@ -156,10 +160,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? name,  String? email,  String? phone, @JsonKey(name: 'avatar_url')  String? avatarUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? phone, @JsonKey(name: 'full_name')  String? fullName,  String? email, @JsonKey(name: 'cohort_registration_year_month')  String? registrationDate, @JsonKey(name: 'cohort_first_order_year_month')  String? firstOrderDate, @JsonKey(name: 'client_age_range')  String? ageRange, @JsonKey(name: 'client_gender')  String? gender, @JsonKey(name: 'email_subscription')  bool? isSubscribedEmail)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileModel() when $default != null:
-return $default(_that.name,_that.email,_that.phone,_that.avatarUrl);case _:
+return $default(_that.phone,_that.fullName,_that.email,_that.registrationDate,_that.firstOrderDate,_that.ageRange,_that.gender,_that.isSubscribedEmail);case _:
   return orElse();
 
 }
@@ -177,10 +181,10 @@ return $default(_that.name,_that.email,_that.phone,_that.avatarUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? name,  String? email,  String? phone, @JsonKey(name: 'avatar_url')  String? avatarUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? phone, @JsonKey(name: 'full_name')  String? fullName,  String? email, @JsonKey(name: 'cohort_registration_year_month')  String? registrationDate, @JsonKey(name: 'cohort_first_order_year_month')  String? firstOrderDate, @JsonKey(name: 'client_age_range')  String? ageRange, @JsonKey(name: 'client_gender')  String? gender, @JsonKey(name: 'email_subscription')  bool? isSubscribedEmail)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileModel():
-return $default(_that.name,_that.email,_that.phone,_that.avatarUrl);case _:
+return $default(_that.phone,_that.fullName,_that.email,_that.registrationDate,_that.firstOrderDate,_that.ageRange,_that.gender,_that.isSubscribedEmail);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +201,10 @@ return $default(_that.name,_that.email,_that.phone,_that.avatarUrl);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? name,  String? email,  String? phone, @JsonKey(name: 'avatar_url')  String? avatarUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? phone, @JsonKey(name: 'full_name')  String? fullName,  String? email, @JsonKey(name: 'cohort_registration_year_month')  String? registrationDate, @JsonKey(name: 'cohort_first_order_year_month')  String? firstOrderDate, @JsonKey(name: 'client_age_range')  String? ageRange, @JsonKey(name: 'client_gender')  String? gender, @JsonKey(name: 'email_subscription')  bool? isSubscribedEmail)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileModel() when $default != null:
-return $default(_that.name,_that.email,_that.phone,_that.avatarUrl);case _:
+return $default(_that.phone,_that.fullName,_that.email,_that.registrationDate,_that.firstOrderDate,_that.ageRange,_that.gender,_that.isSubscribedEmail);case _:
   return null;
 
 }
@@ -212,13 +216,17 @@ return $default(_that.name,_that.email,_that.phone,_that.avatarUrl);case _:
 @JsonSerializable()
 
 class _ProfileModel extends ProfileModel {
-  const _ProfileModel({this.name, this.email, this.phone, @JsonKey(name: 'avatar_url') this.avatarUrl}): super._();
+  const _ProfileModel({this.phone, @JsonKey(name: 'full_name') this.fullName, this.email, @JsonKey(name: 'cohort_registration_year_month') this.registrationDate, @JsonKey(name: 'cohort_first_order_year_month') this.firstOrderDate, @JsonKey(name: 'client_age_range') this.ageRange, @JsonKey(name: 'client_gender') this.gender, @JsonKey(name: 'email_subscription') this.isSubscribedEmail}): super._();
   factory _ProfileModel.fromJson(Map<String, dynamic> json) => _$ProfileModelFromJson(json);
 
-@override final  String? name;
-@override final  String? email;
 @override final  String? phone;
-@override@JsonKey(name: 'avatar_url') final  String? avatarUrl;
+@override@JsonKey(name: 'full_name') final  String? fullName;
+@override final  String? email;
+@override@JsonKey(name: 'cohort_registration_year_month') final  String? registrationDate;
+@override@JsonKey(name: 'cohort_first_order_year_month') final  String? firstOrderDate;
+@override@JsonKey(name: 'client_age_range') final  String? ageRange;
+@override@JsonKey(name: 'client_gender') final  String? gender;
+@override@JsonKey(name: 'email_subscription') final  bool? isSubscribedEmail;
 
 /// Create a copy of ProfileModel
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileModel&&(identical(other.name, name) || other.name == name)&&(identical(other.email, email) || other.email == email)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileModel&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.fullName, fullName) || other.fullName == fullName)&&(identical(other.email, email) || other.email == email)&&(identical(other.registrationDate, registrationDate) || other.registrationDate == registrationDate)&&(identical(other.firstOrderDate, firstOrderDate) || other.firstOrderDate == firstOrderDate)&&(identical(other.ageRange, ageRange) || other.ageRange == ageRange)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.isSubscribedEmail, isSubscribedEmail) || other.isSubscribedEmail == isSubscribedEmail));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,email,phone,avatarUrl);
+int get hashCode => Object.hash(runtimeType,phone,fullName,email,registrationDate,firstOrderDate,ageRange,gender,isSubscribedEmail);
 
 @override
 String toString() {
-  return 'ProfileModel(name: $name, email: $email, phone: $phone, avatarUrl: $avatarUrl)';
+  return 'ProfileModel(phone: $phone, fullName: $fullName, email: $email, registrationDate: $registrationDate, firstOrderDate: $firstOrderDate, ageRange: $ageRange, gender: $gender, isSubscribedEmail: $isSubscribedEmail)';
 }
 
 
@@ -253,7 +261,7 @@ abstract mixin class _$ProfileModelCopyWith<$Res> implements $ProfileModelCopyWi
   factory _$ProfileModelCopyWith(_ProfileModel value, $Res Function(_ProfileModel) _then) = __$ProfileModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? name, String? email, String? phone,@JsonKey(name: 'avatar_url') String? avatarUrl
+ String? phone,@JsonKey(name: 'full_name') String? fullName, String? email,@JsonKey(name: 'cohort_registration_year_month') String? registrationDate,@JsonKey(name: 'cohort_first_order_year_month') String? firstOrderDate,@JsonKey(name: 'client_age_range') String? ageRange,@JsonKey(name: 'client_gender') String? gender,@JsonKey(name: 'email_subscription') bool? isSubscribedEmail
 });
 
 
@@ -270,13 +278,17 @@ class __$ProfileModelCopyWithImpl<$Res>
 
 /// Create a copy of ProfileModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? email = freezed,Object? phone = freezed,Object? avatarUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? phone = freezed,Object? fullName = freezed,Object? email = freezed,Object? registrationDate = freezed,Object? firstOrderDate = freezed,Object? ageRange = freezed,Object? gender = freezed,Object? isSubscribedEmail = freezed,}) {
   return _then(_ProfileModel(
-name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String?,fullName: freezed == fullName ? _self.fullName : fullName // ignore: cast_nullable_to_non_nullable
 as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String?,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
-as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,registrationDate: freezed == registrationDate ? _self.registrationDate : registrationDate // ignore: cast_nullable_to_non_nullable
+as String?,firstOrderDate: freezed == firstOrderDate ? _self.firstOrderDate : firstOrderDate // ignore: cast_nullable_to_non_nullable
+as String?,ageRange: freezed == ageRange ? _self.ageRange : ageRange // ignore: cast_nullable_to_non_nullable
+as String?,gender: freezed == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
+as String?,isSubscribedEmail: freezed == isSubscribedEmail ? _self.isSubscribedEmail : isSubscribedEmail // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 

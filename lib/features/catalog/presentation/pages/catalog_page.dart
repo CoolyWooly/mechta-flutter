@@ -6,6 +6,7 @@ import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/features/catalog/domain/entities/brand_entity.dart';
 import 'package:mechta_flutter/features/catalog/domain/entities/category_entity.dart';
 import 'package:mechta_flutter/features/catalog/presentation/bloc/catalog_bloc.dart';
+import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class CatalogPage extends StatelessWidget {
   const CatalogPage({super.key});
@@ -24,15 +25,17 @@ class _CatalogView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return DefaultTabController(
-      length: 2, // For 'Catalog' and 'Brands'
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Каталог'),
-          bottom: const TabBar(
+          title: Text(l10n.catalog),
+          bottom: TabBar(
             tabs: [
-              Tab(text: 'Каталог'),
-              Tab(text: 'Бренды'),
+              Tab(text: l10n.catalog),
+              Tab(text: l10n.brands),
             ],
           ),
         ),
@@ -48,13 +51,13 @@ class _CatalogView extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(state.errorMessage ?? 'Ошибка загрузки'),
+                        Text(state.errorMessage ?? l10n.loadingError),
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () => context.read<CatalogBloc>().add(
                             const CatalogLoadRequested(),
                           ),
-                          child: const Text('Повторить'),
+                          child: Text(l10n.retry),
                         ),
                       ],
                     ),
@@ -63,7 +66,7 @@ class _CatalogView extends StatelessWidget {
                     padding: const EdgeInsets.all(16),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                          crossAxisCount: 3,
                           mainAxisSpacing: 12,
                           crossAxisSpacing: 12,
                         ),
@@ -85,13 +88,13 @@ class _CatalogView extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(state.errorMessage ?? 'Ошибка загрузки'),
+                        Text(state.errorMessage ?? l10n.loadingError),
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () => context.read<CatalogBloc>().add(
                             const CatalogLoadRequested(),
                           ),
-                          child: const Text('Повторить'),
+                          child: Text(l10n.retry),
                         ),
                       ],
                     ),
@@ -138,20 +141,6 @@ class _CategoryCard extends StatelessWidget {
               '/catalog/subcatalog/${category.url}?title=${Uri.encodeComponent(category.name)}'),
         child: Stack(
           children: [
-            // Category name — top left
-            Positioned(
-              top: 12,
-              left: 12,
-              right: 48,
-              child: Text(
-                category.name,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
             // Image — bottom right
             Positioned(
               bottom: 0,
@@ -166,6 +155,18 @@ class _CategoryCard extends StatelessWidget {
                   size: 32,
                   color: colorScheme.onSurfaceVariant,
                 ),
+              ),
+            ),
+            // Category name — top left
+            Positioned(
+              top: 12,
+              left: 12,
+              right: 12,
+              child: Text(
+                category.name,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class AuthBottomSheet extends StatelessWidget {
   final VoidCallback? onSuccess;
@@ -67,7 +68,7 @@ class _AuthBottomSheetViewState extends State<_AuthBottomSheetView> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                isSmsSent ? 'Введите код из СМС' : 'Вход',
+                isSmsSent ? AppLocalizations.of(context)!.enterSmsCode : AppLocalizations.of(context)!.signInTitle,
                 style: Theme.of(context).textTheme.titleLarge,
               ),
               const SizedBox(height: 16),
@@ -75,10 +76,10 @@ class _AuthBottomSheetViewState extends State<_AuthBottomSheetView> {
                 TextField(
                   controller: _phoneController,
                   keyboardType: TextInputType.phone,
-                  decoration: const InputDecoration(
-                    labelText: 'Номер телефона',
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.phoneNumber,
                     hintText: '+7 (___) ___-__-__',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -99,15 +100,15 @@ class _AuthBottomSheetViewState extends State<_AuthBottomSheetView> {
                           width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('Получить СМС'),
+                      : Text(AppLocalizations.of(context)!.getSms),
                 ),
               ] else ...[
                 TextField(
                   controller: _otpController,
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    labelText: 'Код из СМС',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.smsCode,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -131,7 +132,7 @@ class _AuthBottomSheetViewState extends State<_AuthBottomSheetView> {
                           width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('Отправить'),
+                      : Text(AppLocalizations.of(context)!.send),
                 ),
               ],
             ],

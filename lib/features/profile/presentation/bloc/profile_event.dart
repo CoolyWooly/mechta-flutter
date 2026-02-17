@@ -10,3 +10,11 @@ abstract class ProfileEvent extends Equatable {
 class ProfileLoadRequested extends ProfileEvent {
   const ProfileLoadRequested();
 }
+
+class ProfileFetchRequested extends ProfileEvent {
+  const ProfileFetchRequested();
+}
+
+class ProfileLogoutRequested extends ProfileEvent {
+  const ProfileLogoutRequested();
+}

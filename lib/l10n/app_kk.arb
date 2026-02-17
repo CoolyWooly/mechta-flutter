@@ -1,0 +1,69 @@
+{
+  "@@locale": "kk",
+
+  "home": "Басты бет",
+  "catalog": "Каталог",
+  "cart": "Себет",
+  "favorites": "Таңдаулылар",
+  "profile": "Профиль",
+
+  "loadingError": "Жүктеу қатесі",
+  "retry": "Қайталау",
+
+  "onboardingWelcomeTitle": "Mechta-ға қош келдіңіз",
+  "onboardingWelcomeDesc": "Мыңдаған электроника және тұрмыстық техника бір қолданбада",
+  "onboardingDeliveryTitle": "Жылдам жеткізу",
+  "onboardingDeliveryDesc": "Тапсырысыңызды бүкіл Қазақстан бойынша ыңғайлы уақытта жеткіземіз",
+  "onboardingOffersTitle": "Тиімді ұсыныстар",
+  "onboardingOffersDesc": "Жеңілдіктер, акциялар және тұрақты клиенттерге арналған бонустық бағдарлама",
+  "skip": "Өткізу",
+  "next": "Келесі",
+  "start": "Бастау",
+
+  "popularCategories": "Танымал санаттар",
+  "popularBrands": "Танымал брендтер",
+  "news": "Жаңалықтар",
+  "socialMedia": "Біз әлеуметтік желілерде",
+
+  "brands": "Брендтер",
+
+  "product": "Тауар",
+  "addToCartWithPrice": "Себетке — {price} ₸",
+  "outOfStock": "Қоймада жоқ",
+  "inStock": "Қоймада бар",
+  "productCode": "Код: {code}",
+  "tradeInAvailable": "Trade-In қолжетімді",
+  "specifications": "Сипаттамалар",
+  "description": "Сипаттама",
+
+  "emptyCart": "Себет бос",
+
+  "noFavorites": "Таңдаулы тауарлар жоқ",
+
+  "logout": "Аккаунттан шығу",
+  "logoutConfirmTitle": "Шығу",
+  "logoutConfirmMessage": "Аккаунттан шығуға сенімдісіз бе?",
+  "cancel": "Бас тарту",
+  "logoutAction": "Шығу",
+  "signInPrompt": "Аккаунтқа кіріңіз",
+  "signIn": "Кіру",
+
+  "selectCity": "Қаланы таңдаңыз",
+  "city": "Қала",
+
+  "promotions": "Акциялар",
+  "daysLeft": "{days} күн қалды",
+  "details": "Толығырақ",
+  "promotion": "Акция",
+
+  "enterSmsCode": "СМС кодын енгізіңіз",
+  "signInTitle": "Кіру",
+  "phoneNumber": "Телефон нөмірі",
+  "getSms": "СМС алу",
+  "smsCode": "СМС коды",
+  "send": "Жіберу",
+
+  "language": "Тіл",
+  "russian": "Орысша",
+  "kazakh": "Қазақша"
+}
