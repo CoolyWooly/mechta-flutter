@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mechta_flutter/core/data/models/product_category_model.dart';
-import 'package:mechta_flutter/core/data/models/product_detail_model.dart';
+import 'package:mechta_flutter/core/data/models/product_model.dart';
 import 'package:mechta_flutter/features/home/domain/entities/top_category_entity.dart';
 
 part 'top_category_model.freezed.dart';
@@ -12,7 +12,7 @@ abstract class TopCategoryModel with _$TopCategoryModel {
 
   const factory TopCategoryModel({
     @JsonKey(name: 'category') ProductCategoryModel? category,
-    @JsonKey(name: 'products') @Default([]) List<ProductDetailModel> products,
+    @JsonKey(name: 'products') @Default([]) List<ProductModel> products,
   }) = _TopCategoryModel;
 
   factory TopCategoryModel.fromJson(Map<String, dynamic> json) =>

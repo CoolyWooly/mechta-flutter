@@ -2,6 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'package:mechta_flutter/core/data/datasources/seo_remote_data_source.dart';
+import 'package:mechta_flutter/core/navigation/app_link_handler.dart';
+import 'package:mechta_flutter/core/navigation/seo_navigator.dart';
 import 'package:mechta_flutter/core/network/dio_client.dart';
 
 // Home
@@ -44,12 +47,28 @@ import 'package:mechta_flutter/features/profile/domain/repositories/profile_repo
 import 'package:mechta_flutter/features/profile/domain/usecases/get_profile.dart';
 import 'package:mechta_flutter/features/profile/presentation/bloc/profile_bloc.dart';
 
+// Subcatalog
+import 'package:mechta_flutter/features/subcatalog/data/datasources/subcatalog_remote_data_source.dart';
+import 'package:mechta_flutter/features/subcatalog/data/repositories/subcatalog_repository_impl.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/repositories/subcatalog_repository.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_subcatalog_products.dart';
+import 'package:mechta_flutter/features/subcatalog/presentation/bloc/subcatalog_bloc.dart';
+
 // Product
 import 'package:mechta_flutter/features/product/data/datasources/product_remote_data_source.dart';
 import 'package:mechta_flutter/features/product/data/repositories/product_repository_impl.dart';
 import 'package:mechta_flutter/features/product/domain/repositories/product_repository.dart';
 import 'package:mechta_flutter/features/product/domain/usecases/get_product.dart';
 import 'package:mechta_flutter/features/product/presentation/bloc/product_bloc.dart';
+
+// Promotions
+import 'package:mechta_flutter/features/promotions/data/datasources/promotions_remote_data_source.dart';
+import 'package:mechta_flutter/features/promotions/data/repositories/promotions_repository_impl.dart';
+import 'package:mechta_flutter/features/promotions/domain/repositories/promotions_repository.dart';
+import 'package:mechta_flutter/features/promotions/domain/usecases/get_promotion_detail.dart';
+import 'package:mechta_flutter/features/promotions/domain/usecases/get_promotions.dart';
+import 'package:mechta_flutter/features/promotions/presentation/bloc/promotion_detail_bloc.dart';
+import 'package:mechta_flutter/features/promotions/presentation/bloc/promotions_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -61,14 +80,21 @@ Future<void> configureDependencies() async {
   // ---- Core ----
   final deviceId = _getOrCreateDeviceId(sharedPreferences);
   sl.registerLazySingleton<Dio>(() => createDio(deviceId: deviceId));
+  sl.registerLazySingleton<SeoRemoteDataSource>(
+    () => SeoRemoteDataSourceImpl(dio: sl()),
+  );
+  sl.registerLazySingleton(() => SeoNavigator(dataSource: sl()));
+  sl.registerLazySingleton(() => AppLinkHandler(seoNavigator: sl()));
 
   // ---- Features ----
   _registerHomeFeature();
   _registerCatalogFeature();
+  _registerSubcatalogFeature();
   _registerCartFeature();
   _registerFavoritesFeature();
   _registerProfileFeature();
   _registerProductFeature();
+  _registerPromotionsFeature();
 }
 
 const _deviceIdKey = 'device_id';
@@ -148,6 +174,30 @@ void _registerProfileFeature() {
   );
   sl.registerLazySingleton(() => GetProfileUseCase(sl()));
   sl.registerFactory(() => ProfileBloc(getProfile: sl()));
+}
+
+void _registerSubcatalogFeature() {
+  sl.registerLazySingleton<SubcatalogRemoteDataSource>(
+    () => SubcatalogRemoteDataSourceImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<SubcatalogRepository>(
+    () => SubcatalogRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton(() => GetSubcatalogProductsUseCase(sl()));
+  sl.registerFactory(() => SubcatalogBloc(getProducts: sl()));
+}
+
+void _registerPromotionsFeature() {
+  sl.registerLazySingleton<PromotionsRemoteDataSource>(
+    () => PromotionsRemoteDataSourceImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<PromotionsRepository>(
+    () => PromotionsRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton(() => GetPromotionsUseCase(sl()));
+  sl.registerLazySingleton(() => GetPromotionDetailUseCase(sl()));
+  sl.registerFactory(() => PromotionsBloc(getPromotions: sl()));
+  sl.registerFactory(() => PromotionDetailBloc(getPromotionDetail: sl()));
 }
 
 void _registerProductFeature() {

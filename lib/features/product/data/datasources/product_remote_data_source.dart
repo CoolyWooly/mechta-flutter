@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:mechta_flutter/core/data/models/product_model.dart';
 import 'package:mechta_flutter/core/error/exceptions.dart';
-import 'package:mechta_flutter/features/product/data/models/product_model.dart';
 
 abstract class ProductRemoteDataSource {
   Future<ProductModel> getProduct(int id);

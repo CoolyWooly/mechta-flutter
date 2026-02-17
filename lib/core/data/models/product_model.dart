@@ -8,16 +8,16 @@ import 'package:mechta_flutter/core/data/models/property_model.dart';
 import 'package:mechta_flutter/core/data/models/rating_model.dart';
 import 'package:mechta_flutter/core/data/models/shipment_model.dart';
 import 'package:mechta_flutter/core/data/models/sticker_model.dart';
-import 'package:mechta_flutter/core/domain/entities/product_detail_entity.dart';
+import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
 
-part 'product_detail_model.freezed.dart';
-part 'product_detail_model.g.dart';
+part 'product_model.freezed.dart';
+part 'product_model.g.dart';
 
 @freezed
-abstract class ProductDetailModel with _$ProductDetailModel {
-  const ProductDetailModel._();
+abstract class ProductModel with _$ProductModel {
+  const ProductModel._();
 
-  const factory ProductDetailModel({
+  const factory ProductModel({
     @JsonKey(name: 'id') String? id,
     @JsonKey(name: 'name') String? name,
     @JsonKey(name: 'slug') String? slug,
@@ -36,12 +36,12 @@ abstract class ProductDetailModel with _$ProductDetailModel {
     @JsonKey(name: 'propertyGroups') @Default([]) List<PropertyGroupModel> propertyGroups,
     @JsonKey(name: 'metrics') MetricsModel? metrics,
     @JsonKey(name: 'onlyShopwindow') bool? isShowcase,
-  }) = _ProductDetailModel;
+  }) = _ProductModel;
 
-  factory ProductDetailModel.fromJson(Map<String, dynamic> json) =>
-      _$ProductDetailModelFromJson(json);
+  factory ProductModel.fromJson(Map<String, dynamic> json) =>
+      _$ProductModelFromJson(json);
 
-  ProductDetailEntity toEntity() => ProductDetailEntity(
+  ProductEntity toEntity() => ProductEntity(
         id: id,
         name: name,
         slug: slug,

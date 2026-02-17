@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'product_detail_model.dart';
+part of 'product_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_ProductDetailModel _$ProductDetailModelFromJson(
+_ProductModel _$ProductModelFromJson(
   Map<String, dynamic> json,
-) => _ProductDetailModel(
+) => _ProductModel(
   id: json['id'] as String?,
   name: json['name'] as String?,
   slug: json['slug'] as String?,
@@ -57,7 +57,7 @@ _ProductDetailModel _$ProductDetailModelFromJson(
   isShowcase: json['onlyShopwindow'] as bool?,
 );
 
-Map<String, dynamic> _$ProductDetailModelToJson(_ProductDetailModel instance) =>
+Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

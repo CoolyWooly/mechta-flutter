@@ -134,7 +134,8 @@ class _CategoryCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => context.go('/catalog/product/${category.url}'),
+        onTap: () => context.go(
+              '/catalog/subcatalog/${category.url}?title=${Uri.encodeComponent(category.name)}'),
         child: Stack(
           children: [
             // Category name — top left

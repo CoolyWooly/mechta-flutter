@@ -9,7 +9,7 @@ import 'package:mechta_flutter/core/domain/entities/rating_entity.dart';
 import 'package:mechta_flutter/core/domain/entities/shipment_entity.dart';
 import 'package:mechta_flutter/core/domain/entities/sticker_entity.dart';
 
-class ProductDetailEntity extends Equatable {
+class ProductEntity extends Equatable {
   final String? id;
   final String? name;
   final String? slug;
@@ -29,7 +29,7 @@ class ProductDetailEntity extends Equatable {
   final MetricsEntity? metrics;
   final bool? isShowcase;
 
-  const ProductDetailEntity({
+  const ProductEntity({
     this.id,
     this.name,
     this.slug,

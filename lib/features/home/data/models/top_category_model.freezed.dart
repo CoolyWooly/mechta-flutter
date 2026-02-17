@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TopCategoryModel {
 
-@JsonKey(name: 'category') ProductCategoryModel? get category;@JsonKey(name: 'products') List<ProductDetailModel> get products;
+@JsonKey(name: 'category') ProductCategoryModel? get category;@JsonKey(name: 'products') List<ProductModel> get products;
 /// Create a copy of TopCategoryModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $TopCategoryModelCopyWith<$Res>  {
   factory $TopCategoryModelCopyWith(TopCategoryModel value, $Res Function(TopCategoryModel) _then) = _$TopCategoryModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'category') ProductCategoryModel? category,@JsonKey(name: 'products') List<ProductDetailModel> products
+@JsonKey(name: 'category') ProductCategoryModel? category,@JsonKey(name: 'products') List<ProductModel> products
 });
 
 
@@ -69,7 +69,7 @@ class _$TopCategoryModelCopyWithImpl<$Res>
   return _then(_self.copyWith(
 category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as ProductCategoryModel?,products: null == products ? _self.products : products // ignore: cast_nullable_to_non_nullable
-as List<ProductDetailModel>,
+as List<ProductModel>,
   ));
 }
 /// Create a copy of TopCategoryModel
@@ -166,7 +166,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'category')  ProductCategoryModel? category, @JsonKey(name: 'products')  List<ProductDetailModel> products)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'category')  ProductCategoryModel? category, @JsonKey(name: 'products')  List<ProductModel> products)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TopCategoryModel() when $default != null:
 return $default(_that.category,_that.products);case _:
@@ -187,7 +187,7 @@ return $default(_that.category,_that.products);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'category')  ProductCategoryModel? category, @JsonKey(name: 'products')  List<ProductDetailModel> products)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'category')  ProductCategoryModel? category, @JsonKey(name: 'products')  List<ProductModel> products)  $default,) {final _that = this;
 switch (_that) {
 case _TopCategoryModel():
 return $default(_that.category,_that.products);case _:
@@ -207,7 +207,7 @@ return $default(_that.category,_that.products);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'category')  ProductCategoryModel? category, @JsonKey(name: 'products')  List<ProductDetailModel> products)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'category')  ProductCategoryModel? category, @JsonKey(name: 'products')  List<ProductModel> products)?  $default,) {final _that = this;
 switch (_that) {
 case _TopCategoryModel() when $default != null:
 return $default(_that.category,_that.products);case _:
@@ -222,12 +222,12 @@ return $default(_that.category,_that.products);case _:
 @JsonSerializable()
 
 class _TopCategoryModel extends TopCategoryModel {
-  const _TopCategoryModel({@JsonKey(name: 'category') this.category, @JsonKey(name: 'products') final  List<ProductDetailModel> products = const []}): _products = products,super._();
+  const _TopCategoryModel({@JsonKey(name: 'category') this.category, @JsonKey(name: 'products') final  List<ProductModel> products = const []}): _products = products,super._();
   factory _TopCategoryModel.fromJson(Map<String, dynamic> json) => _$TopCategoryModelFromJson(json);
 
 @override@JsonKey(name: 'category') final  ProductCategoryModel? category;
- final  List<ProductDetailModel> _products;
-@override@JsonKey(name: 'products') List<ProductDetailModel> get products {
+ final  List<ProductModel> _products;
+@override@JsonKey(name: 'products') List<ProductModel> get products {
   if (_products is EqualUnmodifiableListView) return _products;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_products);
@@ -267,7 +267,7 @@ abstract mixin class _$TopCategoryModelCopyWith<$Res> implements $TopCategoryMod
   factory _$TopCategoryModelCopyWith(_TopCategoryModel value, $Res Function(_TopCategoryModel) _then) = __$TopCategoryModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'category') ProductCategoryModel? category,@JsonKey(name: 'products') List<ProductDetailModel> products
+@JsonKey(name: 'category') ProductCategoryModel? category,@JsonKey(name: 'products') List<ProductModel> products
 });
 
 
@@ -288,7 +288,7 @@ class __$TopCategoryModelCopyWithImpl<$Res>
   return _then(_TopCategoryModel(
 category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as ProductCategoryModel?,products: null == products ? _self._products : products // ignore: cast_nullable_to_non_nullable
-as List<ProductDetailModel>,
+as List<ProductModel>,
   ));
 }
 

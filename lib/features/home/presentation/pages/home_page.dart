@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mechta_flutter/app/di.dart';
+import 'package:mechta_flutter/core/navigation/app_link_handler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/features/catalog/domain/entities/brand_entity.dart';
 import 'package:mechta_flutter/features/home/domain/entities/popular_category_entity.dart';
-import 'package:mechta_flutter/core/domain/entities/product_detail_entity.dart';
+import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
 import 'package:mechta_flutter/core/utils/picture_url_converter.dart';
 import 'package:mechta_flutter/features/home/domain/entities/banner_entity.dart';
 import 'package:mechta_flutter/features/home/domain/entities/news_entity.dart';
@@ -137,34 +138,41 @@ class _BannerPagerState extends State<_BannerPager> {
             onPageChanged: (index) => setState(() => _currentPage = index),
             itemBuilder: (context, index) {
               final banner = widget.banners[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    banner.mobile,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Container(
-                        color: colorScheme.surfaceContainerHighest,
-                        child: const Center(
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                      );
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: colorScheme.surfaceContainerHighest,
-                        child: Center(
-                          child: Icon(
-                            Icons.image_not_supported_outlined,
-                            size: 48,
-                            color: colorScheme.onSurfaceVariant,
+              return GestureDetector(
+                onTap: () {
+                  if (banner.url.isNotEmpty) {
+                    sl<AppLinkHandler>().handle(context, banner.url);
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      banner.mobile,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Container(
+                          color: colorScheme.surfaceContainerHighest,
+                          child: const Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: colorScheme.surfaceContainerHighest,
+                          child: Center(
+                            child: Icon(
+                              Icons.image_not_supported_outlined,
+                              size: 48,
+                              color: colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               );
@@ -251,7 +259,7 @@ class _CategoryTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => context.go('/catalog/product/${category.url}'),
+        onTap: () => sl<AppLinkHandler>().handle(context, category.url),
         child: Column(
           children: [
             Padding(
@@ -437,7 +445,7 @@ class _TopCategoryBlock extends StatelessWidget {
 }
 
 class _ProductCard extends StatelessWidget {
-  final ProductDetailEntity product;
+  final ProductEntity product;
 
   const _ProductCard({required this.product});
 

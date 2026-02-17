@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mechta_flutter/features/product/domain/entities/product_entity.dart';
+import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
 import 'package:mechta_flutter/features/product/domain/usecases/get_product.dart';
 
 part 'product_event.dart';
