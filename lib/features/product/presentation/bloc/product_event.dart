@@ -8,10 +8,10 @@ abstract class ProductEvent extends Equatable {
 }
 
 class ProductLoadRequested extends ProductEvent {
-  final int productId;
+  final String slug;
 
-  const ProductLoadRequested(this.productId);
+  const ProductLoadRequested(this.slug);
 
   @override
-  List<Object?> get props => [productId];
+  List<Object?> get props => [slug];
 }

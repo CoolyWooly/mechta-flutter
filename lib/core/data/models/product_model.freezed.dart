@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProductModel {
 
-@JsonKey(name: 'id') String? get id;@JsonKey(name: 'name') String? get name;@JsonKey(name: 'slug') String? get slug;@JsonKey(name: 'code') String? get code;@JsonKey(name: 'numericId') int? get numericId;@JsonKey(name: 'images') List<String> get images;@JsonKey(name: 'preview') String? get preview;@JsonKey(name: 'availability') String? get availability;@JsonKey(name: 'preorder') PreorderModel? get preorder;@JsonKey(name: 'prices') PriceModel? get prices;@JsonKey(name: 'stickers') List<StickerModel> get stickers;@JsonKey(name: 'mainProperties') List<PropertyModel> get mainProperties;@JsonKey(name: 'categories') List<ProductCategoryModel> get categories;@JsonKey(name: 'rating') RatingModel? get rating;@JsonKey(name: 'shipment') ShipmentModel? get shipment;@JsonKey(name: 'propertyGroups') List<PropertyGroupModel> get propertyGroups;@JsonKey(name: 'metrics') MetricsModel? get metrics;@JsonKey(name: 'onlyShopwindow') bool? get isShowcase;
+@JsonKey(name: 'id') String? get id;@JsonKey(name: 'name') String? get name;@JsonKey(name: 'slug') String? get slug;@JsonKey(name: 'code') String? get code;@JsonKey(name: 'numericId') int? get numericId;@JsonKey(name: 'images') List<String> get images;@JsonKey(name: 'preview') String? get preview;@JsonKey(name: 'availability') String? get availability;@JsonKey(name: 'preorder') PreorderModel? get preorder;@JsonKey(name: 'prices') PriceModel? get prices;@JsonKey(name: 'stickers') List<StickerModel> get stickers;@JsonKey(name: 'mainProperties') List<PropertyModel> get mainProperties;@JsonKey(name: 'categories') List<ProductCategoryModel> get categories;@JsonKey(name: 'rating') RatingModel? get rating;@JsonKey(name: 'shipment') ShipmentModel? get shipment;@JsonKey(name: 'propertyGroups') List<PropertyGroupModel> get propertyGroups;@JsonKey(name: 'metrics') MetricsModel? get metrics;@JsonKey(name: 'onlyShopwindow') bool? get isShowcase;@JsonKey(name: 'videos') List<String> get videos;@JsonKey(name: 'tradeInAvailable') bool? get tradeInAvailable;@JsonKey(name: 'marketplaces') List<String> get marketplaces;
 /// Create a copy of ProductModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ProductModelCopyWith<ProductModel> get copyWith => _$ProductModelCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.code, code) || other.code == code)&&(identical(other.numericId, numericId) || other.numericId == numericId)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.preview, preview) || other.preview == preview)&&(identical(other.availability, availability) || other.availability == availability)&&(identical(other.preorder, preorder) || other.preorder == preorder)&&(identical(other.prices, prices) || other.prices == prices)&&const DeepCollectionEquality().equals(other.stickers, stickers)&&const DeepCollectionEquality().equals(other.mainProperties, mainProperties)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.shipment, shipment) || other.shipment == shipment)&&const DeepCollectionEquality().equals(other.propertyGroups, propertyGroups)&&(identical(other.metrics, metrics) || other.metrics == metrics)&&(identical(other.isShowcase, isShowcase) || other.isShowcase == isShowcase));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProductModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.code, code) || other.code == code)&&(identical(other.numericId, numericId) || other.numericId == numericId)&&const DeepCollectionEquality().equals(other.images, images)&&(identical(other.preview, preview) || other.preview == preview)&&(identical(other.availability, availability) || other.availability == availability)&&(identical(other.preorder, preorder) || other.preorder == preorder)&&(identical(other.prices, prices) || other.prices == prices)&&const DeepCollectionEquality().equals(other.stickers, stickers)&&const DeepCollectionEquality().equals(other.mainProperties, mainProperties)&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.shipment, shipment) || other.shipment == shipment)&&const DeepCollectionEquality().equals(other.propertyGroups, propertyGroups)&&(identical(other.metrics, metrics) || other.metrics == metrics)&&(identical(other.isShowcase, isShowcase) || other.isShowcase == isShowcase)&&const DeepCollectionEquality().equals(other.videos, videos)&&(identical(other.tradeInAvailable, tradeInAvailable) || other.tradeInAvailable == tradeInAvailable)&&const DeepCollectionEquality().equals(other.marketplaces, marketplaces));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,slug,code,numericId,const DeepCollectionEquality().hash(images),preview,availability,preorder,prices,const DeepCollectionEquality().hash(stickers),const DeepCollectionEquality().hash(mainProperties),const DeepCollectionEquality().hash(categories),rating,shipment,const DeepCollectionEquality().hash(propertyGroups),metrics,isShowcase);
+int get hashCode => Object.hashAll([runtimeType,id,name,slug,code,numericId,const DeepCollectionEquality().hash(images),preview,availability,preorder,prices,const DeepCollectionEquality().hash(stickers),const DeepCollectionEquality().hash(mainProperties),const DeepCollectionEquality().hash(categories),rating,shipment,const DeepCollectionEquality().hash(propertyGroups),metrics,isShowcase,const DeepCollectionEquality().hash(videos),tradeInAvailable,const DeepCollectionEquality().hash(marketplaces)]);
 
 @override
 String toString() {
-  return 'ProductModel(id: $id, name: $name, slug: $slug, code: $code, numericId: $numericId, images: $images, preview: $preview, availability: $availability, preorder: $preorder, prices: $prices, stickers: $stickers, mainProperties: $mainProperties, categories: $categories, rating: $rating, shipment: $shipment, propertyGroups: $propertyGroups, metrics: $metrics, isShowcase: $isShowcase)';
+  return 'ProductModel(id: $id, name: $name, slug: $slug, code: $code, numericId: $numericId, images: $images, preview: $preview, availability: $availability, preorder: $preorder, prices: $prices, stickers: $stickers, mainProperties: $mainProperties, categories: $categories, rating: $rating, shipment: $shipment, propertyGroups: $propertyGroups, metrics: $metrics, isShowcase: $isShowcase, videos: $videos, tradeInAvailable: $tradeInAvailable, marketplaces: $marketplaces)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ProductModelCopyWith<$Res>  {
   factory $ProductModelCopyWith(ProductModel value, $Res Function(ProductModel) _then) = _$ProductModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'id') String? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'slug') String? slug,@JsonKey(name: 'code') String? code,@JsonKey(name: 'numericId') int? numericId,@JsonKey(name: 'images') List<String> images,@JsonKey(name: 'preview') String? preview,@JsonKey(name: 'availability') String? availability,@JsonKey(name: 'preorder') PreorderModel? preorder,@JsonKey(name: 'prices') PriceModel? prices,@JsonKey(name: 'stickers') List<StickerModel> stickers,@JsonKey(name: 'mainProperties') List<PropertyModel> mainProperties,@JsonKey(name: 'categories') List<ProductCategoryModel> categories,@JsonKey(name: 'rating') RatingModel? rating,@JsonKey(name: 'shipment') ShipmentModel? shipment,@JsonKey(name: 'propertyGroups') List<PropertyGroupModel> propertyGroups,@JsonKey(name: 'metrics') MetricsModel? metrics,@JsonKey(name: 'onlyShopwindow') bool? isShowcase
+@JsonKey(name: 'id') String? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'slug') String? slug,@JsonKey(name: 'code') String? code,@JsonKey(name: 'numericId') int? numericId,@JsonKey(name: 'images') List<String> images,@JsonKey(name: 'preview') String? preview,@JsonKey(name: 'availability') String? availability,@JsonKey(name: 'preorder') PreorderModel? preorder,@JsonKey(name: 'prices') PriceModel? prices,@JsonKey(name: 'stickers') List<StickerModel> stickers,@JsonKey(name: 'mainProperties') List<PropertyModel> mainProperties,@JsonKey(name: 'categories') List<ProductCategoryModel> categories,@JsonKey(name: 'rating') RatingModel? rating,@JsonKey(name: 'shipment') ShipmentModel? shipment,@JsonKey(name: 'propertyGroups') List<PropertyGroupModel> propertyGroups,@JsonKey(name: 'metrics') MetricsModel? metrics,@JsonKey(name: 'onlyShopwindow') bool? isShowcase,@JsonKey(name: 'videos') List<String> videos,@JsonKey(name: 'tradeInAvailable') bool? tradeInAvailable,@JsonKey(name: 'marketplaces') List<String> marketplaces
 });
 
 
@@ -65,7 +65,7 @@ class _$ProductModelCopyWithImpl<$Res>
 
 /// Create a copy of ProductModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = freezed,Object? slug = freezed,Object? code = freezed,Object? numericId = freezed,Object? images = null,Object? preview = freezed,Object? availability = freezed,Object? preorder = freezed,Object? prices = freezed,Object? stickers = null,Object? mainProperties = null,Object? categories = null,Object? rating = freezed,Object? shipment = freezed,Object? propertyGroups = null,Object? metrics = freezed,Object? isShowcase = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? name = freezed,Object? slug = freezed,Object? code = freezed,Object? numericId = freezed,Object? images = null,Object? preview = freezed,Object? availability = freezed,Object? preorder = freezed,Object? prices = freezed,Object? stickers = null,Object? mainProperties = null,Object? categories = null,Object? rating = freezed,Object? shipment = freezed,Object? propertyGroups = null,Object? metrics = freezed,Object? isShowcase = freezed,Object? videos = null,Object? tradeInAvailable = freezed,Object? marketplaces = null,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -85,7 +85,10 @@ as RatingModel?,shipment: freezed == shipment ? _self.shipment : shipment // ign
 as ShipmentModel?,propertyGroups: null == propertyGroups ? _self.propertyGroups : propertyGroups // ignore: cast_nullable_to_non_nullable
 as List<PropertyGroupModel>,metrics: freezed == metrics ? _self.metrics : metrics // ignore: cast_nullable_to_non_nullable
 as MetricsModel?,isShowcase: freezed == isShowcase ? _self.isShowcase : isShowcase // ignore: cast_nullable_to_non_nullable
-as bool?,
+as bool?,videos: null == videos ? _self.videos : videos // ignore: cast_nullable_to_non_nullable
+as List<String>,tradeInAvailable: freezed == tradeInAvailable ? _self.tradeInAvailable : tradeInAvailable // ignore: cast_nullable_to_non_nullable
+as bool?,marketplaces: null == marketplaces ? _self.marketplaces : marketplaces // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 /// Create a copy of ProductModel
@@ -230,10 +233,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  String? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'slug')  String? slug, @JsonKey(name: 'code')  String? code, @JsonKey(name: 'numericId')  int? numericId, @JsonKey(name: 'images')  List<String> images, @JsonKey(name: 'preview')  String? preview, @JsonKey(name: 'availability')  String? availability, @JsonKey(name: 'preorder')  PreorderModel? preorder, @JsonKey(name: 'prices')  PriceModel? prices, @JsonKey(name: 'stickers')  List<StickerModel> stickers, @JsonKey(name: 'mainProperties')  List<PropertyModel> mainProperties, @JsonKey(name: 'categories')  List<ProductCategoryModel> categories, @JsonKey(name: 'rating')  RatingModel? rating, @JsonKey(name: 'shipment')  ShipmentModel? shipment, @JsonKey(name: 'propertyGroups')  List<PropertyGroupModel> propertyGroups, @JsonKey(name: 'metrics')  MetricsModel? metrics, @JsonKey(name: 'onlyShopwindow')  bool? isShowcase)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  String? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'slug')  String? slug, @JsonKey(name: 'code')  String? code, @JsonKey(name: 'numericId')  int? numericId, @JsonKey(name: 'images')  List<String> images, @JsonKey(name: 'preview')  String? preview, @JsonKey(name: 'availability')  String? availability, @JsonKey(name: 'preorder')  PreorderModel? preorder, @JsonKey(name: 'prices')  PriceModel? prices, @JsonKey(name: 'stickers')  List<StickerModel> stickers, @JsonKey(name: 'mainProperties')  List<PropertyModel> mainProperties, @JsonKey(name: 'categories')  List<ProductCategoryModel> categories, @JsonKey(name: 'rating')  RatingModel? rating, @JsonKey(name: 'shipment')  ShipmentModel? shipment, @JsonKey(name: 'propertyGroups')  List<PropertyGroupModel> propertyGroups, @JsonKey(name: 'metrics')  MetricsModel? metrics, @JsonKey(name: 'onlyShopwindow')  bool? isShowcase, @JsonKey(name: 'videos')  List<String> videos, @JsonKey(name: 'tradeInAvailable')  bool? tradeInAvailable, @JsonKey(name: 'marketplaces')  List<String> marketplaces)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProductModel() when $default != null:
-return $default(_that.id,_that.name,_that.slug,_that.code,_that.numericId,_that.images,_that.preview,_that.availability,_that.preorder,_that.prices,_that.stickers,_that.mainProperties,_that.categories,_that.rating,_that.shipment,_that.propertyGroups,_that.metrics,_that.isShowcase);case _:
+return $default(_that.id,_that.name,_that.slug,_that.code,_that.numericId,_that.images,_that.preview,_that.availability,_that.preorder,_that.prices,_that.stickers,_that.mainProperties,_that.categories,_that.rating,_that.shipment,_that.propertyGroups,_that.metrics,_that.isShowcase,_that.videos,_that.tradeInAvailable,_that.marketplaces);case _:
   return orElse();
 
 }
@@ -251,10 +254,10 @@ return $default(_that.id,_that.name,_that.slug,_that.code,_that.numericId,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  String? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'slug')  String? slug, @JsonKey(name: 'code')  String? code, @JsonKey(name: 'numericId')  int? numericId, @JsonKey(name: 'images')  List<String> images, @JsonKey(name: 'preview')  String? preview, @JsonKey(name: 'availability')  String? availability, @JsonKey(name: 'preorder')  PreorderModel? preorder, @JsonKey(name: 'prices')  PriceModel? prices, @JsonKey(name: 'stickers')  List<StickerModel> stickers, @JsonKey(name: 'mainProperties')  List<PropertyModel> mainProperties, @JsonKey(name: 'categories')  List<ProductCategoryModel> categories, @JsonKey(name: 'rating')  RatingModel? rating, @JsonKey(name: 'shipment')  ShipmentModel? shipment, @JsonKey(name: 'propertyGroups')  List<PropertyGroupModel> propertyGroups, @JsonKey(name: 'metrics')  MetricsModel? metrics, @JsonKey(name: 'onlyShopwindow')  bool? isShowcase)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'id')  String? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'slug')  String? slug, @JsonKey(name: 'code')  String? code, @JsonKey(name: 'numericId')  int? numericId, @JsonKey(name: 'images')  List<String> images, @JsonKey(name: 'preview')  String? preview, @JsonKey(name: 'availability')  String? availability, @JsonKey(name: 'preorder')  PreorderModel? preorder, @JsonKey(name: 'prices')  PriceModel? prices, @JsonKey(name: 'stickers')  List<StickerModel> stickers, @JsonKey(name: 'mainProperties')  List<PropertyModel> mainProperties, @JsonKey(name: 'categories')  List<ProductCategoryModel> categories, @JsonKey(name: 'rating')  RatingModel? rating, @JsonKey(name: 'shipment')  ShipmentModel? shipment, @JsonKey(name: 'propertyGroups')  List<PropertyGroupModel> propertyGroups, @JsonKey(name: 'metrics')  MetricsModel? metrics, @JsonKey(name: 'onlyShopwindow')  bool? isShowcase, @JsonKey(name: 'videos')  List<String> videos, @JsonKey(name: 'tradeInAvailable')  bool? tradeInAvailable, @JsonKey(name: 'marketplaces')  List<String> marketplaces)  $default,) {final _that = this;
 switch (_that) {
 case _ProductModel():
-return $default(_that.id,_that.name,_that.slug,_that.code,_that.numericId,_that.images,_that.preview,_that.availability,_that.preorder,_that.prices,_that.stickers,_that.mainProperties,_that.categories,_that.rating,_that.shipment,_that.propertyGroups,_that.metrics,_that.isShowcase);case _:
+return $default(_that.id,_that.name,_that.slug,_that.code,_that.numericId,_that.images,_that.preview,_that.availability,_that.preorder,_that.prices,_that.stickers,_that.mainProperties,_that.categories,_that.rating,_that.shipment,_that.propertyGroups,_that.metrics,_that.isShowcase,_that.videos,_that.tradeInAvailable,_that.marketplaces);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -271,10 +274,10 @@ return $default(_that.id,_that.name,_that.slug,_that.code,_that.numericId,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  String? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'slug')  String? slug, @JsonKey(name: 'code')  String? code, @JsonKey(name: 'numericId')  int? numericId, @JsonKey(name: 'images')  List<String> images, @JsonKey(name: 'preview')  String? preview, @JsonKey(name: 'availability')  String? availability, @JsonKey(name: 'preorder')  PreorderModel? preorder, @JsonKey(name: 'prices')  PriceModel? prices, @JsonKey(name: 'stickers')  List<StickerModel> stickers, @JsonKey(name: 'mainProperties')  List<PropertyModel> mainProperties, @JsonKey(name: 'categories')  List<ProductCategoryModel> categories, @JsonKey(name: 'rating')  RatingModel? rating, @JsonKey(name: 'shipment')  ShipmentModel? shipment, @JsonKey(name: 'propertyGroups')  List<PropertyGroupModel> propertyGroups, @JsonKey(name: 'metrics')  MetricsModel? metrics, @JsonKey(name: 'onlyShopwindow')  bool? isShowcase)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'id')  String? id, @JsonKey(name: 'name')  String? name, @JsonKey(name: 'slug')  String? slug, @JsonKey(name: 'code')  String? code, @JsonKey(name: 'numericId')  int? numericId, @JsonKey(name: 'images')  List<String> images, @JsonKey(name: 'preview')  String? preview, @JsonKey(name: 'availability')  String? availability, @JsonKey(name: 'preorder')  PreorderModel? preorder, @JsonKey(name: 'prices')  PriceModel? prices, @JsonKey(name: 'stickers')  List<StickerModel> stickers, @JsonKey(name: 'mainProperties')  List<PropertyModel> mainProperties, @JsonKey(name: 'categories')  List<ProductCategoryModel> categories, @JsonKey(name: 'rating')  RatingModel? rating, @JsonKey(name: 'shipment')  ShipmentModel? shipment, @JsonKey(name: 'propertyGroups')  List<PropertyGroupModel> propertyGroups, @JsonKey(name: 'metrics')  MetricsModel? metrics, @JsonKey(name: 'onlyShopwindow')  bool? isShowcase, @JsonKey(name: 'videos')  List<String> videos, @JsonKey(name: 'tradeInAvailable')  bool? tradeInAvailable, @JsonKey(name: 'marketplaces')  List<String> marketplaces)?  $default,) {final _that = this;
 switch (_that) {
 case _ProductModel() when $default != null:
-return $default(_that.id,_that.name,_that.slug,_that.code,_that.numericId,_that.images,_that.preview,_that.availability,_that.preorder,_that.prices,_that.stickers,_that.mainProperties,_that.categories,_that.rating,_that.shipment,_that.propertyGroups,_that.metrics,_that.isShowcase);case _:
+return $default(_that.id,_that.name,_that.slug,_that.code,_that.numericId,_that.images,_that.preview,_that.availability,_that.preorder,_that.prices,_that.stickers,_that.mainProperties,_that.categories,_that.rating,_that.shipment,_that.propertyGroups,_that.metrics,_that.isShowcase,_that.videos,_that.tradeInAvailable,_that.marketplaces);case _:
   return null;
 
 }
@@ -286,7 +289,7 @@ return $default(_that.id,_that.name,_that.slug,_that.code,_that.numericId,_that.
 @JsonSerializable()
 
 class _ProductModel extends ProductModel {
-  const _ProductModel({@JsonKey(name: 'id') this.id, @JsonKey(name: 'name') this.name, @JsonKey(name: 'slug') this.slug, @JsonKey(name: 'code') this.code, @JsonKey(name: 'numericId') this.numericId, @JsonKey(name: 'images') final  List<String> images = const [], @JsonKey(name: 'preview') this.preview, @JsonKey(name: 'availability') this.availability, @JsonKey(name: 'preorder') this.preorder, @JsonKey(name: 'prices') this.prices, @JsonKey(name: 'stickers') final  List<StickerModel> stickers = const [], @JsonKey(name: 'mainProperties') final  List<PropertyModel> mainProperties = const [], @JsonKey(name: 'categories') final  List<ProductCategoryModel> categories = const [], @JsonKey(name: 'rating') this.rating, @JsonKey(name: 'shipment') this.shipment, @JsonKey(name: 'propertyGroups') final  List<PropertyGroupModel> propertyGroups = const [], @JsonKey(name: 'metrics') this.metrics, @JsonKey(name: 'onlyShopwindow') this.isShowcase}): _images = images,_stickers = stickers,_mainProperties = mainProperties,_categories = categories,_propertyGroups = propertyGroups,super._();
+  const _ProductModel({@JsonKey(name: 'id') this.id, @JsonKey(name: 'name') this.name, @JsonKey(name: 'slug') this.slug, @JsonKey(name: 'code') this.code, @JsonKey(name: 'numericId') this.numericId, @JsonKey(name: 'images') final  List<String> images = const [], @JsonKey(name: 'preview') this.preview, @JsonKey(name: 'availability') this.availability, @JsonKey(name: 'preorder') this.preorder, @JsonKey(name: 'prices') this.prices, @JsonKey(name: 'stickers') final  List<StickerModel> stickers = const [], @JsonKey(name: 'mainProperties') final  List<PropertyModel> mainProperties = const [], @JsonKey(name: 'categories') final  List<ProductCategoryModel> categories = const [], @JsonKey(name: 'rating') this.rating, @JsonKey(name: 'shipment') this.shipment, @JsonKey(name: 'propertyGroups') final  List<PropertyGroupModel> propertyGroups = const [], @JsonKey(name: 'metrics') this.metrics, @JsonKey(name: 'onlyShopwindow') this.isShowcase, @JsonKey(name: 'videos') final  List<String> videos = const [], @JsonKey(name: 'tradeInAvailable') this.tradeInAvailable, @JsonKey(name: 'marketplaces') final  List<String> marketplaces = const []}): _images = images,_stickers = stickers,_mainProperties = mainProperties,_categories = categories,_propertyGroups = propertyGroups,_videos = videos,_marketplaces = marketplaces,super._();
   factory _ProductModel.fromJson(Map<String, dynamic> json) => _$ProductModelFromJson(json);
 
 @override@JsonKey(name: 'id') final  String? id;
@@ -337,6 +340,21 @@ class _ProductModel extends ProductModel {
 
 @override@JsonKey(name: 'metrics') final  MetricsModel? metrics;
 @override@JsonKey(name: 'onlyShopwindow') final  bool? isShowcase;
+ final  List<String> _videos;
+@override@JsonKey(name: 'videos') List<String> get videos {
+  if (_videos is EqualUnmodifiableListView) return _videos;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_videos);
+}
+
+@override@JsonKey(name: 'tradeInAvailable') final  bool? tradeInAvailable;
+ final  List<String> _marketplaces;
+@override@JsonKey(name: 'marketplaces') List<String> get marketplaces {
+  if (_marketplaces is EqualUnmodifiableListView) return _marketplaces;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_marketplaces);
+}
+
 
 /// Create a copy of ProductModel
 /// with the given fields replaced by the non-null parameter values.
@@ -351,16 +369,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.code, code) || other.code == code)&&(identical(other.numericId, numericId) || other.numericId == numericId)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.preview, preview) || other.preview == preview)&&(identical(other.availability, availability) || other.availability == availability)&&(identical(other.preorder, preorder) || other.preorder == preorder)&&(identical(other.prices, prices) || other.prices == prices)&&const DeepCollectionEquality().equals(other._stickers, _stickers)&&const DeepCollectionEquality().equals(other._mainProperties, _mainProperties)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.shipment, shipment) || other.shipment == shipment)&&const DeepCollectionEquality().equals(other._propertyGroups, _propertyGroups)&&(identical(other.metrics, metrics) || other.metrics == metrics)&&(identical(other.isShowcase, isShowcase) || other.isShowcase == isShowcase));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProductModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.code, code) || other.code == code)&&(identical(other.numericId, numericId) || other.numericId == numericId)&&const DeepCollectionEquality().equals(other._images, _images)&&(identical(other.preview, preview) || other.preview == preview)&&(identical(other.availability, availability) || other.availability == availability)&&(identical(other.preorder, preorder) || other.preorder == preorder)&&(identical(other.prices, prices) || other.prices == prices)&&const DeepCollectionEquality().equals(other._stickers, _stickers)&&const DeepCollectionEquality().equals(other._mainProperties, _mainProperties)&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.shipment, shipment) || other.shipment == shipment)&&const DeepCollectionEquality().equals(other._propertyGroups, _propertyGroups)&&(identical(other.metrics, metrics) || other.metrics == metrics)&&(identical(other.isShowcase, isShowcase) || other.isShowcase == isShowcase)&&const DeepCollectionEquality().equals(other._videos, _videos)&&(identical(other.tradeInAvailable, tradeInAvailable) || other.tradeInAvailable == tradeInAvailable)&&const DeepCollectionEquality().equals(other._marketplaces, _marketplaces));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,slug,code,numericId,const DeepCollectionEquality().hash(_images),preview,availability,preorder,prices,const DeepCollectionEquality().hash(_stickers),const DeepCollectionEquality().hash(_mainProperties),const DeepCollectionEquality().hash(_categories),rating,shipment,const DeepCollectionEquality().hash(_propertyGroups),metrics,isShowcase);
+int get hashCode => Object.hashAll([runtimeType,id,name,slug,code,numericId,const DeepCollectionEquality().hash(_images),preview,availability,preorder,prices,const DeepCollectionEquality().hash(_stickers),const DeepCollectionEquality().hash(_mainProperties),const DeepCollectionEquality().hash(_categories),rating,shipment,const DeepCollectionEquality().hash(_propertyGroups),metrics,isShowcase,const DeepCollectionEquality().hash(_videos),tradeInAvailable,const DeepCollectionEquality().hash(_marketplaces)]);
 
 @override
 String toString() {
-  return 'ProductModel(id: $id, name: $name, slug: $slug, code: $code, numericId: $numericId, images: $images, preview: $preview, availability: $availability, preorder: $preorder, prices: $prices, stickers: $stickers, mainProperties: $mainProperties, categories: $categories, rating: $rating, shipment: $shipment, propertyGroups: $propertyGroups, metrics: $metrics, isShowcase: $isShowcase)';
+  return 'ProductModel(id: $id, name: $name, slug: $slug, code: $code, numericId: $numericId, images: $images, preview: $preview, availability: $availability, preorder: $preorder, prices: $prices, stickers: $stickers, mainProperties: $mainProperties, categories: $categories, rating: $rating, shipment: $shipment, propertyGroups: $propertyGroups, metrics: $metrics, isShowcase: $isShowcase, videos: $videos, tradeInAvailable: $tradeInAvailable, marketplaces: $marketplaces)';
 }
 
 
@@ -371,7 +389,7 @@ abstract mixin class _$ProductModelCopyWith<$Res> implements $ProductModelCopyWi
   factory _$ProductModelCopyWith(_ProductModel value, $Res Function(_ProductModel) _then) = __$ProductModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'id') String? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'slug') String? slug,@JsonKey(name: 'code') String? code,@JsonKey(name: 'numericId') int? numericId,@JsonKey(name: 'images') List<String> images,@JsonKey(name: 'preview') String? preview,@JsonKey(name: 'availability') String? availability,@JsonKey(name: 'preorder') PreorderModel? preorder,@JsonKey(name: 'prices') PriceModel? prices,@JsonKey(name: 'stickers') List<StickerModel> stickers,@JsonKey(name: 'mainProperties') List<PropertyModel> mainProperties,@JsonKey(name: 'categories') List<ProductCategoryModel> categories,@JsonKey(name: 'rating') RatingModel? rating,@JsonKey(name: 'shipment') ShipmentModel? shipment,@JsonKey(name: 'propertyGroups') List<PropertyGroupModel> propertyGroups,@JsonKey(name: 'metrics') MetricsModel? metrics,@JsonKey(name: 'onlyShopwindow') bool? isShowcase
+@JsonKey(name: 'id') String? id,@JsonKey(name: 'name') String? name,@JsonKey(name: 'slug') String? slug,@JsonKey(name: 'code') String? code,@JsonKey(name: 'numericId') int? numericId,@JsonKey(name: 'images') List<String> images,@JsonKey(name: 'preview') String? preview,@JsonKey(name: 'availability') String? availability,@JsonKey(name: 'preorder') PreorderModel? preorder,@JsonKey(name: 'prices') PriceModel? prices,@JsonKey(name: 'stickers') List<StickerModel> stickers,@JsonKey(name: 'mainProperties') List<PropertyModel> mainProperties,@JsonKey(name: 'categories') List<ProductCategoryModel> categories,@JsonKey(name: 'rating') RatingModel? rating,@JsonKey(name: 'shipment') ShipmentModel? shipment,@JsonKey(name: 'propertyGroups') List<PropertyGroupModel> propertyGroups,@JsonKey(name: 'metrics') MetricsModel? metrics,@JsonKey(name: 'onlyShopwindow') bool? isShowcase,@JsonKey(name: 'videos') List<String> videos,@JsonKey(name: 'tradeInAvailable') bool? tradeInAvailable,@JsonKey(name: 'marketplaces') List<String> marketplaces
 });
 
 
@@ -388,7 +406,7 @@ class __$ProductModelCopyWithImpl<$Res>
 
 /// Create a copy of ProductModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = freezed,Object? slug = freezed,Object? code = freezed,Object? numericId = freezed,Object? images = null,Object? preview = freezed,Object? availability = freezed,Object? preorder = freezed,Object? prices = freezed,Object? stickers = null,Object? mainProperties = null,Object? categories = null,Object? rating = freezed,Object? shipment = freezed,Object? propertyGroups = null,Object? metrics = freezed,Object? isShowcase = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? name = freezed,Object? slug = freezed,Object? code = freezed,Object? numericId = freezed,Object? images = null,Object? preview = freezed,Object? availability = freezed,Object? preorder = freezed,Object? prices = freezed,Object? stickers = null,Object? mainProperties = null,Object? categories = null,Object? rating = freezed,Object? shipment = freezed,Object? propertyGroups = null,Object? metrics = freezed,Object? isShowcase = freezed,Object? videos = null,Object? tradeInAvailable = freezed,Object? marketplaces = null,}) {
   return _then(_ProductModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -408,7 +426,10 @@ as RatingModel?,shipment: freezed == shipment ? _self.shipment : shipment // ign
 as ShipmentModel?,propertyGroups: null == propertyGroups ? _self._propertyGroups : propertyGroups // ignore: cast_nullable_to_non_nullable
 as List<PropertyGroupModel>,metrics: freezed == metrics ? _self.metrics : metrics // ignore: cast_nullable_to_non_nullable
 as MetricsModel?,isShowcase: freezed == isShowcase ? _self.isShowcase : isShowcase // ignore: cast_nullable_to_non_nullable
-as bool?,
+as bool?,videos: null == videos ? _self._videos : videos // ignore: cast_nullable_to_non_nullable
+as List<String>,tradeInAvailable: freezed == tradeInAvailable ? _self.tradeInAvailable : tradeInAvailable // ignore: cast_nullable_to_non_nullable
+as bool?,marketplaces: null == marketplaces ? _self._marketplaces : marketplaces // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 

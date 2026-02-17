@@ -159,8 +159,8 @@ class _ProductCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {
-          final location = GoRouterState.of(context).uri.toString();
-          context.go('$location/product/${product.code}');
+          final uri = GoRouterState.of(context).uri;
+          context.go('${uri.path}/product/${product.slug}');
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

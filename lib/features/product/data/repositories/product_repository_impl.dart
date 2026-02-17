@@ -10,9 +10,9 @@ class ProductRepositoryImpl implements ProductRepository {
   ProductRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<ProductEntity> getProduct(int id) async {
+  Future<ProductEntity> getProduct(String slug) async {
     try {
-      final model = await remoteDataSource.getProduct(id);
+      final model = await remoteDataSource.getProduct(slug);
       return model.toEntity();
     } on ServerException catch (e) {
       throw ServerFailure(e.message);

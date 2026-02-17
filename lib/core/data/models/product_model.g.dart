@@ -55,6 +55,15 @@ _ProductModel _$ProductModelFromJson(
       ? null
       : MetricsModel.fromJson(json['metrics'] as Map<String, dynamic>),
   isShowcase: json['onlyShopwindow'] as bool?,
+  videos:
+      (json['videos'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+      const [],
+  tradeInAvailable: json['tradeInAvailable'] as bool?,
+  marketplaces:
+      (json['marketplaces'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
@@ -77,4 +86,7 @@ Map<String, dynamic> _$ProductModelToJson(_ProductModel instance) =>
       'propertyGroups': instance.propertyGroups,
       'metrics': instance.metrics,
       'onlyShopwindow': instance.isShowcase,
+      'videos': instance.videos,
+      'tradeInAvailable': instance.tradeInAvailable,
+      'marketplaces': instance.marketplaces,
     };

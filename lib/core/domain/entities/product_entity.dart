@@ -28,6 +28,9 @@ class ProductEntity extends Equatable {
   final List<PropertyGroupEntity> propertyGroups;
   final MetricsEntity? metrics;
   final bool? isShowcase;
+  final List<String> videos;
+  final bool? tradeInAvailable;
+  final List<String> marketplaces;
 
   const ProductEntity({
     this.id,
@@ -48,6 +51,9 @@ class ProductEntity extends Equatable {
     this.propertyGroups = const [],
     this.metrics,
     this.isShowcase,
+    this.videos = const [],
+    this.tradeInAvailable,
+    this.marketplaces = const [],
   });
 
   @override
@@ -70,5 +76,8 @@ class ProductEntity extends Equatable {
         propertyGroups,
         metrics,
         isShowcase,
+        videos,
+        tradeInAvailable,
+        marketplaces,
       ];
 }

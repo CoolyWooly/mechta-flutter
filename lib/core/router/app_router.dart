@@ -25,8 +25,8 @@ final _profileNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'profile');
 GoRoute _productRoute() => GoRoute(
       path: RoutePaths.product,
       builder: (context, state) {
-        final productId = state.pathParameters['id']!;
-        return ProductPage(productId: productId);
+        final slug = state.pathParameters['productSlug']!;
+        return ProductPage(slug: slug);
       },
     );
 

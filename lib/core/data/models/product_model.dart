@@ -36,6 +36,9 @@ abstract class ProductModel with _$ProductModel {
     @JsonKey(name: 'propertyGroups') @Default([]) List<PropertyGroupModel> propertyGroups,
     @JsonKey(name: 'metrics') MetricsModel? metrics,
     @JsonKey(name: 'onlyShopwindow') bool? isShowcase,
+    @JsonKey(name: 'videos') @Default([]) List<String> videos,
+    @JsonKey(name: 'tradeInAvailable') bool? tradeInAvailable,
+    @JsonKey(name: 'marketplaces') @Default([]) List<String> marketplaces,
   }) = _ProductModel;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>
@@ -60,5 +63,8 @@ abstract class ProductModel with _$ProductModel {
         propertyGroups: propertyGroups.map((e) => e.toEntity()).toList(),
         metrics: metrics?.toEntity(),
         isShowcase: isShowcase,
+        videos: videos,
+        tradeInAvailable: tradeInAvailable,
+        marketplaces: marketplaces,
       );
 }

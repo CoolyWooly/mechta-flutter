@@ -3,7 +3,7 @@ import 'package:mechta_flutter/core/data/models/product_model.dart';
 import 'package:mechta_flutter/core/error/exceptions.dart';
 
 abstract class ProductRemoteDataSource {
-  Future<ProductModel> getProduct(int id);
+  Future<ProductModel> getProduct(String slug);
 }
 
 class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
@@ -12,11 +12,11 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
   ProductRemoteDataSourceImpl({required this.dio});
 
   @override
-  Future<ProductModel> getProduct(int id) async {
+  Future<ProductModel> getProduct(String slug) async {
     try {
-      final response = await dio.get('/products/$id');
+      final response = await dio.get('api/v3/product/$slug');
       return ProductModel.fromJson(
-        response.data['data'] as Map<String, dynamic>,
+        response.data as Map<String, dynamic>,
       );
     } on DioException catch (e) {
       throw ServerException(

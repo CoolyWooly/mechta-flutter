@@ -464,8 +464,8 @@ class _ProductCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: () {
-            if (product.code != null) {
-              context.go('/home/product/${product.code}');
+            if (product.slug != null) {
+              context.go('/home/product/${product.slug}');
             }
           },
           child: Column(
