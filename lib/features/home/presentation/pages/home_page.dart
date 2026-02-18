@@ -353,9 +353,8 @@ class _BrandTile extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () {
-          // TODO: Implement brand tap navigation
-        },
+        onTap: () => context.go(
+              '/home/brand/${brand.slug}?title=${Uri.encodeComponent(brand.name)}'),
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: imageUrl != null

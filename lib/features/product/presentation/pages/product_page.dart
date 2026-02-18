@@ -68,7 +68,7 @@ class _ProductViewState extends State<_ProductView> {
         }
         return Scaffold(
           appBar: AppBar(
-            title: Text(state.product?.name ?? AppLocalizations.of(context)!.product),
+            title: Text(state.product?.name ?? ''),
             actions: [
               if (state.product?.id != null)
                 IconButton(

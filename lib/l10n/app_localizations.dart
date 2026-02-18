@@ -224,6 +224,12 @@ abstract class AppLocalizations {
   /// **'Бренды'**
   String get brands;
 
+  /// No description provided for @products.
+  ///
+  /// In ru, this message translates to:
+  /// **'Товары'**
+  String get products;
+
   /// No description provided for @product.
   ///
   /// In ru, this message translates to:

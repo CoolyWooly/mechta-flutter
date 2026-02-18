@@ -27,6 +27,7 @@
 
   "brands": "Бренды",
 
+  "products": "Товары",
   "product": "Товар",
   "addToCartWithPrice": "В корзину — {price} ₸",
   "@addToCartWithPrice": {

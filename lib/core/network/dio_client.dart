@@ -29,6 +29,8 @@ Dio createDio({
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
         }
+        final locale = sharedPreferences.getString('app_locale') ?? 'ru';
+        options.headers['Accept-Language'] = locale;
         final cityJson = sharedPreferences.getString('selected_city');
         if (cityJson != null) {
           try {

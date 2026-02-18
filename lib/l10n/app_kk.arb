@@ -27,6 +27,7 @@
 
   "brands": "Брендтер",
 
+  "products": "Тауарлар",
   "product": "Тауар",
   "addToCartWithPrice": "Себетке — {price} ₸",
   "outOfStock": "Қоймада жоқ",

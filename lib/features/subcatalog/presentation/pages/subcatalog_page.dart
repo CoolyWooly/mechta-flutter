@@ -3,15 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
+import 'package:mechta_flutter/core/router/route_names.dart';
 import 'package:mechta_flutter/core/utils/picture_url_converter.dart';
 import 'package:mechta_flutter/features/favorites/domain/usecases/is_favorite.dart';
 import 'package:mechta_flutter/features/favorites/domain/usecases/toggle_favorite.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/entities/category_entity.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/bloc/subcatalog_bloc.dart';
 import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class SubcatalogPage extends StatelessWidget {
   final String slug;
-  final String title;
   final int page;
   final double? minPrice;
   final double? maxPrice;
@@ -22,7 +23,6 @@ class SubcatalogPage extends StatelessWidget {
   const SubcatalogPage({
     super.key,
     required this.slug,
-    required this.title,
     this.page = 1,
     this.minPrice,
     this.maxPrice,
@@ -43,16 +43,14 @@ class SubcatalogPage extends StatelessWidget {
           orderBy: orderBy,
           direction: direction,
           properties: properties,
-        )),
-      child: _SubcatalogView(title: title),
+        ))
+        ..add(SubcatalogCategoryChildrenRequested(slug: slug)),
+      child: _SubcatalogView(),
     );
   }
 }
 
 class _SubcatalogView extends StatefulWidget {
-  final String title;
-
-  const _SubcatalogView({required this.title});
 
   @override
   State<_SubcatalogView> createState() => _SubcatalogViewState();
@@ -91,7 +89,14 @@ class _SubcatalogViewState extends State<_SubcatalogView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
+      appBar: AppBar(
+        title: BlocSelector<SubcatalogBloc, SubcatalogState, String?>(
+          selector: (state) => state.categoryName,
+          builder: (context, categoryName) {
+            return Text(categoryName ?? '');
+          },
+        ),
+      ),
       body: BlocBuilder<SubcatalogBloc, SubcatalogState>(
         builder: (context, state) {
           return switch (state.status) {
@@ -113,32 +118,99 @@ class _SubcatalogViewState extends State<_SubcatalogView> {
                   ],
                 ),
               ),
-            _ => _buildProductGrid(context, state),
+            _ => _buildContent(context, state),
           };
         },
       ),
     );
   }
 
-  Widget _buildProductGrid(BuildContext context, SubcatalogState state) {
-    return GridView.builder(
+  Widget _buildContent(BuildContext context, SubcatalogState state) {
+    return CustomScrollView(
       controller: _scrollController,
-      padding: const EdgeInsets.all(16),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 12,
-        crossAxisSpacing: 12,
-        childAspectRatio: 0.65,
-      ),
-      itemCount:
-          state.hasReachedMax ? state.products.length : state.products.length + 1,
-      itemBuilder: (context, index) {
-        if (index >= state.products.length) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        return _ProductCard(product: state.products[index]);
-      },
+      slivers: [
+        // Children categories
+        if (state.children.isNotEmpty)
+          _ChildrenCategoriesSection(children: state.children),
+
+        // Product grid
+        SliverPadding(
+          padding: const EdgeInsets.all(16),
+          sliver: SliverGrid(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              childAspectRatio: 0.65,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                if (index >= state.products.length) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                return _ProductCard(product: state.products[index]);
+              },
+              childCount: state.hasReachedMax
+                  ? state.products.length
+                  : state.products.length + 1,
+            ),
+          ),
+        ),
+      ],
     );
+  }
+}
+
+class _ChildrenCategoriesSection extends StatelessWidget {
+  final List<CategoryChildEntity> children;
+
+  const _ChildrenCategoriesSection({required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return SliverToBoxAdapter(
+      child: SizedBox(
+        height: 48,
+        child: ListView.separated(
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          itemCount: children.length,
+          separatorBuilder: (_, _) => const SizedBox(width: 8),
+          itemBuilder: (context, index) {
+            final child = children[index];
+            return ActionChip(
+              label: Text(child.name),
+              backgroundColor: colorScheme.surfaceContainerHighest,
+              onPressed: () {
+                _navigateToChild(context, child);
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  void _navigateToChild(BuildContext context, CategoryChildEntity child) {
+    final uri = GoRouterState.of(context).uri.path;
+    // Find the tab root to build the push path
+    const tabRoots = [
+      RoutePaths.home,
+      RoutePaths.catalog,
+      RoutePaths.cart,
+      RoutePaths.favorites,
+      RoutePaths.profile,
+    ];
+    var tabRoot = RoutePaths.home;
+    for (final root in tabRoots) {
+      if (uri.startsWith(root)) {
+        tabRoot = root;
+        break;
+      }
+    }
+    context.push('$tabRoot/subcatalog/${child.slug}');
   }
 }
 

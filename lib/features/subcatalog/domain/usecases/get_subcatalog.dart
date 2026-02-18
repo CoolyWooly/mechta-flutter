@@ -1,17 +1,16 @@
 import 'package:equatable/equatable.dart';
 import 'package:mechta_flutter/core/usecase/usecase.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/entities/subcatalog_products_entity.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/entities/subcatalog_entity.dart';
 import 'package:mechta_flutter/features/subcatalog/domain/repositories/subcatalog_repository.dart';
 
-class GetSubcatalogProductsUseCase
-    extends UseCase<SubcatalogProductsEntity, SubcatalogParams> {
+class GetSubcatalogUseCase extends UseCase<SubcatalogEntity, SubcatalogParams> {
   final SubcatalogRepository repository;
 
-  GetSubcatalogProductsUseCase(this.repository);
+  GetSubcatalogUseCase(this.repository);
 
   @override
-  Future<SubcatalogProductsEntity> call(SubcatalogParams params) {
-    return repository.getProducts(params);
+  Future<SubcatalogEntity> call(SubcatalogParams params) {
+    return repository.getSubcatalog(params);
   }
 }
 

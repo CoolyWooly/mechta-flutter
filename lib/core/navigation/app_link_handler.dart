@@ -3,8 +3,25 @@ import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/core/navigation/seo_navigator.dart';
 import 'package:mechta_flutter/core/router/route_names.dart';
 
+/// Returns the current tab root path (e.g. '/home', '/catalog') from context.
+String _currentTabRoot(BuildContext context) {
+  final uri = GoRouterState.of(context).uri.path;
+  const tabRoots = [
+    RoutePaths.home,
+    RoutePaths.catalog,
+    RoutePaths.cart,
+    RoutePaths.favorites,
+    RoutePaths.profile,
+  ];
+  for (final root in tabRoots) {
+    if (uri.startsWith(root)) return root;
+  }
+  return RoutePaths.home;
+}
+
 /// Centralized handler for in-app link taps.
 /// Inspects the URL path and decides how to navigate.
+/// Navigates within the current tab to avoid switching tabs.
 class AppLinkHandler {
   final SeoNavigator _seoNavigator;
 
@@ -12,16 +29,17 @@ class AppLinkHandler {
       : _seoNavigator = seoNavigator;
 
   /// Handles a tap on a link with the given [url].
-  /// Parses the path and navigates accordingly.
+  /// Parses the path and pushes the destination on top of the current route.
   Future<void> handle(BuildContext context, String url) async {
     final uri = Uri.tryParse(url);
     if (uri == null) return;
 
     final path = uri.path;
+    final tabRoot = _currentTabRoot(context);
 
     // /useful/shares/ (exact, no trailing slug) → promotions list
     if (_isPromotionsList(path)) {
-      context.go('/home/${RoutePaths.promotions}');
+      context.push('$tabRoot/${RoutePaths.promotions}');
       return;
     }
 
@@ -29,7 +47,7 @@ class AppLinkHandler {
     if (_isPromotionDetail(path)) {
       final code = _extractPromotionCode(path);
       if (code != null) {
-        context.go('/home/${RoutePaths.promotions}/$code');
+        context.push('$tabRoot/promotion/$code');
       }
       return;
     }
@@ -37,7 +55,7 @@ class AppLinkHandler {
     // /product/{code} → product page
     final productMatch = RegExp(r'^/product/(.+)$').firstMatch(path);
     if (productMatch != null) {
-      context.go('/home/product/${productMatch.group(1)}');
+      context.push('$tabRoot/product/${productMatch.group(1)}');
       return;
     }
 

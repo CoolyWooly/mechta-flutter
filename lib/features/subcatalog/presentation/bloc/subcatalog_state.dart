@@ -15,6 +15,8 @@ class SubcatalogState extends Equatable {
   final String? direction;
   final Map<String, List<String>>? properties;
   final String? errorMessage;
+  final List<CategoryChildEntity> children;
+  final String? categoryName;
 
   const SubcatalogState({
     this.status = SubcatalogStatus.initial,
@@ -29,6 +31,8 @@ class SubcatalogState extends Equatable {
     this.direction,
     this.properties,
     this.errorMessage,
+    this.children = const [],
+    this.categoryName,
   });
 
   SubcatalogState copyWith({
@@ -44,6 +48,8 @@ class SubcatalogState extends Equatable {
     String? direction,
     Map<String, List<String>>? properties,
     String? errorMessage,
+    List<CategoryChildEntity>? children,
+    String? categoryName,
   }) {
     return SubcatalogState(
       status: status ?? this.status,
@@ -58,6 +64,8 @@ class SubcatalogState extends Equatable {
       direction: direction ?? this.direction,
       properties: properties ?? this.properties,
       errorMessage: errorMessage ?? this.errorMessage,
+      children: children ?? this.children,
+      categoryName: categoryName ?? this.categoryName,
     );
   }
 
@@ -75,5 +83,7 @@ class SubcatalogState extends Equatable {
         direction,
         properties,
         errorMessage,
+        children,
+        categoryName,
       ];
 }

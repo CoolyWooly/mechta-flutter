@@ -75,6 +75,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get brands => 'Брендтер';
 
   @override
+  String get products => 'Тауарлар';
+
+  @override
   String get product => 'Тауар';
 
   @override

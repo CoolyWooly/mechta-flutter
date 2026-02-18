@@ -11,6 +11,7 @@ import 'package:mechta_flutter/features/favorites/presentation/pages/favorites_p
 import 'package:mechta_flutter/features/profile/presentation/pages/profile_page.dart';
 import 'package:mechta_flutter/features/product/presentation/pages/product_page.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/pages/subcatalog_page.dart';
+import 'package:mechta_flutter/features/brand_detail/presentation/pages/brand_detail_page.dart';
 import 'package:mechta_flutter/features/promotions/presentation/pages/promotion_detail_page.dart';
 import 'package:mechta_flutter/features/promotions/presentation/pages/promotions_page.dart';
 import 'package:mechta_flutter/core/navigation/seo_resolve_page.dart';
@@ -21,6 +22,42 @@ GoRoute _productRoute() => GoRoute(
         final slug = state.pathParameters['productSlug']!;
         return ProductPage(slug: slug);
       },
+    );
+
+GoRoute _promotionDetailRoute() => GoRoute(
+      path: RoutePaths.promotionDetail,
+      builder: (context, state) {
+        final code = state.pathParameters['promotionCode']!;
+        return PromotionDetailPage(code: code);
+      },
+    );
+
+GoRoute _brandDetailRoute() => GoRoute(
+      path: RoutePaths.brandDetail,
+      builder: (context, state) {
+        final brand = state.pathParameters['brandCode']!;
+        final title = state.uri.queryParameters['title'];
+        return BrandDetailPage(brand: brand, title: title);
+      },
+      routes: [_productRoute(), _promotionDetailRoute(), _subcatalogRoute()],
+    );
+
+GoRoute _subcatalogRoute() => GoRoute(
+      path: RoutePaths.subcatalog,
+      builder: (context, state) {
+        final slug = state.pathParameters['categorySlug']!;
+        final query = state.uri.queryParameters;
+        return SubcatalogPage(
+          slug: slug,
+          page: int.tryParse(query['page'] ?? '') ?? 1,
+          minPrice: double.tryParse(query['minPrice'] ?? ''),
+          maxPrice: double.tryParse(query['maxPrice'] ?? ''),
+          orderBy: query['orderBy'],
+          direction: query['direction'],
+          properties: _parseProperties(state.uri),
+        );
+      },
+      routes: [_productRoute()],
     );
 
 /// Parses `properties[key][]=value` query parameters into a Map.
@@ -37,22 +74,6 @@ Map<String, List<String>>? _parseProperties(Uri uri) {
   return properties.isEmpty ? null : properties;
 }
 
-/// Builds a SubcatalogPage from route state, parsing all query params.
-SubcatalogPage _buildSubcatalogPage(GoRouterState state) {
-  final slug = state.pathParameters['slug']!;
-  final query = state.uri.queryParameters;
-  return SubcatalogPage(
-    slug: slug,
-    title: query['title'] ?? slug,
-    page: int.tryParse(query['page'] ?? '') ?? 1,
-    minPrice: double.tryParse(query['minPrice'] ?? ''),
-    maxPrice: double.tryParse(query['maxPrice'] ?? ''),
-    orderBy: query['orderBy'],
-    direction: query['direction'],
-    properties: _parseProperties(state.uri),
-  );
-}
-
 String? _deepLinkRedirect(BuildContext context, GoRouterState state) {
   final uri = state.uri;
   final path = uri.path;
@@ -67,7 +88,7 @@ String? _deepLinkRedirect(BuildContext context, GoRouterState state) {
   // /useful/shares/ → promotions list or /useful/shares/{code} → detail
   final promoDetailMatch = RegExp(r'^/useful/shares/(.+?)/?$').firstMatch(path);
   if (promoDetailMatch != null) {
-    return '/home/${RoutePaths.promotions}/${promoDetailMatch.group(1)}';
+    return '/home/${RoutePaths.promotions}/promotion/${promoDetailMatch.group(1)}';
   }
   if (path == '/useful/shares' || path == '/useful/shares/') {
     return '/home/${RoutePaths.promotions}';
@@ -77,6 +98,12 @@ String? _deepLinkRedirect(BuildContext context, GoRouterState state) {
   if (path.startsWith('/section/')) {
     final fullPath = uri.query.isNotEmpty ? '$path?${uri.query}' : path;
     return '${RoutePaths.seoResolve}?path=${Uri.encodeComponent(fullPath)}';
+  }
+
+  // /brands/{code} → /home/brand/{code}
+  final brandMatch = RegExp(r'^/brands/(.+?)/?$').firstMatch(path);
+  if (brandMatch != null) {
+    return '/home/brand/${brandMatch.group(1)}';
   }
 
   // /product/{code} → /home/product/{code}
@@ -137,20 +164,14 @@ GoRouter createAppRouter() {
                 ),
                 routes: [
                   _productRoute(),
+                  _subcatalogRoute(),
+                  _brandDetailRoute(),
+                  _promotionDetailRoute(),
                   GoRoute(
                     path: RoutePaths.promotions,
                     name: RouteNames.promotions,
                     builder: (context, state) => const PromotionsPage(),
-                    routes: [
-                      GoRoute(
-                        path: RoutePaths.promotionDetail,
-                        name: RouteNames.promotionDetail,
-                        builder: (context, state) {
-                          final code = state.pathParameters['code']!;
-                          return PromotionDetailPage(code: code);
-                        },
-                      ),
-                    ],
+                    routes: [_promotionDetailRoute()],
                   ),
                 ],
               ),
@@ -166,12 +187,9 @@ GoRouter createAppRouter() {
                   child: CatalogPage(),
                 ),
                 routes: [
-                  GoRoute(
-                    path: RoutePaths.subcatalog,
-                    name: RouteNames.subcatalog,
-                    builder: (context, state) => _buildSubcatalogPage(state),
-                    routes: [_productRoute()],
-                  ),
+                  _subcatalogRoute(),
+                  _brandDetailRoute(),
+                  _promotionDetailRoute(),
                   _productRoute(),
                 ],
               ),
@@ -186,7 +204,11 @@ GoRouter createAppRouter() {
                 pageBuilder: (context, state) => const NoTransitionPage(
                   child: CartPage(),
                 ),
-                routes: [_productRoute()],
+                routes: [
+                  _productRoute(),
+                  _subcatalogRoute(),
+                  _promotionDetailRoute(),
+                ],
               ),
             ],
           ),
@@ -199,7 +221,11 @@ GoRouter createAppRouter() {
                 pageBuilder: (context, state) => const NoTransitionPage(
                   child: FavoritesPage(),
                 ),
-                routes: [_productRoute()],
+                routes: [
+                  _productRoute(),
+                  _subcatalogRoute(),
+                  _promotionDetailRoute(),
+                ],
               ),
             ],
           ),
@@ -212,7 +238,11 @@ GoRouter createAppRouter() {
                 pageBuilder: (context, state) => const NoTransitionPage(
                   child: ProfilePage(),
                 ),
-                routes: [_productRoute()],
+                routes: [
+                  _productRoute(),
+                  _subcatalogRoute(),
+                  _promotionDetailRoute(),
+                ],
               ),
             ],
           ),

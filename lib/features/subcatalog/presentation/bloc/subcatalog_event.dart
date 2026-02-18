@@ -33,3 +33,12 @@ class SubcatalogLoadRequested extends SubcatalogEvent {
 class SubcatalogNextPageRequested extends SubcatalogEvent {
   const SubcatalogNextPageRequested();
 }
+
+class SubcatalogCategoryChildrenRequested extends SubcatalogEvent {
+  final String slug;
+
+  const SubcatalogCategoryChildrenRequested({required this.slug});
+
+  @override
+  List<Object?> get props => [slug];
+}

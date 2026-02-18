@@ -137,8 +137,7 @@ class _CategoryCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () => context.go(
-              '/catalog/subcatalog/${category.url}?title=${Uri.encodeComponent(category.name)}'),
+        onTap: () => context.go('/catalog/subcatalog/${category.url}'),
         child: Stack(
           children: [
             // Image — bottom right
@@ -212,9 +211,8 @@ class _BrandCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
-        onTap: () {
-          // TODO: Implement brand tap navigation
-        },
+        onTap: () => context.go(
+              '/catalog/brand/${brand.slug}?title=${Uri.encodeComponent(brand.name)}'),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: imageUrl != null

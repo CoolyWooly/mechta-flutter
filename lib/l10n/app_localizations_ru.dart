@@ -75,6 +75,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get brands => 'Бренды';
 
   @override
+  String get products => 'Товары';
+
+  @override
   String get product => 'Товар';
 
   @override

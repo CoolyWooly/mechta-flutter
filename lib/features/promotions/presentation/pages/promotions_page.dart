@@ -173,6 +173,6 @@ class _PromotionCard extends StatelessWidget {
     final code = promotion.code;
     if (code == null || code.isEmpty) return;
     final location = GoRouterState.of(context).uri.toString();
-    context.go('$location/$code');
+    context.go('$location/promotion/$code');
   }
 }

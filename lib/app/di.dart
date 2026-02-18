@@ -76,7 +76,8 @@ import 'package:mechta_flutter/features/profile/presentation/bloc/profile_bloc.d
 import 'package:mechta_flutter/features/subcatalog/data/datasources/subcatalog_remote_data_source.dart';
 import 'package:mechta_flutter/features/subcatalog/data/repositories/subcatalog_repository_impl.dart';
 import 'package:mechta_flutter/features/subcatalog/domain/repositories/subcatalog_repository.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_subcatalog_products.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_category_children.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_subcatalog.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/bloc/subcatalog_bloc.dart';
 
 // Product
@@ -85,6 +86,13 @@ import 'package:mechta_flutter/features/product/data/repositories/product_reposi
 import 'package:mechta_flutter/features/product/domain/repositories/product_repository.dart';
 import 'package:mechta_flutter/features/product/domain/usecases/get_product.dart';
 import 'package:mechta_flutter/features/product/presentation/bloc/product_bloc.dart';
+
+// Brand Detail
+import 'package:mechta_flutter/features/brand_detail/data/datasources/brand_detail_remote_data_source.dart';
+import 'package:mechta_flutter/features/brand_detail/data/repositories/brand_detail_repository_impl.dart';
+import 'package:mechta_flutter/features/brand_detail/domain/repositories/brand_detail_repository.dart';
+import 'package:mechta_flutter/features/brand_detail/domain/usecases/get_brand_detail.dart';
+import 'package:mechta_flutter/features/brand_detail/presentation/bloc/brand_detail_bloc.dart';
 
 // Promotions
 import 'package:mechta_flutter/features/promotions/data/datasources/promotions_remote_data_source.dart';
@@ -123,6 +131,7 @@ Future<void> configureDependencies() async {
   _registerFavoritesFeature();
   _registerProfileFeature();
   _registerProductFeature();
+  _registerBrandDetailFeature();
   _registerPromotionsFeature();
 }
 
@@ -278,8 +287,23 @@ void _registerSubcatalogFeature() {
   sl.registerLazySingleton<SubcatalogRepository>(
     () => SubcatalogRepositoryImpl(remoteDataSource: sl()),
   );
-  sl.registerLazySingleton(() => GetSubcatalogProductsUseCase(sl()));
-  sl.registerFactory(() => SubcatalogBloc(getProducts: sl()));
+  sl.registerLazySingleton(() => GetSubcatalogUseCase(sl()));
+  sl.registerLazySingleton(() => GetCategoryChildrenUseCase(sl()));
+  sl.registerFactory(() => SubcatalogBloc(
+        getSubcatalog: sl(),
+        getCategoryChildren: sl(),
+      ));
+}
+
+void _registerBrandDetailFeature() {
+  sl.registerLazySingleton<BrandDetailRemoteDataSource>(
+    () => BrandDetailRemoteDataSourceImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<BrandDetailRepository>(
+    () => BrandDetailRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton(() => GetBrandDetailUseCase(sl()));
+  sl.registerFactory(() => BrandDetailBloc(getBrandDetail: sl()));
 }
 
 void _registerPromotionsFeature() {

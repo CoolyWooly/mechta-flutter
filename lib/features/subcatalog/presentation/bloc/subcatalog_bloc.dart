@@ -1,19 +1,26 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_subcatalog_products.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/entities/category_entity.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_category_children.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_subcatalog.dart';
 
 part 'subcatalog_event.dart';
 part 'subcatalog_state.dart';
 
 class SubcatalogBloc extends Bloc<SubcatalogEvent, SubcatalogState> {
-  final GetSubcatalogProductsUseCase _getProducts;
+  final GetSubcatalogUseCase _getSubcatalog;
+  final GetCategoryChildrenUseCase _getCategoryChildren;
 
-  SubcatalogBloc({required GetSubcatalogProductsUseCase getProducts})
-      : _getProducts = getProducts,
+  SubcatalogBloc({
+    required GetSubcatalogUseCase getSubcatalog,
+    required GetCategoryChildrenUseCase getCategoryChildren,
+  })  : _getSubcatalog = getSubcatalog,
+        _getCategoryChildren = getCategoryChildren,
         super(const SubcatalogState()) {
     on<SubcatalogLoadRequested>(_onLoadRequested);
     on<SubcatalogNextPageRequested>(_onNextPageRequested);
+    on<SubcatalogCategoryChildrenRequested>(_onCategoryChildrenRequested);
   }
 
   Future<void> _onLoadRequested(
@@ -33,7 +40,7 @@ class SubcatalogBloc extends Bloc<SubcatalogEvent, SubcatalogState> {
       hasReachedMax: false,
     ));
     try {
-      final result = await _getProducts(SubcatalogParams(
+      final result = await _getSubcatalog(SubcatalogParams(
         slug: event.slug,
         page: event.page,
         minPrice: event.minPrice,
@@ -66,7 +73,7 @@ class SubcatalogBloc extends Bloc<SubcatalogEvent, SubcatalogState> {
     final nextPage = state.page + 1;
     emit(state.copyWith(status: SubcatalogStatus.loading));
     try {
-      final result = await _getProducts(SubcatalogParams(
+      final result = await _getSubcatalog(SubcatalogParams(
         slug: state.slug,
         page: nextPage,
         minPrice: state.minPrice,
@@ -88,6 +95,21 @@ class SubcatalogBloc extends Bloc<SubcatalogEvent, SubcatalogState> {
         status: SubcatalogStatus.failure,
         errorMessage: e.toString(),
       ));
+    }
+  }
+
+  Future<void> _onCategoryChildrenRequested(
+    SubcatalogCategoryChildrenRequested event,
+    Emitter<SubcatalogState> emit,
+  ) async {
+    try {
+      final info = await _getCategoryChildren(event.slug);
+      emit(state.copyWith(
+        children: info.children,
+        categoryName: info.name,
+      ));
+    } catch (_) {
+      // Silently ignore — children are optional
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mechta_flutter/app/app_restart.dart';
 import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/core/usecase/usecase.dart';
 import 'package:mechta_flutter/features/auth/presentation/widgets/auth_bottom_sheet.dart';
@@ -268,6 +269,9 @@ class _LanguageTile extends StatelessWidget {
                     onTap: () {
                       context.read<LocaleBloc>().add(LocaleChanged(const Locale('ru')));
                       Navigator.pop(bottomSheetContext);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        AppRestart.restart(context);
+                      });
                     },
                   ),
                   ListTile(
@@ -278,6 +282,9 @@ class _LanguageTile extends StatelessWidget {
                     onTap: () {
                       context.read<LocaleBloc>().add(LocaleChanged(const Locale('kk')));
                       Navigator.pop(bottomSheetContext);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        AppRestart.restart(context);
+                      });
                     },
                   ),
                 ],

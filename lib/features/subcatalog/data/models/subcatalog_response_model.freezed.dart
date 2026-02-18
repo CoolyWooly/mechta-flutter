@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SubcatalogResponseModel {
 
- List<ProductModel>? get products; MetaModel? get meta;
+ List<ProductModel>? get products; SubcatalogMetaModel? get meta;
 /// Create a copy of SubcatalogResponseModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,11 +48,11 @@ abstract mixin class $SubcatalogResponseModelCopyWith<$Res>  {
   factory $SubcatalogResponseModelCopyWith(SubcatalogResponseModel value, $Res Function(SubcatalogResponseModel) _then) = _$SubcatalogResponseModelCopyWithImpl;
 @useResult
 $Res call({
- List<ProductModel>? products, MetaModel? meta
+ List<ProductModel>? products, SubcatalogMetaModel? meta
 });
 
 
-$MetaModelCopyWith<$Res>? get meta;
+$SubcatalogMetaModelCopyWith<$Res>? get meta;
 
 }
 /// @nodoc
@@ -69,19 +69,19 @@ class _$SubcatalogResponseModelCopyWithImpl<$Res>
   return _then(_self.copyWith(
 products: freezed == products ? _self.products : products // ignore: cast_nullable_to_non_nullable
 as List<ProductModel>?,meta: freezed == meta ? _self.meta : meta // ignore: cast_nullable_to_non_nullable
-as MetaModel?,
+as SubcatalogMetaModel?,
   ));
 }
 /// Create a copy of SubcatalogResponseModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$MetaModelCopyWith<$Res>? get meta {
+$SubcatalogMetaModelCopyWith<$Res>? get meta {
     if (_self.meta == null) {
     return null;
   }
 
-  return $MetaModelCopyWith<$Res>(_self.meta!, (value) {
+  return $SubcatalogMetaModelCopyWith<$Res>(_self.meta!, (value) {
     return _then(_self.copyWith(meta: value));
   });
 }
@@ -166,7 +166,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<ProductModel>? products,  MetaModel? meta)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<ProductModel>? products,  SubcatalogMetaModel? meta)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SubcatalogResponseModel() when $default != null:
 return $default(_that.products,_that.meta);case _:
@@ -187,7 +187,7 @@ return $default(_that.products,_that.meta);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<ProductModel>? products,  MetaModel? meta)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<ProductModel>? products,  SubcatalogMetaModel? meta)  $default,) {final _that = this;
 switch (_that) {
 case _SubcatalogResponseModel():
 return $default(_that.products,_that.meta);case _:
@@ -207,7 +207,7 @@ return $default(_that.products,_that.meta);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<ProductModel>? products,  MetaModel? meta)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<ProductModel>? products,  SubcatalogMetaModel? meta)?  $default,) {final _that = this;
 switch (_that) {
 case _SubcatalogResponseModel() when $default != null:
 return $default(_that.products,_that.meta);case _:
@@ -234,7 +234,7 @@ class _SubcatalogResponseModel implements SubcatalogResponseModel {
   return EqualUnmodifiableListView(value);
 }
 
-@override final  MetaModel? meta;
+@override final  SubcatalogMetaModel? meta;
 
 /// Create a copy of SubcatalogResponseModel
 /// with the given fields replaced by the non-null parameter values.
@@ -269,11 +269,11 @@ abstract mixin class _$SubcatalogResponseModelCopyWith<$Res> implements $Subcata
   factory _$SubcatalogResponseModelCopyWith(_SubcatalogResponseModel value, $Res Function(_SubcatalogResponseModel) _then) = __$SubcatalogResponseModelCopyWithImpl;
 @override @useResult
 $Res call({
- List<ProductModel>? products, MetaModel? meta
+ List<ProductModel>? products, SubcatalogMetaModel? meta
 });
 
 
-@override $MetaModelCopyWith<$Res>? get meta;
+@override $SubcatalogMetaModelCopyWith<$Res>? get meta;
 
 }
 /// @nodoc
@@ -290,7 +290,7 @@ class __$SubcatalogResponseModelCopyWithImpl<$Res>
   return _then(_SubcatalogResponseModel(
 products: freezed == products ? _self._products : products // ignore: cast_nullable_to_non_nullable
 as List<ProductModel>?,meta: freezed == meta ? _self.meta : meta // ignore: cast_nullable_to_non_nullable
-as MetaModel?,
+as SubcatalogMetaModel?,
   ));
 }
 
@@ -298,12 +298,12 @@ as MetaModel?,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$MetaModelCopyWith<$Res>? get meta {
+$SubcatalogMetaModelCopyWith<$Res>? get meta {
     if (_self.meta == null) {
     return null;
   }
 
-  return $MetaModelCopyWith<$Res>(_self.meta!, (value) {
+  return $SubcatalogMetaModelCopyWith<$Res>(_self.meta!, (value) {
     return _then(_self.copyWith(meta: value));
   });
 }
@@ -311,22 +311,22 @@ $MetaModelCopyWith<$Res>? get meta {
 
 
 /// @nodoc
-mixin _$MetaModel {
+mixin _$SubcatalogMetaModel {
 
  int? get totalCount;
-/// Create a copy of MetaModel
+/// Create a copy of SubcatalogMetaModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$MetaModelCopyWith<MetaModel> get copyWith => _$MetaModelCopyWithImpl<MetaModel>(this as MetaModel, _$identity);
+$SubcatalogMetaModelCopyWith<SubcatalogMetaModel> get copyWith => _$SubcatalogMetaModelCopyWithImpl<SubcatalogMetaModel>(this as SubcatalogMetaModel, _$identity);
 
-  /// Serializes this MetaModel to a JSON map.
+  /// Serializes this SubcatalogMetaModel to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MetaModel&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SubcatalogMetaModel&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -335,15 +335,15 @@ int get hashCode => Object.hash(runtimeType,totalCount);
 
 @override
 String toString() {
-  return 'MetaModel(totalCount: $totalCount)';
+  return 'SubcatalogMetaModel(totalCount: $totalCount)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $MetaModelCopyWith<$Res>  {
-  factory $MetaModelCopyWith(MetaModel value, $Res Function(MetaModel) _then) = _$MetaModelCopyWithImpl;
+abstract mixin class $SubcatalogMetaModelCopyWith<$Res>  {
+  factory $SubcatalogMetaModelCopyWith(SubcatalogMetaModel value, $Res Function(SubcatalogMetaModel) _then) = _$SubcatalogMetaModelCopyWithImpl;
 @useResult
 $Res call({
  int? totalCount
@@ -354,14 +354,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$MetaModelCopyWithImpl<$Res>
-    implements $MetaModelCopyWith<$Res> {
-  _$MetaModelCopyWithImpl(this._self, this._then);
+class _$SubcatalogMetaModelCopyWithImpl<$Res>
+    implements $SubcatalogMetaModelCopyWith<$Res> {
+  _$SubcatalogMetaModelCopyWithImpl(this._self, this._then);
 
-  final MetaModel _self;
-  final $Res Function(MetaModel) _then;
+  final SubcatalogMetaModel _self;
+  final $Res Function(SubcatalogMetaModel) _then;
 
-/// Create a copy of MetaModel
+/// Create a copy of SubcatalogMetaModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? totalCount = freezed,}) {
   return _then(_self.copyWith(
@@ -373,8 +373,8 @@ as int?,
 }
 
 
-/// Adds pattern-matching-related methods to [MetaModel].
-extension MetaModelPatterns on MetaModel {
+/// Adds pattern-matching-related methods to [SubcatalogMetaModel].
+extension SubcatalogMetaModelPatterns on SubcatalogMetaModel {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -387,10 +387,10 @@ extension MetaModelPatterns on MetaModel {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _MetaModel value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _SubcatalogMetaModel value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _MetaModel() when $default != null:
+case _SubcatalogMetaModel() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -409,10 +409,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _MetaModel value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _SubcatalogMetaModel value)  $default,){
 final _that = this;
 switch (_that) {
-case _MetaModel():
+case _SubcatalogMetaModel():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -430,10 +430,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _MetaModel value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _SubcatalogMetaModel value)?  $default,){
 final _that = this;
 switch (_that) {
-case _MetaModel() when $default != null:
+case _SubcatalogMetaModel() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -453,7 +453,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? totalCount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _MetaModel() when $default != null:
+case _SubcatalogMetaModel() when $default != null:
 return $default(_that.totalCount);case _:
   return orElse();
 
@@ -474,7 +474,7 @@ return $default(_that.totalCount);case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? totalCount)  $default,) {final _that = this;
 switch (_that) {
-case _MetaModel():
+case _SubcatalogMetaModel():
 return $default(_that.totalCount);case _:
   throw StateError('Unexpected subclass');
 
@@ -494,7 +494,7 @@ return $default(_that.totalCount);case _:
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? totalCount)?  $default,) {final _that = this;
 switch (_that) {
-case _MetaModel() when $default != null:
+case _SubcatalogMetaModel() when $default != null:
 return $default(_that.totalCount);case _:
   return null;
 
@@ -506,26 +506,26 @@ return $default(_that.totalCount);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _MetaModel implements MetaModel {
-  const _MetaModel({this.totalCount});
-  factory _MetaModel.fromJson(Map<String, dynamic> json) => _$MetaModelFromJson(json);
+class _SubcatalogMetaModel implements SubcatalogMetaModel {
+  const _SubcatalogMetaModel({this.totalCount});
+  factory _SubcatalogMetaModel.fromJson(Map<String, dynamic> json) => _$SubcatalogMetaModelFromJson(json);
 
 @override final  int? totalCount;
 
-/// Create a copy of MetaModel
+/// Create a copy of SubcatalogMetaModel
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$MetaModelCopyWith<_MetaModel> get copyWith => __$MetaModelCopyWithImpl<_MetaModel>(this, _$identity);
+_$SubcatalogMetaModelCopyWith<_SubcatalogMetaModel> get copyWith => __$SubcatalogMetaModelCopyWithImpl<_SubcatalogMetaModel>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$MetaModelToJson(this, );
+  return _$SubcatalogMetaModelToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MetaModel&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SubcatalogMetaModel&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -534,15 +534,15 @@ int get hashCode => Object.hash(runtimeType,totalCount);
 
 @override
 String toString() {
-  return 'MetaModel(totalCount: $totalCount)';
+  return 'SubcatalogMetaModel(totalCount: $totalCount)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$MetaModelCopyWith<$Res> implements $MetaModelCopyWith<$Res> {
-  factory _$MetaModelCopyWith(_MetaModel value, $Res Function(_MetaModel) _then) = __$MetaModelCopyWithImpl;
+abstract mixin class _$SubcatalogMetaModelCopyWith<$Res> implements $SubcatalogMetaModelCopyWith<$Res> {
+  factory _$SubcatalogMetaModelCopyWith(_SubcatalogMetaModel value, $Res Function(_SubcatalogMetaModel) _then) = __$SubcatalogMetaModelCopyWithImpl;
 @override @useResult
 $Res call({
  int? totalCount
@@ -553,17 +553,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$MetaModelCopyWithImpl<$Res>
-    implements _$MetaModelCopyWith<$Res> {
-  __$MetaModelCopyWithImpl(this._self, this._then);
+class __$SubcatalogMetaModelCopyWithImpl<$Res>
+    implements _$SubcatalogMetaModelCopyWith<$Res> {
+  __$SubcatalogMetaModelCopyWithImpl(this._self, this._then);
 
-  final _MetaModel _self;
-  final $Res Function(_MetaModel) _then;
+  final _SubcatalogMetaModel _self;
+  final $Res Function(_SubcatalogMetaModel) _then;
 
-/// Create a copy of MetaModel
+/// Create a copy of SubcatalogMetaModel
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? totalCount = freezed,}) {
-  return _then(_MetaModel(
+  return _then(_SubcatalogMetaModel(
 totalCount: freezed == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
 as int?,
   ));

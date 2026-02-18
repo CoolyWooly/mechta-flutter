@@ -11,7 +11,7 @@ abstract class BrandModel with _$BrandModel {
 
   const factory BrandModel({
     @JsonKey(name: 'name') String? name,
-    @JsonKey(name: 'code') String? code,
+    @JsonKey(name: 'slug') String? slug,
     @JsonKey(name: 'image') ImageModel? image,
   }) = _BrandModel;
 
@@ -20,7 +20,7 @@ abstract class BrandModel with _$BrandModel {
 
   BrandEntity toEntity() => BrandEntity(
         name: name ?? '',
-        code: code ?? '',
+        slug: slug ?? '',
         image: image?.toEntity(),
       );
 }

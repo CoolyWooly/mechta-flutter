@@ -8,7 +8,7 @@ part 'subcatalog_response_model.g.dart';
 abstract class SubcatalogResponseModel with _$SubcatalogResponseModel {
   const factory SubcatalogResponseModel({
     List<ProductModel>? products,
-    MetaModel? meta,
+    SubcatalogMetaModel? meta,
   }) = _SubcatalogResponseModel;
 
   factory SubcatalogResponseModel.fromJson(Map<String, dynamic> json) =>
@@ -16,11 +16,11 @@ abstract class SubcatalogResponseModel with _$SubcatalogResponseModel {
 }
 
 @freezed
-abstract class MetaModel with _$MetaModel {
-  const factory MetaModel({
+abstract class SubcatalogMetaModel with _$SubcatalogMetaModel {
+  const factory SubcatalogMetaModel({
     int? totalCount,
-  }) = _MetaModel;
+  }) = _SubcatalogMetaModel;
 
-  factory MetaModel.fromJson(Map<String, dynamic> json) =>
-      _$MetaModelFromJson(json);
+  factory SubcatalogMetaModel.fromJson(Map<String, dynamic> json) =>
+      _$SubcatalogMetaModelFromJson(json);
 }

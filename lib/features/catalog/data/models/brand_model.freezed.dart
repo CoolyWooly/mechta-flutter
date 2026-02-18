@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BrandModel {
 
-@JsonKey(name: 'name') String? get name;@JsonKey(name: 'code') String? get code;@JsonKey(name: 'image') ImageModel? get image;
+@JsonKey(name: 'name') String? get name;@JsonKey(name: 'slug') String? get slug;@JsonKey(name: 'image') ImageModel? get image;
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BrandModelCopyWith<BrandModel> get copyWith => _$BrandModelCopyWithImpl<BrandMo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BrandModel&&(identical(other.name, name) || other.name == name)&&(identical(other.code, code) || other.code == code)&&(identical(other.image, image) || other.image == image));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BrandModel&&(identical(other.name, name) || other.name == name)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.image, image) || other.image == image));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,code,image);
+int get hashCode => Object.hash(runtimeType,name,slug,image);
 
 @override
 String toString() {
-  return 'BrandModel(name: $name, code: $code, image: $image)';
+  return 'BrandModel(name: $name, slug: $slug, image: $image)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $BrandModelCopyWith<$Res>  {
   factory $BrandModelCopyWith(BrandModel value, $Res Function(BrandModel) _then) = _$BrandModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'name') String? name,@JsonKey(name: 'code') String? code,@JsonKey(name: 'image') ImageModel? image
+@JsonKey(name: 'name') String? name,@JsonKey(name: 'slug') String? slug,@JsonKey(name: 'image') ImageModel? image
 });
 
 
@@ -65,10 +65,10 @@ class _$BrandModelCopyWithImpl<$Res>
 
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? code = freezed,Object? image = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? slug = freezed,Object? image = freezed,}) {
   return _then(_self.copyWith(
 name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,code: freezed == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
+as String?,slug: freezed == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as ImageModel?,
   ));
@@ -167,10 +167,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'name')  String? name, @JsonKey(name: 'code')  String? code, @JsonKey(name: 'image')  ImageModel? image)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'name')  String? name, @JsonKey(name: 'slug')  String? slug, @JsonKey(name: 'image')  ImageModel? image)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BrandModel() when $default != null:
-return $default(_that.name,_that.code,_that.image);case _:
+return $default(_that.name,_that.slug,_that.image);case _:
   return orElse();
 
 }
@@ -188,10 +188,10 @@ return $default(_that.name,_that.code,_that.image);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'name')  String? name, @JsonKey(name: 'code')  String? code, @JsonKey(name: 'image')  ImageModel? image)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'name')  String? name, @JsonKey(name: 'slug')  String? slug, @JsonKey(name: 'image')  ImageModel? image)  $default,) {final _that = this;
 switch (_that) {
 case _BrandModel():
-return $default(_that.name,_that.code,_that.image);case _:
+return $default(_that.name,_that.slug,_that.image);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +208,10 @@ return $default(_that.name,_that.code,_that.image);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'name')  String? name, @JsonKey(name: 'code')  String? code, @JsonKey(name: 'image')  ImageModel? image)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'name')  String? name, @JsonKey(name: 'slug')  String? slug, @JsonKey(name: 'image')  ImageModel? image)?  $default,) {final _that = this;
 switch (_that) {
 case _BrandModel() when $default != null:
-return $default(_that.name,_that.code,_that.image);case _:
+return $default(_that.name,_that.slug,_that.image);case _:
   return null;
 
 }
@@ -223,11 +223,11 @@ return $default(_that.name,_that.code,_that.image);case _:
 @JsonSerializable()
 
 class _BrandModel extends BrandModel {
-  const _BrandModel({@JsonKey(name: 'name') this.name, @JsonKey(name: 'code') this.code, @JsonKey(name: 'image') this.image}): super._();
+  const _BrandModel({@JsonKey(name: 'name') this.name, @JsonKey(name: 'slug') this.slug, @JsonKey(name: 'image') this.image}): super._();
   factory _BrandModel.fromJson(Map<String, dynamic> json) => _$BrandModelFromJson(json);
 
 @override@JsonKey(name: 'name') final  String? name;
-@override@JsonKey(name: 'code') final  String? code;
+@override@JsonKey(name: 'slug') final  String? slug;
 @override@JsonKey(name: 'image') final  ImageModel? image;
 
 /// Create a copy of BrandModel
@@ -243,16 +243,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BrandModel&&(identical(other.name, name) || other.name == name)&&(identical(other.code, code) || other.code == code)&&(identical(other.image, image) || other.image == image));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BrandModel&&(identical(other.name, name) || other.name == name)&&(identical(other.slug, slug) || other.slug == slug)&&(identical(other.image, image) || other.image == image));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,code,image);
+int get hashCode => Object.hash(runtimeType,name,slug,image);
 
 @override
 String toString() {
-  return 'BrandModel(name: $name, code: $code, image: $image)';
+  return 'BrandModel(name: $name, slug: $slug, image: $image)';
 }
 
 
@@ -263,7 +263,7 @@ abstract mixin class _$BrandModelCopyWith<$Res> implements $BrandModelCopyWith<$
   factory _$BrandModelCopyWith(_BrandModel value, $Res Function(_BrandModel) _then) = __$BrandModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'name') String? name,@JsonKey(name: 'code') String? code,@JsonKey(name: 'image') ImageModel? image
+@JsonKey(name: 'name') String? name,@JsonKey(name: 'slug') String? slug,@JsonKey(name: 'image') ImageModel? image
 });
 
 
@@ -280,10 +280,10 @@ class __$BrandModelCopyWithImpl<$Res>
 
 /// Create a copy of BrandModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? code = freezed,Object? image = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? slug = freezed,Object? image = freezed,}) {
   return _then(_BrandModel(
 name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,code: freezed == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
+as String?,slug: freezed == slug ? _self.slug : slug // ignore: cast_nullable_to_non_nullable
 as String?,image: freezed == image ? _self.image : image // ignore: cast_nullable_to_non_nullable
 as ImageModel?,
   ));

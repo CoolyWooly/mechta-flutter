@@ -13,10 +13,11 @@ abstract class RoutePaths {
   static const String seoResolve = '/seo-resolve';
 
   // Shared sub-routes (relative paths for nesting)
-  static const String subcatalog = 'subcatalog/:slug';
+  static const String subcatalog = 'subcatalog/:categorySlug';
   static const String product = 'product/:productSlug';
+  static const String brandDetail = 'brand/:brandCode';
   static const String promotions = 'promotions';
-  static const String promotionDetail = ':code';
+  static const String promotionDetail = 'promotion/:promotionCode';
 }
 
 abstract class RouteNames {
@@ -24,10 +25,8 @@ abstract class RouteNames {
   static const String onboarding = 'onboarding';
   static const String home = 'home';
   static const String catalog = 'catalog';
-  static const String subcatalog = 'subcatalog';
   static const String cart = 'cart';
   static const String favorites = 'favorites';
   static const String profile = 'profile';
   static const String promotions = 'promotions';
-  static const String promotionDetail = 'promotionDetail';
 }

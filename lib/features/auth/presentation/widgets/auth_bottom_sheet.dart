@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:mechta_flutter/l10n/app_localizations.dart';
@@ -30,6 +32,10 @@ class _AuthBottomSheetView extends StatefulWidget {
 class _AuthBottomSheetViewState extends State<_AuthBottomSheetView> {
   final _phoneController = TextEditingController();
   final _otpController = TextEditingController();
+  final _phoneMask = MaskTextInputFormatter(
+    mask: '+7 (###) ###-##-##',
+    filter: {'#': RegExp(r'[0-9]')},
+  );
 
   @override
   void dispose() {
@@ -76,6 +82,7 @@ class _AuthBottomSheetViewState extends State<_AuthBottomSheetView> {
                 TextField(
                   controller: _phoneController,
                   keyboardType: TextInputType.phone,
+                  inputFormatters: [_phoneMask],
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.phoneNumber,
                     hintText: '+7 (___) ___-__-__',
@@ -87,11 +94,11 @@ class _AuthBottomSheetViewState extends State<_AuthBottomSheetView> {
                   onPressed: state.status == AuthStatus.smsSending
                       ? null
                       : () {
-                          final phone = _phoneController.text.trim();
-                          if (phone.isNotEmpty) {
+                          final phone = _phoneMask.getUnmaskedText();
+                          if (phone.length == 10) {
                             context
                                 .read<AuthBloc>()
-                                .add(AuthSmsRequested(phone));
+                                .add(AuthSmsRequested('7$phone'));
                           }
                         },
                   child: state.status == AuthStatus.smsSending
@@ -106,8 +113,13 @@ class _AuthBottomSheetViewState extends State<_AuthBottomSheetView> {
                 TextField(
                   controller: _otpController,
                   keyboardType: TextInputType.number,
+                  maxLength: 4,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
                   decoration: InputDecoration(
                     labelText: AppLocalizations.of(context)!.smsCode,
+                    counterText: '',
                     border: const OutlineInputBorder(),
                   ),
                 ),

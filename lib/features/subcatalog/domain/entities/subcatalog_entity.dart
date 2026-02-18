@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
 
-class SubcatalogProductsEntity extends Equatable {
+class SubcatalogEntity extends Equatable {
   final List<ProductEntity> products;
   final int totalCount;
 
-  const SubcatalogProductsEntity({
+  const SubcatalogEntity({
     required this.products,
     required this.totalCount,
   });
