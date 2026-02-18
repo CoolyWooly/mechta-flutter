@@ -5,34 +5,34 @@ import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/core/navigation/app_link_handler.dart';
 import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
 import 'package:mechta_flutter/core/utils/picture_url_converter.dart';
-import 'package:mechta_flutter/features/brand_detail/domain/entities/brand_detail_entity.dart';
-import 'package:mechta_flutter/features/brand_detail/presentation/bloc/brand_detail_bloc.dart';
+import 'package:mechta_flutter/features/brand/domain/entities/brand_entity.dart';
+import 'package:mechta_flutter/features/brand/presentation/bloc/brand_bloc.dart';
 import 'package:mechta_flutter/features/favorites/domain/usecases/is_favorite.dart';
 import 'package:mechta_flutter/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:mechta_flutter/features/promotions/domain/entities/promotion_entity.dart';
 import 'package:mechta_flutter/l10n/app_localizations.dart';
 
-class BrandDetailPage extends StatelessWidget {
+class BrandPage extends StatelessWidget {
   final String brand;
   final String? title;
 
-  const BrandDetailPage({super.key, required this.brand, this.title});
+  const BrandPage({super.key, required this.brand, this.title});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          sl<BrandDetailBloc>()..add(BrandDetailLoadRequested(brand: brand)),
-      child: _BrandDetailView(brand: brand, title: title),
+          sl<BrandBloc>()..add(BrandLoadRequested(brand: brand)),
+      child: _BrandView(brand: brand, title: title),
     );
   }
 }
 
-class _BrandDetailView extends StatelessWidget {
+class _BrandView extends StatelessWidget {
   final String brand;
   final String? title;
 
-  const _BrandDetailView({required this.brand, this.title});
+  const _BrandView({required this.brand, this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -40,28 +40,28 @@ class _BrandDetailView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(title ?? brand)),
-      body: BlocBuilder<BrandDetailBloc, BrandDetailState>(
+      body: BlocBuilder<BrandBloc, BrandState>(
         builder: (context, state) {
           return switch (state.status) {
-            BrandDetailStatus.initial || BrandDetailStatus.loading =>
+            BrandStatus.initial || BrandStatus.loading =>
               const Center(child: CircularProgressIndicator()),
-            BrandDetailStatus.failure => Center(
+            BrandStatus.failure => Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(state.errorMessage ?? l10n.loadingError),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () => context.read<BrandDetailBloc>().add(
-                            BrandDetailLoadRequested(brand: brand),
+                      onPressed: () => context.read<BrandBloc>().add(
+                            BrandLoadRequested(brand: brand),
                           ),
                       child: Text(l10n.retry),
                     ),
                   ],
                 ),
               ),
-            BrandDetailStatus.success => _BrandDetailContent(
-                brandDetail: state.brandDetail!,
+            BrandStatus.success => _BrandContent(
+                brand: state.brand!,
               ),
           };
         },
@@ -70,23 +70,23 @@ class _BrandDetailView extends StatelessWidget {
   }
 }
 
-class _BrandDetailContent extends StatelessWidget {
-  final BrandDetailEntity brandDetail;
+class _BrandContent extends StatelessWidget {
+  final BrandEntity brand;
 
-  const _BrandDetailContent({required this.brandDetail});
+  const _BrandContent({required this.brand});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final allProducts = [
-      ...brandDetail.newProducts,
-      ...brandDetail.recommendedProducts,
+      ...brand.newProducts,
+      ...brand.recommendedProducts,
     ];
 
     return ListView(
       children: [
         // Banner
-        if (brandDetail.banners.isNotEmpty) _BannerSection(banners: brandDetail.banners),
+        if (brand.banners.isNotEmpty) _BannerSection(banners: brand.banners),
 
         // Products (new + recommended)
         if (allProducts.isNotEmpty) ...[
@@ -104,17 +104,17 @@ class _BrandDetailContent extends StatelessWidget {
         ],
 
         // Categories
-        if (brandDetail.categories.isNotEmpty) ...[
+        if (brand.categories.isNotEmpty) ...[
           _SectionHeader(title: l10n.catalog),
-          ...brandDetail.categories.map(
+          ...brand.categories.map(
             (cat) => _BrandCategoryTile(category: cat),
           ),
         ],
 
         // Promotions
-        if (brandDetail.promotions.isNotEmpty) ...[
+        if (brand.promotions.isNotEmpty) ...[
           _SectionHeader(title: l10n.promotions),
-          ...brandDetail.promotions.map(
+          ...brand.promotions.map(
             (promo) => _PromotionCard(promotion: promo),
           ),
         ],

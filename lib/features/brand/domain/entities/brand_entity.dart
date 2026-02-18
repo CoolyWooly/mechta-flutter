@@ -2,14 +2,14 @@ import 'package:equatable/equatable.dart';
 import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
 import 'package:mechta_flutter/features/promotions/domain/entities/promotion_entity.dart';
 
-class BrandDetailEntity extends Equatable {
+class BrandEntity extends Equatable {
   final List<BrandBannerEntity> banners;
   final List<BrandCategoryEntity> categories;
   final List<PromotionEntity> promotions;
   final List<ProductEntity> newProducts;
   final List<ProductEntity> recommendedProducts;
 
-  const BrandDetailEntity({
+  const BrandEntity({
     this.banners = const [],
     this.categories = const [],
     this.promotions = const [],

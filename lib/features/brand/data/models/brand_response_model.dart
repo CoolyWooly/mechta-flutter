@@ -1,27 +1,27 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mechta_flutter/core/data/models/legacy_product_model.dart';
-import 'package:mechta_flutter/features/brand_detail/domain/entities/brand_detail_entity.dart';
+import 'package:mechta_flutter/features/brand/domain/entities/brand_entity.dart';
 import 'package:mechta_flutter/features/promotions/data/models/promotion_model.dart';
 
-part 'brand_detail_response_model.freezed.dart';
-part 'brand_detail_response_model.g.dart';
+part 'brand_response_model.freezed.dart';
+part 'brand_response_model.g.dart';
 
 @freezed
-abstract class BrandDetailResponseModel with _$BrandDetailResponseModel {
-  const BrandDetailResponseModel._();
+abstract class BrandResponseModel with _$BrandResponseModel {
+  const BrandResponseModel._();
 
-  const factory BrandDetailResponseModel({
+  const factory BrandResponseModel({
     @JsonKey(name: 'banners') List<BrandBannerModel>? banners,
     @JsonKey(name: 'categories') List<BrandCategoryModel>? categories,
     @JsonKey(name: 'actions') List<PromotionModel>? promotions,
     @JsonKey(name: 'new_items') List<LegacyProductModel>? newProducts,
     @JsonKey(name: 'recommended_items') List<LegacyProductModel>? recommendedProducts,
-  }) = _BrandDetailResponseModel;
+  }) = _BrandResponseModel;
 
-  factory BrandDetailResponseModel.fromJson(Map<String, dynamic> json) =>
-      _$BrandDetailResponseModelFromJson(json);
+  factory BrandResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$BrandResponseModelFromJson(json);
 
-  BrandDetailEntity toEntity() => BrandDetailEntity(
+  BrandEntity toEntity() => BrandEntity(
         banners: banners?.map((b) => b.toEntity()).toList() ?? const [],
         categories: categories?.map((c) => c.toEntity()).toList() ?? const [],
         promotions: promotions?.map((p) => p.toEntity()).toList() ?? const [],

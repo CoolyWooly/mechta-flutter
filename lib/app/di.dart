@@ -87,12 +87,12 @@ import 'package:mechta_flutter/features/product/domain/repositories/product_repo
 import 'package:mechta_flutter/features/product/domain/usecases/get_product.dart';
 import 'package:mechta_flutter/features/product/presentation/bloc/product_bloc.dart';
 
-// Brand Detail
-import 'package:mechta_flutter/features/brand_detail/data/datasources/brand_detail_remote_data_source.dart';
-import 'package:mechta_flutter/features/brand_detail/data/repositories/brand_detail_repository_impl.dart';
-import 'package:mechta_flutter/features/brand_detail/domain/repositories/brand_detail_repository.dart';
-import 'package:mechta_flutter/features/brand_detail/domain/usecases/get_brand_detail.dart';
-import 'package:mechta_flutter/features/brand_detail/presentation/bloc/brand_detail_bloc.dart';
+// Brand
+import 'package:mechta_flutter/features/brand/data/datasources/brand_remote_data_source.dart';
+import 'package:mechta_flutter/features/brand/data/repositories/brand_repository_impl.dart';
+import 'package:mechta_flutter/features/brand/domain/repositories/brand_repository.dart';
+import 'package:mechta_flutter/features/brand/domain/usecases/get_brand.dart';
+import 'package:mechta_flutter/features/brand/presentation/bloc/brand_bloc.dart';
 
 // Promotions
 import 'package:mechta_flutter/features/promotions/data/datasources/promotions_remote_data_source.dart';
@@ -131,7 +131,7 @@ Future<void> configureDependencies() async {
   _registerFavoritesFeature();
   _registerProfileFeature();
   _registerProductFeature();
-  _registerBrandDetailFeature();
+  _registerBrandFeature();
   _registerPromotionsFeature();
 }
 
@@ -295,15 +295,15 @@ void _registerSubcatalogFeature() {
       ));
 }
 
-void _registerBrandDetailFeature() {
-  sl.registerLazySingleton<BrandDetailRemoteDataSource>(
-    () => BrandDetailRemoteDataSourceImpl(dio: sl()),
+void _registerBrandFeature() {
+  sl.registerLazySingleton<BrandRemoteDataSource>(
+    () => BrandRemoteDataSourceImpl(dio: sl()),
   );
-  sl.registerLazySingleton<BrandDetailRepository>(
-    () => BrandDetailRepositoryImpl(remoteDataSource: sl()),
+  sl.registerLazySingleton<BrandRepository>(
+    () => BrandRepositoryImpl(remoteDataSource: sl()),
   );
-  sl.registerLazySingleton(() => GetBrandDetailUseCase(sl()));
-  sl.registerFactory(() => BrandDetailBloc(getBrandDetail: sl()));
+  sl.registerLazySingleton(() => GetBrandUseCase(sl()));
+  sl.registerFactory(() => BrandBloc(getBrand: sl()));
 }
 
 void _registerPromotionsFeature() {

@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'brand_detail_response_model.dart';
+part of 'brand_response_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,22 +13,22 @@ part of 'brand_detail_response_model.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$BrandDetailResponseModel {
+mixin _$BrandResponseModel {
 
 @JsonKey(name: 'banners') List<BrandBannerModel>? get banners;@JsonKey(name: 'categories') List<BrandCategoryModel>? get categories;@JsonKey(name: 'actions') List<PromotionModel>? get promotions;@JsonKey(name: 'new_items') List<LegacyProductModel>? get newProducts;@JsonKey(name: 'recommended_items') List<LegacyProductModel>? get recommendedProducts;
-/// Create a copy of BrandDetailResponseModel
+/// Create a copy of BrandResponseModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$BrandDetailResponseModelCopyWith<BrandDetailResponseModel> get copyWith => _$BrandDetailResponseModelCopyWithImpl<BrandDetailResponseModel>(this as BrandDetailResponseModel, _$identity);
+$BrandResponseModelCopyWith<BrandResponseModel> get copyWith => _$BrandResponseModelCopyWithImpl<BrandResponseModel>(this as BrandResponseModel, _$identity);
 
-  /// Serializes this BrandDetailResponseModel to a JSON map.
+  /// Serializes this BrandResponseModel to a JSON map.
   Map<String, dynamic> toJson();
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BrandDetailResponseModel&&const DeepCollectionEquality().equals(other.banners, banners)&&const DeepCollectionEquality().equals(other.categories, categories)&&const DeepCollectionEquality().equals(other.promotions, promotions)&&const DeepCollectionEquality().equals(other.newProducts, newProducts)&&const DeepCollectionEquality().equals(other.recommendedProducts, recommendedProducts));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BrandResponseModel&&const DeepCollectionEquality().equals(other.banners, banners)&&const DeepCollectionEquality().equals(other.categories, categories)&&const DeepCollectionEquality().equals(other.promotions, promotions)&&const DeepCollectionEquality().equals(other.newProducts, newProducts)&&const DeepCollectionEquality().equals(other.recommendedProducts, recommendedProducts));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -37,15 +37,15 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'BrandDetailResponseModel(banners: $banners, categories: $categories, promotions: $promotions, newProducts: $newProducts, recommendedProducts: $recommendedProducts)';
+  return 'BrandResponseModel(banners: $banners, categories: $categories, promotions: $promotions, newProducts: $newProducts, recommendedProducts: $recommendedProducts)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $BrandDetailResponseModelCopyWith<$Res>  {
-  factory $BrandDetailResponseModelCopyWith(BrandDetailResponseModel value, $Res Function(BrandDetailResponseModel) _then) = _$BrandDetailResponseModelCopyWithImpl;
+abstract mixin class $BrandResponseModelCopyWith<$Res>  {
+  factory $BrandResponseModelCopyWith(BrandResponseModel value, $Res Function(BrandResponseModel) _then) = _$BrandResponseModelCopyWithImpl;
 @useResult
 $Res call({
 @JsonKey(name: 'banners') List<BrandBannerModel>? banners,@JsonKey(name: 'categories') List<BrandCategoryModel>? categories,@JsonKey(name: 'actions') List<PromotionModel>? promotions,@JsonKey(name: 'new_items') List<LegacyProductModel>? newProducts,@JsonKey(name: 'recommended_items') List<LegacyProductModel>? recommendedProducts
@@ -56,14 +56,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$BrandDetailResponseModelCopyWithImpl<$Res>
-    implements $BrandDetailResponseModelCopyWith<$Res> {
-  _$BrandDetailResponseModelCopyWithImpl(this._self, this._then);
+class _$BrandResponseModelCopyWithImpl<$Res>
+    implements $BrandResponseModelCopyWith<$Res> {
+  _$BrandResponseModelCopyWithImpl(this._self, this._then);
 
-  final BrandDetailResponseModel _self;
-  final $Res Function(BrandDetailResponseModel) _then;
+  final BrandResponseModel _self;
+  final $Res Function(BrandResponseModel) _then;
 
-/// Create a copy of BrandDetailResponseModel
+/// Create a copy of BrandResponseModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? banners = freezed,Object? categories = freezed,Object? promotions = freezed,Object? newProducts = freezed,Object? recommendedProducts = freezed,}) {
   return _then(_self.copyWith(
@@ -79,8 +79,8 @@ as List<LegacyProductModel>?,
 }
 
 
-/// Adds pattern-matching-related methods to [BrandDetailResponseModel].
-extension BrandDetailResponseModelPatterns on BrandDetailResponseModel {
+/// Adds pattern-matching-related methods to [BrandResponseModel].
+extension BrandResponseModelPatterns on BrandResponseModel {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -93,10 +93,10 @@ extension BrandDetailResponseModelPatterns on BrandDetailResponseModel {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _BrandDetailResponseModel value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _BrandResponseModel value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _BrandDetailResponseModel() when $default != null:
+case _BrandResponseModel() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -115,10 +115,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _BrandDetailResponseModel value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _BrandResponseModel value)  $default,){
 final _that = this;
 switch (_that) {
-case _BrandDetailResponseModel():
+case _BrandResponseModel():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -136,10 +136,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _BrandDetailResponseModel value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _BrandResponseModel value)?  $default,){
 final _that = this;
 switch (_that) {
-case _BrandDetailResponseModel() when $default != null:
+case _BrandResponseModel() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -159,7 +159,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'banners')  List<BrandBannerModel>? banners, @JsonKey(name: 'categories')  List<BrandCategoryModel>? categories, @JsonKey(name: 'actions')  List<PromotionModel>? promotions, @JsonKey(name: 'new_items')  List<LegacyProductModel>? newProducts, @JsonKey(name: 'recommended_items')  List<LegacyProductModel>? recommendedProducts)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _BrandDetailResponseModel() when $default != null:
+case _BrandResponseModel() when $default != null:
 return $default(_that.banners,_that.categories,_that.promotions,_that.newProducts,_that.recommendedProducts);case _:
   return orElse();
 
@@ -180,7 +180,7 @@ return $default(_that.banners,_that.categories,_that.promotions,_that.newProduct
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'banners')  List<BrandBannerModel>? banners, @JsonKey(name: 'categories')  List<BrandCategoryModel>? categories, @JsonKey(name: 'actions')  List<PromotionModel>? promotions, @JsonKey(name: 'new_items')  List<LegacyProductModel>? newProducts, @JsonKey(name: 'recommended_items')  List<LegacyProductModel>? recommendedProducts)  $default,) {final _that = this;
 switch (_that) {
-case _BrandDetailResponseModel():
+case _BrandResponseModel():
 return $default(_that.banners,_that.categories,_that.promotions,_that.newProducts,_that.recommendedProducts);case _:
   throw StateError('Unexpected subclass');
 
@@ -200,7 +200,7 @@ return $default(_that.banners,_that.categories,_that.promotions,_that.newProduct
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'banners')  List<BrandBannerModel>? banners, @JsonKey(name: 'categories')  List<BrandCategoryModel>? categories, @JsonKey(name: 'actions')  List<PromotionModel>? promotions, @JsonKey(name: 'new_items')  List<LegacyProductModel>? newProducts, @JsonKey(name: 'recommended_items')  List<LegacyProductModel>? recommendedProducts)?  $default,) {final _that = this;
 switch (_that) {
-case _BrandDetailResponseModel() when $default != null:
+case _BrandResponseModel() when $default != null:
 return $default(_that.banners,_that.categories,_that.promotions,_that.newProducts,_that.recommendedProducts);case _:
   return null;
 
@@ -212,9 +212,9 @@ return $default(_that.banners,_that.categories,_that.promotions,_that.newProduct
 /// @nodoc
 @JsonSerializable()
 
-class _BrandDetailResponseModel extends BrandDetailResponseModel {
-  const _BrandDetailResponseModel({@JsonKey(name: 'banners') final  List<BrandBannerModel>? banners, @JsonKey(name: 'categories') final  List<BrandCategoryModel>? categories, @JsonKey(name: 'actions') final  List<PromotionModel>? promotions, @JsonKey(name: 'new_items') final  List<LegacyProductModel>? newProducts, @JsonKey(name: 'recommended_items') final  List<LegacyProductModel>? recommendedProducts}): _banners = banners,_categories = categories,_promotions = promotions,_newProducts = newProducts,_recommendedProducts = recommendedProducts,super._();
-  factory _BrandDetailResponseModel.fromJson(Map<String, dynamic> json) => _$BrandDetailResponseModelFromJson(json);
+class _BrandResponseModel extends BrandResponseModel {
+  const _BrandResponseModel({@JsonKey(name: 'banners') final  List<BrandBannerModel>? banners, @JsonKey(name: 'categories') final  List<BrandCategoryModel>? categories, @JsonKey(name: 'actions') final  List<PromotionModel>? promotions, @JsonKey(name: 'new_items') final  List<LegacyProductModel>? newProducts, @JsonKey(name: 'recommended_items') final  List<LegacyProductModel>? recommendedProducts}): _banners = banners,_categories = categories,_promotions = promotions,_newProducts = newProducts,_recommendedProducts = recommendedProducts,super._();
+  factory _BrandResponseModel.fromJson(Map<String, dynamic> json) => _$BrandResponseModelFromJson(json);
 
  final  List<BrandBannerModel>? _banners;
 @override@JsonKey(name: 'banners') List<BrandBannerModel>? get banners {
@@ -262,20 +262,20 @@ class _BrandDetailResponseModel extends BrandDetailResponseModel {
 }
 
 
-/// Create a copy of BrandDetailResponseModel
+/// Create a copy of BrandResponseModel
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$BrandDetailResponseModelCopyWith<_BrandDetailResponseModel> get copyWith => __$BrandDetailResponseModelCopyWithImpl<_BrandDetailResponseModel>(this, _$identity);
+_$BrandResponseModelCopyWith<_BrandResponseModel> get copyWith => __$BrandResponseModelCopyWithImpl<_BrandResponseModel>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$BrandDetailResponseModelToJson(this, );
+  return _$BrandResponseModelToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BrandDetailResponseModel&&const DeepCollectionEquality().equals(other._banners, _banners)&&const DeepCollectionEquality().equals(other._categories, _categories)&&const DeepCollectionEquality().equals(other._promotions, _promotions)&&const DeepCollectionEquality().equals(other._newProducts, _newProducts)&&const DeepCollectionEquality().equals(other._recommendedProducts, _recommendedProducts));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BrandResponseModel&&const DeepCollectionEquality().equals(other._banners, _banners)&&const DeepCollectionEquality().equals(other._categories, _categories)&&const DeepCollectionEquality().equals(other._promotions, _promotions)&&const DeepCollectionEquality().equals(other._newProducts, _newProducts)&&const DeepCollectionEquality().equals(other._recommendedProducts, _recommendedProducts));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -284,15 +284,15 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'BrandDetailResponseModel(banners: $banners, categories: $categories, promotions: $promotions, newProducts: $newProducts, recommendedProducts: $recommendedProducts)';
+  return 'BrandResponseModel(banners: $banners, categories: $categories, promotions: $promotions, newProducts: $newProducts, recommendedProducts: $recommendedProducts)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$BrandDetailResponseModelCopyWith<$Res> implements $BrandDetailResponseModelCopyWith<$Res> {
-  factory _$BrandDetailResponseModelCopyWith(_BrandDetailResponseModel value, $Res Function(_BrandDetailResponseModel) _then) = __$BrandDetailResponseModelCopyWithImpl;
+abstract mixin class _$BrandResponseModelCopyWith<$Res> implements $BrandResponseModelCopyWith<$Res> {
+  factory _$BrandResponseModelCopyWith(_BrandResponseModel value, $Res Function(_BrandResponseModel) _then) = __$BrandResponseModelCopyWithImpl;
 @override @useResult
 $Res call({
 @JsonKey(name: 'banners') List<BrandBannerModel>? banners,@JsonKey(name: 'categories') List<BrandCategoryModel>? categories,@JsonKey(name: 'actions') List<PromotionModel>? promotions,@JsonKey(name: 'new_items') List<LegacyProductModel>? newProducts,@JsonKey(name: 'recommended_items') List<LegacyProductModel>? recommendedProducts
@@ -303,17 +303,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$BrandDetailResponseModelCopyWithImpl<$Res>
-    implements _$BrandDetailResponseModelCopyWith<$Res> {
-  __$BrandDetailResponseModelCopyWithImpl(this._self, this._then);
+class __$BrandResponseModelCopyWithImpl<$Res>
+    implements _$BrandResponseModelCopyWith<$Res> {
+  __$BrandResponseModelCopyWithImpl(this._self, this._then);
 
-  final _BrandDetailResponseModel _self;
-  final $Res Function(_BrandDetailResponseModel) _then;
+  final _BrandResponseModel _self;
+  final $Res Function(_BrandResponseModel) _then;
 
-/// Create a copy of BrandDetailResponseModel
+/// Create a copy of BrandResponseModel
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? banners = freezed,Object? categories = freezed,Object? promotions = freezed,Object? newProducts = freezed,Object? recommendedProducts = freezed,}) {
-  return _then(_BrandDetailResponseModel(
+  return _then(_BrandResponseModel(
 banners: freezed == banners ? _self._banners : banners // ignore: cast_nullable_to_non_nullable
 as List<BrandBannerModel>?,categories: freezed == categories ? _self._categories : categories // ignore: cast_nullable_to_non_nullable
 as List<BrandCategoryModel>?,promotions: freezed == promotions ? _self._promotions : promotions // ignore: cast_nullable_to_non_nullable

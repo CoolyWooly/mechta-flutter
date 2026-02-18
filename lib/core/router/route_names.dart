@@ -15,7 +15,7 @@ abstract class RoutePaths {
   // Shared sub-routes (relative paths for nesting)
   static const String subcatalog = 'subcatalog/:categorySlug';
   static const String product = 'product/:productSlug';
-  static const String brandDetail = 'brand/:brandCode';
+  static const String brand = 'brand/:brandCode';
   static const String promotions = 'promotions';
   static const String promotionDetail = 'promotion/:promotionCode';
 }

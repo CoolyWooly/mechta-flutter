@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'brand_detail_response_model.dart';
+part of 'brand_response_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_BrandDetailResponseModel _$BrandDetailResponseModelFromJson(
+_BrandResponseModel _$BrandResponseModelFromJson(
   Map<String, dynamic> json,
-) => _BrandDetailResponseModel(
+) => _BrandResponseModel(
   banners: (json['banners'] as List<dynamic>?)
       ?.map((e) => BrandBannerModel.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -26,8 +26,8 @@ _BrandDetailResponseModel _$BrandDetailResponseModelFromJson(
       .toList(),
 );
 
-Map<String, dynamic> _$BrandDetailResponseModelToJson(
-  _BrandDetailResponseModel instance,
+Map<String, dynamic> _$BrandResponseModelToJson(
+  _BrandResponseModel instance,
 ) => <String, dynamic>{
   'banners': instance.banners,
   'categories': instance.categories,
