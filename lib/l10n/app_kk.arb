@@ -66,5 +66,19 @@
 
   "language": "Тіл",
   "russian": "Орысша",
-  "kazakh": "Қазақша"
+  "kazakh": "Қазақша",
+
+  "bonuses": "Бонустар",
+  "chips": "Чипстер",
+  "activeBonuses": "Белсенді",
+  "blockedBonuses": "Бұғатталған",
+  "expiringSoon": "Жақын арада жанады",
+  "expirationDate": "Жану күні",
+  "bonusHistoryEmpty": "Бонустар тарихы бос",
+  "order": "Тапсырыс",
+
+  "ourShops": "Біздің дүкендер",
+  "list": "Тізім",
+  "map": "Карта",
+  "shopsEmpty": "Дүкендер табылмады"
 }

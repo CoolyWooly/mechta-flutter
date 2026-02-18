@@ -15,6 +15,8 @@ import 'package:mechta_flutter/features/brand/presentation/pages/brand_page.dart
 import 'package:mechta_flutter/features/promotions/presentation/pages/promotion_detail_page.dart';
 import 'package:mechta_flutter/features/promotions/presentation/pages/promotions_page.dart';
 import 'package:mechta_flutter/core/navigation/seo_resolve_page.dart';
+import 'package:mechta_flutter/features/bonuses/presentation/pages/bonuses_page.dart';
+import 'package:mechta_flutter/features/shops/presentation/pages/shops_page.dart';
 
 GoRoute _productRoute() => GoRoute(
       path: RoutePaths.product,
@@ -40,6 +42,16 @@ GoRoute _brandRoute() => GoRoute(
         return BrandPage(brand: brand, title: title);
       },
       routes: [_productRoute(), _promotionDetailRoute(), _subcatalogRoute()],
+    );
+
+GoRoute _bonusesRoute() => GoRoute(
+      path: RoutePaths.bonuses,
+      builder: (context, state) => const BonusesPage(),
+    );
+
+GoRoute _shopsRoute() => GoRoute(
+      path: RoutePaths.shops,
+      builder: (context, state) => const ShopsPage(),
     );
 
 GoRoute _subcatalogRoute() => GoRoute(
@@ -242,6 +254,8 @@ GoRouter createAppRouter() {
                   _productRoute(),
                   _subcatalogRoute(),
                   _promotionDetailRoute(),
+                  _bonusesRoute(),
+                  _shopsRoute(),
                 ],
               ),
             ],

@@ -178,4 +178,40 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get kazakh => 'Қазақша';
+
+  @override
+  String get bonuses => 'Бонустар';
+
+  @override
+  String get chips => 'Чипстер';
+
+  @override
+  String get activeBonuses => 'Белсенді';
+
+  @override
+  String get blockedBonuses => 'Бұғатталған';
+
+  @override
+  String get expiringSoon => 'Жақын арада жанады';
+
+  @override
+  String get expirationDate => 'Жану күні';
+
+  @override
+  String get bonusHistoryEmpty => 'Бонустар тарихы бос';
+
+  @override
+  String get order => 'Тапсырыс';
+
+  @override
+  String get ourShops => 'Біздің дүкендер';
+
+  @override
+  String get list => 'Тізім';
+
+  @override
+  String get map => 'Карта';
+
+  @override
+  String get shopsEmpty => 'Дүкендер табылмады';
 }

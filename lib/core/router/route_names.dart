@@ -18,6 +18,8 @@ abstract class RoutePaths {
   static const String brand = 'brand/:brandCode';
   static const String promotions = 'promotions';
   static const String promotionDetail = 'promotion/:promotionCode';
+  static const String bonuses = 'bonuses';
+  static const String shops = 'shops';
 }
 
 abstract class RouteNames {

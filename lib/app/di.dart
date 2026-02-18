@@ -87,6 +87,20 @@ import 'package:mechta_flutter/features/product/domain/repositories/product_repo
 import 'package:mechta_flutter/features/product/domain/usecases/get_product.dart';
 import 'package:mechta_flutter/features/product/presentation/bloc/product_bloc.dart';
 
+// Shops
+import 'package:mechta_flutter/features/shops/data/datasources/shops_remote_data_source.dart';
+import 'package:mechta_flutter/features/shops/data/repositories/shops_repository_impl.dart';
+import 'package:mechta_flutter/features/shops/domain/repositories/shops_repository.dart';
+import 'package:mechta_flutter/features/shops/domain/usecases/get_shops.dart';
+import 'package:mechta_flutter/features/shops/presentation/bloc/shops_bloc.dart';
+
+// Bonuses
+import 'package:mechta_flutter/features/bonuses/data/datasources/bonuses_remote_data_source.dart';
+import 'package:mechta_flutter/features/bonuses/data/repositories/bonuses_repository_impl.dart';
+import 'package:mechta_flutter/features/bonuses/domain/repositories/bonuses_repository.dart';
+import 'package:mechta_flutter/features/bonuses/domain/usecases/get_bonuses_history.dart';
+import 'package:mechta_flutter/features/bonuses/presentation/bloc/bonuses_bloc.dart';
+
 // Brand
 import 'package:mechta_flutter/features/brand/data/datasources/brand_remote_data_source.dart';
 import 'package:mechta_flutter/features/brand/data/repositories/brand_repository_impl.dart';
@@ -131,6 +145,8 @@ Future<void> configureDependencies() async {
   _registerFavoritesFeature();
   _registerProfileFeature();
   _registerProductFeature();
+  _registerShopsFeature();
+  _registerBonusesFeature();
   _registerBrandFeature();
   _registerPromotionsFeature();
 }
@@ -293,6 +309,28 @@ void _registerSubcatalogFeature() {
         getSubcatalog: sl(),
         getCategoryChildren: sl(),
       ));
+}
+
+void _registerShopsFeature() {
+  sl.registerLazySingleton<ShopsRemoteDataSource>(
+    () => ShopsRemoteDataSourceImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<ShopsRepository>(
+    () => ShopsRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton(() => GetShopsUseCase(sl()));
+  sl.registerFactory(() => ShopsBloc(getShops: sl()));
+}
+
+void _registerBonusesFeature() {
+  sl.registerLazySingleton<BonusesRemoteDataSource>(
+    () => BonusesRemoteDataSourceImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<BonusesRepository>(
+    () => BonusesRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton(() => GetBonusesHistoryUseCase(sl()));
+  sl.registerFactory(() => BonusesBloc(getBonusesHistory: sl()));
 }
 
 void _registerBrandFeature() {
