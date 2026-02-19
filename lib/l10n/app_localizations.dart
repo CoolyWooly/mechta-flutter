@@ -421,6 +421,78 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Қазақша'**
   String get kazakh;
+
+  /// No description provided for @bonuses.
+  ///
+  /// In ru, this message translates to:
+  /// **'Бонусы'**
+  String get bonuses;
+
+  /// No description provided for @chips.
+  ///
+  /// In ru, this message translates to:
+  /// **'Чипсы'**
+  String get chips;
+
+  /// No description provided for @activeBonuses.
+  ///
+  /// In ru, this message translates to:
+  /// **'Активные'**
+  String get activeBonuses;
+
+  /// No description provided for @blockedBonuses.
+  ///
+  /// In ru, this message translates to:
+  /// **'Заблокированные'**
+  String get blockedBonuses;
+
+  /// No description provided for @expiringSoon.
+  ///
+  /// In ru, this message translates to:
+  /// **'Сгорает скоро'**
+  String get expiringSoon;
+
+  /// No description provided for @expirationDate.
+  ///
+  /// In ru, this message translates to:
+  /// **'Дата сгорания'**
+  String get expirationDate;
+
+  /// No description provided for @bonusHistoryEmpty.
+  ///
+  /// In ru, this message translates to:
+  /// **'История бонусов пуста'**
+  String get bonusHistoryEmpty;
+
+  /// No description provided for @order.
+  ///
+  /// In ru, this message translates to:
+  /// **'Заказ'**
+  String get order;
+
+  /// No description provided for @ourShops.
+  ///
+  /// In ru, this message translates to:
+  /// **'Наши магазины'**
+  String get ourShops;
+
+  /// No description provided for @list.
+  ///
+  /// In ru, this message translates to:
+  /// **'Список'**
+  String get list;
+
+  /// No description provided for @map.
+  ///
+  /// In ru, this message translates to:
+  /// **'Карта'**
+  String get map;
+
+  /// No description provided for @shopsEmpty.
+  ///
+  /// In ru, this message translates to:
+  /// **'Магазины не найдены'**
+  String get shopsEmpty;
 }
 
 class _AppLocalizationsDelegate

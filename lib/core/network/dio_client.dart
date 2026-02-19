@@ -14,10 +14,12 @@ Dio createDio({
       connectTimeout: ApiConstants.connectTimeout,
       receiveTimeout: ApiConstants.receiveTimeout,
       headers: {
+        'User-Agent': 'Ktor client',
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'X-Mechta-App': 'android',
         'X-Mechta-Device-Id': deviceId,
+        'Version': 138,
       },
     ),
   );

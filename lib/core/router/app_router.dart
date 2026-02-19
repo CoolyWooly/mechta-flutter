@@ -11,12 +11,14 @@ import 'package:mechta_flutter/features/favorites/presentation/pages/favorites_p
 import 'package:mechta_flutter/features/profile/presentation/pages/profile_page.dart';
 import 'package:mechta_flutter/features/product/presentation/pages/product_page.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/pages/subcatalog_page.dart';
+import 'package:mechta_flutter/features/brand/presentation/pages/brand_page.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/pages/filter_page.dart';
 import 'package:mechta_flutter/features/subcatalog/domain/entities/filter_entity.dart';
-import 'package:mechta_flutter/features/brand_detail/presentation/pages/brand_detail_page.dart';
 import 'package:mechta_flutter/features/promotions/presentation/pages/promotion_detail_page.dart';
 import 'package:mechta_flutter/features/promotions/presentation/pages/promotions_page.dart';
 import 'package:mechta_flutter/core/navigation/seo_resolve_page.dart';
+import 'package:mechta_flutter/features/bonuses/presentation/pages/bonuses_page.dart';
+import 'package:mechta_flutter/features/shops/presentation/pages/shops_page.dart';
 
 GoRoute _productRoute() => GoRoute(
       path: RoutePaths.product,
@@ -34,14 +36,24 @@ GoRoute _promotionDetailRoute() => GoRoute(
       },
     );
 
-GoRoute _brandDetailRoute() => GoRoute(
-      path: RoutePaths.brandDetail,
+GoRoute _brandRoute() => GoRoute(
+      path: RoutePaths.brand,
       builder: (context, state) {
         final brand = state.pathParameters['brandCode']!;
         final title = state.uri.queryParameters['title'];
-        return BrandDetailPage(brand: brand, title: title);
+        return BrandPage(brand: brand, title: title);
       },
       routes: [_productRoute(), _promotionDetailRoute(), _subcatalogRoute()],
+    );
+
+GoRoute _bonusesRoute() => GoRoute(
+      path: RoutePaths.bonuses,
+      builder: (context, state) => const BonusesPage(),
+    );
+
+GoRoute _shopsRoute() => GoRoute(
+      path: RoutePaths.shops,
+      builder: (context, state) => const ShopsPage(),
     );
 
 GoRoute _filterRoute() => GoRoute(
@@ -181,7 +193,7 @@ GoRouter createAppRouter() {
                 routes: [
                   _productRoute(),
                   _subcatalogRoute(),
-                  _brandDetailRoute(),
+                  _brandRoute(),
                   _promotionDetailRoute(),
                   GoRoute(
                     path: RoutePaths.promotions,
@@ -204,7 +216,7 @@ GoRouter createAppRouter() {
                 ),
                 routes: [
                   _subcatalogRoute(),
-                  _brandDetailRoute(),
+                  _brandRoute(),
                   _promotionDetailRoute(),
                   _productRoute(),
                 ],
@@ -258,6 +270,8 @@ GoRouter createAppRouter() {
                   _productRoute(),
                   _subcatalogRoute(),
                   _promotionDetailRoute(),
+                  _bonusesRoute(),
+                  _shopsRoute(),
                 ],
               ),
             ],

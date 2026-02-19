@@ -179,4 +179,40 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get kazakh => 'Қазақша';
+
+  @override
+  String get bonuses => 'Бонусы';
+
+  @override
+  String get chips => 'Чипсы';
+
+  @override
+  String get activeBonuses => 'Активные';
+
+  @override
+  String get blockedBonuses => 'Заблокированные';
+
+  @override
+  String get expiringSoon => 'Сгорает скоро';
+
+  @override
+  String get expirationDate => 'Дата сгорания';
+
+  @override
+  String get bonusHistoryEmpty => 'История бонусов пуста';
+
+  @override
+  String get order => 'Заказ';
+
+  @override
+  String get ourShops => 'Наши магазины';
+
+  @override
+  String get list => 'Список';
+
+  @override
+  String get map => 'Карта';
+
+  @override
+  String get shopsEmpty => 'Магазины не найдены';
 }

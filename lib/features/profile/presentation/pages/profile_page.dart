@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/app/app_restart.dart';
 import 'package:mechta_flutter/app/di.dart';
+import 'package:mechta_flutter/core/router/route_names.dart';
 import 'package:mechta_flutter/core/usecase/usecase.dart';
 import 'package:mechta_flutter/features/auth/presentation/widgets/auth_bottom_sheet.dart';
 import 'package:mechta_flutter/features/city/domain/entities/city_entity.dart';
@@ -106,6 +108,18 @@ class _AuthenticatedBody extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         const SizedBox(height: 24),
+        ListTile(
+          leading: const Icon(Icons.star_rounded),
+          title: Text(l10n.bonuses),
+          trailing: const Icon(Icons.chevron_right),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          tileColor: colorScheme.surfaceContainerHighest,
+          onTap: () => context.go('${RoutePaths.profile}/${RoutePaths.bonuses}'),
+        ),
+        const SizedBox(height: 12),
+        const _ShopsTile(),
+        const SizedBox(height: 12),
         const _LanguageTile(),
         const SizedBox(height: 12),
         const _CityTile(),
@@ -161,6 +175,8 @@ class _UnauthenticatedBody extends StatelessWidget {
           padding: EdgeInsets.all(16),
           child: Column(
             children: [
+              _ShopsTile(),
+              SizedBox(height: 12),
               _LanguageTile(),
               SizedBox(height: 12),
               _CityTile(),
@@ -293,6 +309,24 @@ class _LanguageTile extends StatelessWidget {
           },
         );
       },
+    );
+  }
+}
+
+class _ShopsTile extends StatelessWidget {
+  const _ShopsTile();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return ListTile(
+      leading: const Icon(Icons.store_outlined),
+      title: Text(l10n.ourShops),
+      trailing: const Icon(Icons.chevron_right),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      tileColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+      onTap: () => context.go('${RoutePaths.profile}/${RoutePaths.shops}'),
     );
   }
 }

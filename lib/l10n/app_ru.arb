@@ -87,5 +87,19 @@
 
   "language": "Язык",
   "russian": "Русский",
-  "kazakh": "Қазақша"
+  "kazakh": "Қазақша",
+
+  "bonuses": "Бонусы",
+  "chips": "Чипсы",
+  "activeBonuses": "Активные",
+  "blockedBonuses": "Заблокированные",
+  "expiringSoon": "Сгорает скоро",
+  "expirationDate": "Дата сгорания",
+  "bonusHistoryEmpty": "История бонусов пуста",
+  "order": "Заказ",
+
+  "ourShops": "Наши магазины",
+  "list": "Список",
+  "map": "Карта",
+  "shopsEmpty": "Магазины не найдены"
 }
