@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:mechta_flutter/core/error/exceptions.dart';
-import 'package:mechta_flutter/features/subcatalog/data/models/filter_response_model.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_filters.dart';
+import 'package:mechta_flutter/features/filter/data/models/filter_response_model.dart';
+import 'package:mechta_flutter/features/filter/domain/usecases/get_filters.dart';
 
 abstract class FilterRemoteDataSource {
   Future<FiltersResponseModel> getFilters(FilterParams params);

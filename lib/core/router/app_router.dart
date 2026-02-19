@@ -12,8 +12,8 @@ import 'package:mechta_flutter/features/profile/presentation/pages/profile_page.
 import 'package:mechta_flutter/features/product/presentation/pages/product_page.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/pages/subcatalog_page.dart';
 import 'package:mechta_flutter/features/brand/presentation/pages/brand_page.dart';
-import 'package:mechta_flutter/features/subcatalog/presentation/pages/filter_page.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/entities/filter_entity.dart';
+import 'package:mechta_flutter/features/filter/presentation/pages/filter_page.dart';
+import 'package:mechta_flutter/features/filter/domain/entities/filter_entity.dart';
 import 'package:mechta_flutter/features/promotions/presentation/pages/promotion_detail_page.dart';
 import 'package:mechta_flutter/features/promotions/presentation/pages/promotions_page.dart';
 import 'package:mechta_flutter/core/navigation/seo_resolve_page.dart';

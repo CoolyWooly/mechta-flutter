@@ -1,8 +1,8 @@
 import 'package:mechta_flutter/core/error/exceptions.dart';
-import 'package:mechta_flutter/features/subcatalog/data/datasources/filter_remote_data_source.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/entities/filter_entity.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/repositories/filter_repository.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_filters.dart';
+import 'package:mechta_flutter/features/filter/data/datasources/filter_remote_data_source.dart';
+import 'package:mechta_flutter/features/filter/domain/entities/filter_entity.dart';
+import 'package:mechta_flutter/features/filter/domain/repositories/filter_repository.dart';
+import 'package:mechta_flutter/features/filter/domain/usecases/get_filters.dart';
 
 class FilterRepositoryImpl implements FilterRepository {
   final FilterRemoteDataSource remoteDataSource;

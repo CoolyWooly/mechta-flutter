@@ -81,11 +81,11 @@ import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_subcatalo
 import 'package:mechta_flutter/features/subcatalog/presentation/bloc/subcatalog_bloc.dart';
 
 // Filter
-import 'package:mechta_flutter/features/subcatalog/data/datasources/filter_remote_data_source.dart';
-import 'package:mechta_flutter/features/subcatalog/data/repositories/filter_repository_impl.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/repositories/filter_repository.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_filters.dart';
-import 'package:mechta_flutter/features/subcatalog/presentation/bloc/filter_bloc.dart';
+import 'package:mechta_flutter/features/filter/data/datasources/filter_remote_data_source.dart';
+import 'package:mechta_flutter/features/filter/data/repositories/filter_repository_impl.dart';
+import 'package:mechta_flutter/features/filter/domain/repositories/filter_repository.dart';
+import 'package:mechta_flutter/features/filter/domain/usecases/get_filters.dart';
+import 'package:mechta_flutter/features/filter/presentation/bloc/filter_bloc.dart';
 
 // Product
 import 'package:mechta_flutter/features/product/data/datasources/product_remote_data_source.dart';

@@ -6,35 +6,33 @@ part of 'brand_response_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_BrandResponseModel _$BrandResponseModelFromJson(
-  Map<String, dynamic> json,
-) => _BrandResponseModel(
-  banners: (json['banners'] as List<dynamic>?)
-      ?.map((e) => BrandBannerModel.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  categories: (json['categories'] as List<dynamic>?)
-      ?.map((e) => BrandCategoryModel.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  promotions: (json['actions'] as List<dynamic>?)
-      ?.map((e) => PromotionModel.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  newProducts: (json['new_items'] as List<dynamic>?)
-      ?.map((e) => LegacyProductModel.fromJson(e as Map<String, dynamic>))
-      .toList(),
-  recommendedProducts: (json['recommended_items'] as List<dynamic>?)
-      ?.map((e) => LegacyProductModel.fromJson(e as Map<String, dynamic>))
-      .toList(),
-);
+_BrandResponseModel _$BrandResponseModelFromJson(Map<String, dynamic> json) =>
+    _BrandResponseModel(
+      banners: (json['banners'] as List<dynamic>?)
+          ?.map((e) => BrandBannerModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      categories: (json['categories'] as List<dynamic>?)
+          ?.map((e) => BrandCategoryModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      promotions: (json['actions'] as List<dynamic>?)
+          ?.map((e) => PromotionModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      newProducts: (json['new_items'] as List<dynamic>?)
+          ?.map((e) => LegacyProductModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      recommendedProducts: (json['recommended_items'] as List<dynamic>?)
+          ?.map((e) => LegacyProductModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
 
-Map<String, dynamic> _$BrandResponseModelToJson(
-  _BrandResponseModel instance,
-) => <String, dynamic>{
-  'banners': instance.banners,
-  'categories': instance.categories,
-  'actions': instance.promotions,
-  'new_items': instance.newProducts,
-  'recommended_items': instance.recommendedProducts,
-};
+Map<String, dynamic> _$BrandResponseModelToJson(_BrandResponseModel instance) =>
+    <String, dynamic>{
+      'banners': instance.banners,
+      'categories': instance.categories,
+      'actions': instance.promotions,
+      'new_items': instance.newProducts,
+      'recommended_items': instance.recommendedProducts,
+    };
 
 _BrandBannerModel _$BrandBannerModelFromJson(Map<String, dynamic> json) =>
     _BrandBannerModel(

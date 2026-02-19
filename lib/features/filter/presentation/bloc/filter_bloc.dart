@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/entities/filter_entity.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_filters.dart';
+import 'package:mechta_flutter/features/filter/domain/entities/filter_entity.dart';
+import 'package:mechta_flutter/features/filter/domain/usecases/get_filters.dart';
 
 part 'filter_event.dart';
 part 'filter_state.dart';

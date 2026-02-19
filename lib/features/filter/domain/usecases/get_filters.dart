@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:mechta_flutter/core/usecase/usecase.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/entities/filter_entity.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/repositories/filter_repository.dart';
+import 'package:mechta_flutter/features/filter/domain/entities/filter_entity.dart';
+import 'package:mechta_flutter/features/filter/domain/repositories/filter_repository.dart';
 
 class GetFiltersUseCase extends UseCase<FiltersEntity, FilterParams> {
   final FilterRepository repository;

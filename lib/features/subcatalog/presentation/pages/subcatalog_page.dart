@@ -8,7 +8,7 @@ import 'package:mechta_flutter/core/utils/picture_url_converter.dart';
 import 'package:mechta_flutter/features/favorites/domain/usecases/is_favorite.dart';
 import 'package:mechta_flutter/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:mechta_flutter/features/subcatalog/domain/entities/category_entity.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/entities/filter_entity.dart';
+import 'package:mechta_flutter/features/filter/domain/entities/filter_entity.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/bloc/subcatalog_bloc.dart';
 import 'package:mechta_flutter/l10n/app_localizations.dart';
 

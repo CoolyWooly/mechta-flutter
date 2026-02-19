@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/app/di.dart';
-import 'package:mechta_flutter/features/subcatalog/domain/entities/filter_entity.dart';
-import 'package:mechta_flutter/features/subcatalog/presentation/bloc/filter_bloc.dart';
+import 'package:mechta_flutter/features/filter/domain/entities/filter_entity.dart';
+import 'package:mechta_flutter/features/filter/presentation/bloc/filter_bloc.dart';
 
 class FilterPage extends StatelessWidget {
   final String slug;
