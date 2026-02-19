@@ -80,6 +80,13 @@ import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_category_
 import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_subcatalog.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/bloc/subcatalog_bloc.dart';
 
+// Filter
+import 'package:mechta_flutter/features/subcatalog/data/datasources/filter_remote_data_source.dart';
+import 'package:mechta_flutter/features/subcatalog/data/repositories/filter_repository_impl.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/repositories/filter_repository.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_filters.dart';
+import 'package:mechta_flutter/features/subcatalog/presentation/bloc/filter_bloc.dart';
+
 // Product
 import 'package:mechta_flutter/features/product/data/datasources/product_remote_data_source.dart';
 import 'package:mechta_flutter/features/product/data/repositories/product_repository_impl.dart';
@@ -127,6 +134,7 @@ Future<void> configureDependencies() async {
   _registerHomeFeature();
   _registerCatalogFeature();
   _registerSubcatalogFeature();
+  _registerFilterFeature();
   _registerCartFeature();
   _registerFavoritesFeature();
   _registerProfileFeature();
@@ -293,6 +301,17 @@ void _registerSubcatalogFeature() {
         getSubcatalog: sl(),
         getCategoryChildren: sl(),
       ));
+}
+
+void _registerFilterFeature() {
+  sl.registerLazySingleton<FilterRemoteDataSource>(
+    () => FilterRemoteDataSourceImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<FilterRepository>(
+    () => FilterRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton(() => GetFiltersUseCase(sl()));
+  sl.registerFactory(() => FilterBloc(getFilters: sl()));
 }
 
 void _registerBrandDetailFeature() {

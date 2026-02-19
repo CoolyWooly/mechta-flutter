@@ -11,6 +11,8 @@ import 'package:mechta_flutter/features/favorites/presentation/pages/favorites_p
 import 'package:mechta_flutter/features/profile/presentation/pages/profile_page.dart';
 import 'package:mechta_flutter/features/product/presentation/pages/product_page.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/pages/subcatalog_page.dart';
+import 'package:mechta_flutter/features/subcatalog/presentation/pages/filter_page.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/entities/filter_entity.dart';
 import 'package:mechta_flutter/features/brand_detail/presentation/pages/brand_detail_page.dart';
 import 'package:mechta_flutter/features/promotions/presentation/pages/promotion_detail_page.dart';
 import 'package:mechta_flutter/features/promotions/presentation/pages/promotions_page.dart';
@@ -42,6 +44,20 @@ GoRoute _brandDetailRoute() => GoRoute(
       routes: [_productRoute(), _promotionDetailRoute(), _subcatalogRoute()],
     );
 
+GoRoute _filterRoute() => GoRoute(
+      path: RoutePaths.filter,
+      builder: (context, state) {
+        final slug = state.pathParameters['categorySlug']!;
+        final extra = state.extra as FilterResult?;
+        return FilterPage(
+          slug: slug,
+          initialProperties: extra?.properties,
+          initialMinPrice: extra?.minPrice,
+          initialMaxPrice: extra?.maxPrice,
+        );
+      },
+    );
+
 GoRoute _subcatalogRoute() => GoRoute(
       path: RoutePaths.subcatalog,
       builder: (context, state) {
@@ -57,7 +73,7 @@ GoRoute _subcatalogRoute() => GoRoute(
           properties: _parseProperties(state.uri),
         );
       },
-      routes: [_productRoute()],
+      routes: [_productRoute(), _filterRoute()],
     );
 
 /// Parses `properties[key][]=value` query parameters into a Map.

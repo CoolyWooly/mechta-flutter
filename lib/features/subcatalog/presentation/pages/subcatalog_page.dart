@@ -8,6 +8,7 @@ import 'package:mechta_flutter/core/utils/picture_url_converter.dart';
 import 'package:mechta_flutter/features/favorites/domain/usecases/is_favorite.dart';
 import 'package:mechta_flutter/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:mechta_flutter/features/subcatalog/domain/entities/category_entity.dart';
+import 'package:mechta_flutter/features/subcatalog/domain/entities/filter_entity.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/bloc/subcatalog_bloc.dart';
 import 'package:mechta_flutter/l10n/app_localizations.dart';
 
@@ -86,6 +87,30 @@ class _SubcatalogViewState extends State<_SubcatalogView> {
     return currentScroll >= maxScroll - 200;
   }
 
+  Future<void> _openFilters(BuildContext context) async {
+    final bloc = context.read<SubcatalogBloc>();
+    final state = bloc.state;
+    final currentPath = GoRouterState.of(context).uri.path;
+    final result = await context.push<FilterResult>(
+      '$currentPath/${RoutePaths.filter}',
+      extra: FilterResult(
+        properties: state.properties,
+        minPrice: state.minPrice,
+        maxPrice: state.maxPrice,
+      ),
+    );
+    if (result != null && mounted) {
+      bloc.add(SubcatalogLoadRequested(
+        slug: state.slug,
+        properties: result.properties,
+        minPrice: result.minPrice,
+        maxPrice: result.maxPrice,
+        orderBy: state.orderBy,
+        direction: state.direction,
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,6 +121,24 @@ class _SubcatalogViewState extends State<_SubcatalogView> {
             return Text(categoryName ?? '');
           },
         ),
+        actions: [
+          BlocSelector<SubcatalogBloc, SubcatalogState, bool>(
+            selector: (state) =>
+                (state.properties?.isNotEmpty ?? false) ||
+                state.minPrice != null ||
+                state.maxPrice != null,
+            builder: (context, hasFilters) {
+              return IconButton(
+                icon: Badge(
+                  isLabelVisible: hasFilters,
+                  child: const Icon(Icons.tune),
+                ),
+                onPressed: () => _openFilters(context),
+                tooltip: 'Фильтры',
+              );
+            },
+          ),
+        ],
       ),
       body: BlocBuilder<SubcatalogBloc, SubcatalogState>(
         builder: (context, state) {
