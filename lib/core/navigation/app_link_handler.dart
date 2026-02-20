@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/core/navigation/seo_navigator.dart';
 import 'package:mechta_flutter/core/router/route_names.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Returns the current tab root path (e.g. '/home', '/catalog') from context.
 String _currentTabRoot(BuildContext context) {
@@ -30,7 +31,7 @@ class AppLinkHandler {
 
   /// Handles a tap on a link with the given [url].
   /// Parses the path and pushes the destination on top of the current route.
-  Future<void> handle(BuildContext context, String url) async {
+  Future<void> handle(BuildContext context, String url, {String? searchQuery}) async {
     final uri = Uri.tryParse(url);
     if (uri == null) return;
 
@@ -59,16 +60,35 @@ class AppLinkHandler {
       return;
     }
 
+    // /search/?q=...&section_id=... → SubcatalogPage with query
+    if (_isSearchPath(path)) {
+      final q = uri.queryParameters['q'];
+      final sectionId = uri.queryParameters['section_id'];
+      if (q != null && q.isNotEmpty) {
+        final slug = (sectionId != null && sectionId.isNotEmpty)
+            ? sectionId
+            : 'search-results';
+        final queryParam = Uri.encodeComponent(q);
+        context.push('$tabRoot/subcatalog/$slug?query=$queryParam');
+        return;
+      }
+    }
+
     // /section/{slug}?params → seo-resolve → SubcatalogPage
     if (path.startsWith('/section/')) {
-      await _seoNavigator.navigateToSection(context, path);
+      await _seoNavigator.navigateToSection(context, path, searchQuery: searchQuery);
       return;
     }
 
     // Fallback: try seo-resolve for unknown mechta.kz paths
     if (_isMechtaUrl(url)) {
-      await _seoNavigator.navigateToSection(context, path);
+      await _seoNavigator.navigateToSection(context, path, searchQuery: searchQuery);
       return;
+    }
+
+    // External URLs → open in in-app browser
+    if (uri.hasScheme) {
+      await launchUrl(uri, mode: LaunchMode.inAppBrowserView);
     }
   }
 
@@ -86,6 +106,11 @@ class AppLinkHandler {
   String? _extractPromotionCode(String path) {
     final normalized = path.endsWith('/') ? path.substring(0, path.length - 1) : path;
     return normalized.substring('/useful/shares/'.length);
+  }
+
+  bool _isSearchPath(String path) {
+    final normalized = path.endsWith('/') ? path.substring(0, path.length - 1) : path;
+    return normalized == '/search';
   }
 
   bool _isMechtaUrl(String url) {

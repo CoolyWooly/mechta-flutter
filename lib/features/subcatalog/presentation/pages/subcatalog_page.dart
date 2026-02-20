@@ -10,6 +10,7 @@ import 'package:mechta_flutter/features/favorites/domain/usecases/toggle_favorit
 import 'package:mechta_flutter/features/subcatalog/domain/entities/category_entity.dart';
 import 'package:mechta_flutter/features/filter/domain/entities/filter_entity.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/bloc/subcatalog_bloc.dart';
+import 'package:mechta_flutter/core/widgets/search_bar_button.dart';
 import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class SubcatalogPage extends StatelessWidget {
@@ -20,6 +21,7 @@ class SubcatalogPage extends StatelessWidget {
   final String? orderBy;
   final String? direction;
   final Map<String, List<String>>? properties;
+  final String? query;
 
   const SubcatalogPage({
     super.key,
@@ -30,6 +32,7 @@ class SubcatalogPage extends StatelessWidget {
     this.orderBy,
     this.direction,
     this.properties,
+    this.query,
   });
 
   @override
@@ -44,6 +47,7 @@ class SubcatalogPage extends StatelessWidget {
           orderBy: orderBy,
           direction: direction,
           properties: properties,
+          query: query,
         ))
         ..add(SubcatalogCategoryChildrenRequested(slug: slug)),
       child: _SubcatalogView(),
@@ -172,6 +176,60 @@ class _SubcatalogViewState extends State<_SubcatalogView> {
     return CustomScrollView(
       controller: _scrollController,
       slivers: [
+        // Search bar button
+        SliverToBoxAdapter(
+          child: SearchBarButton(
+            text: state.query,
+            onTap: () {
+              final uri = GoRouterState.of(context).uri.path;
+              const tabRoots = [
+                RoutePaths.home,
+                RoutePaths.catalog,
+                RoutePaths.cart,
+                RoutePaths.favorites,
+                RoutePaths.profile,
+              ];
+              var tabRoot = RoutePaths.home;
+              for (final root in tabRoots) {
+                if (uri.startsWith(root)) {
+                  tabRoot = root;
+                  break;
+                }
+              }
+              context.go('$tabRoot/search');
+            },
+          ),
+        ),
+
+        // Available categories from search
+        if (state.availableCategories.isNotEmpty)
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 44,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: state.availableCategories.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 8),
+                itemBuilder: (context, index) {
+                  final cat = state.availableCategories[index];
+                  final isSelected = cat.slug == state.slug;
+                  return ChoiceChip(
+                    label: Text('${cat.name} (${cat.productsCount})'),
+                    selected: isSelected,
+                    onSelected: (_) {
+                      if (!isSelected) {
+                        context.read<SubcatalogBloc>().add(
+                              SubcatalogSearchCategoryChanged(slug: cat.slug),
+                            );
+                      }
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+
         // Children categories
         if (state.children.isNotEmpty)
           _ChildrenCategoriesSection(children: state.children),

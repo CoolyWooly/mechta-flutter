@@ -214,4 +214,29 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get shopsEmpty => 'Дүкендер табылмады';
+
+  @override
+  String get searchProducts => 'Тауарларды іздеу';
+
+  @override
+  String get cartSignInPrompt =>
+      'Себеттегі тауарларды көру үшін аккаунтқа кіріңіз';
+
+  @override
+  String get cartTotal => 'Барлығы';
+
+  @override
+  String get checkout => 'Тапсырысты рәсімдеу';
+
+  @override
+  String get gift => 'Сыйлық';
+
+  @override
+  String get piece => 'дана';
+
+  @override
+  String get discount => 'Жеңілдік';
+
+  @override
+  String get couponDiscount => 'Купон бойынша жеңілдік';
 }

@@ -23,6 +23,7 @@ class SubcatalogParams extends Equatable {
   final String? orderBy;
   final String? direction;
   final Map<String, List<String>>? properties;
+  final String? query;
 
   const SubcatalogParams({
     required this.slug,
@@ -33,6 +34,7 @@ class SubcatalogParams extends Equatable {
     this.orderBy,
     this.direction,
     this.properties,
+    this.query,
   });
 
   @override
@@ -45,5 +47,6 @@ class SubcatalogParams extends Equatable {
         orderBy,
         direction,
         properties,
+        query,
       ];
 }

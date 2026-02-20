@@ -215,4 +215,29 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get shopsEmpty => 'Магазины не найдены';
+
+  @override
+  String get searchProducts => 'Искать товары';
+
+  @override
+  String get cartSignInPrompt =>
+      'Войдите в аккаунт, чтобы увидеть товары в корзине';
+
+  @override
+  String get cartTotal => 'Итого';
+
+  @override
+  String get checkout => 'Оформить заказ';
+
+  @override
+  String get gift => 'Подарок';
+
+  @override
+  String get piece => 'шт.';
+
+  @override
+  String get discount => 'Скидка';
+
+  @override
+  String get couponDiscount => 'Скидка по купону';
 }

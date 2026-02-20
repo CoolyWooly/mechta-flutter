@@ -45,4 +45,25 @@ class SubcatalogRepositoryImpl implements SubcatalogRepository {
       throw ServerFailure(e.message);
     }
   }
+
+  @override
+  Future<SearchCategoryResult> searchCategory(String query) async {
+    try {
+      final response = await remoteDataSource.searchCategory(query);
+      final available = response.availableCategories
+          .where((c) => c.slug != null && c.name != null)
+          .map((c) => AvailableCategoryEntity(
+                slug: c.slug!,
+                name: c.name!,
+                productsCount: c.productsCount ?? 0,
+              ))
+          .toList();
+      return SearchCategoryResult(
+        slug: response.category,
+        availableCategories: available,
+      );
+    } on ServerException catch (e) {
+      throw ServerFailure(e.message);
+    }
+  }
 }

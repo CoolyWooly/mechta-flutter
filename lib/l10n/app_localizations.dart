@@ -493,6 +493,54 @@ abstract class AppLocalizations {
   /// In ru, this message translates to:
   /// **'Магазины не найдены'**
   String get shopsEmpty;
+
+  /// No description provided for @searchProducts.
+  ///
+  /// In ru, this message translates to:
+  /// **'Искать товары'**
+  String get searchProducts;
+
+  /// No description provided for @cartSignInPrompt.
+  ///
+  /// In ru, this message translates to:
+  /// **'Войдите в аккаунт, чтобы увидеть товары в корзине'**
+  String get cartSignInPrompt;
+
+  /// No description provided for @cartTotal.
+  ///
+  /// In ru, this message translates to:
+  /// **'Итого'**
+  String get cartTotal;
+
+  /// No description provided for @checkout.
+  ///
+  /// In ru, this message translates to:
+  /// **'Оформить заказ'**
+  String get checkout;
+
+  /// No description provided for @gift.
+  ///
+  /// In ru, this message translates to:
+  /// **'Подарок'**
+  String get gift;
+
+  /// No description provided for @piece.
+  ///
+  /// In ru, this message translates to:
+  /// **'шт.'**
+  String get piece;
+
+  /// No description provided for @discount.
+  ///
+  /// In ru, this message translates to:
+  /// **'Скидка'**
+  String get discount;
+
+  /// No description provided for @couponDiscount.
+  ///
+  /// In ru, this message translates to:
+  /// **'Скидка по купону'**
+  String get couponDiscount;
 }
 
 class _AppLocalizationsDelegate

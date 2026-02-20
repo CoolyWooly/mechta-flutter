@@ -15,6 +15,7 @@ class SubcatalogLoadRequested extends SubcatalogEvent {
   final String? orderBy;
   final String? direction;
   final Map<String, List<String>>? properties;
+  final String? query;
 
   const SubcatalogLoadRequested({
     required this.slug,
@@ -24,10 +25,11 @@ class SubcatalogLoadRequested extends SubcatalogEvent {
     this.orderBy,
     this.direction,
     this.properties,
+    this.query,
   });
 
   @override
-  List<Object?> get props => [slug, page, minPrice, maxPrice, orderBy, direction, properties];
+  List<Object?> get props => [slug, page, minPrice, maxPrice, orderBy, direction, properties, query];
 }
 
 class SubcatalogNextPageRequested extends SubcatalogEvent {
@@ -38,6 +40,15 @@ class SubcatalogCategoryChildrenRequested extends SubcatalogEvent {
   final String slug;
 
   const SubcatalogCategoryChildrenRequested({required this.slug});
+
+  @override
+  List<Object?> get props => [slug];
+}
+
+class SubcatalogSearchCategoryChanged extends SubcatalogEvent {
+  final String slug;
+
+  const SubcatalogSearchCategoryChanged({required this.slug});
 
   @override
   List<Object?> get props => [slug];

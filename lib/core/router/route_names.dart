@@ -21,6 +21,7 @@ abstract class RoutePaths {
   static const String bonuses = 'bonuses';
   static const String shops = 'shops';
   static const String filter = 'filter';
+  static const String search = 'search';
 }
 
 abstract class RouteNames {

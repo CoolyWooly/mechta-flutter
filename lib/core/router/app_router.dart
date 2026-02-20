@@ -19,6 +19,10 @@ import 'package:mechta_flutter/features/promotions/presentation/pages/promotions
 import 'package:mechta_flutter/core/navigation/seo_resolve_page.dart';
 import 'package:mechta_flutter/features/bonuses/presentation/pages/bonuses_page.dart';
 import 'package:mechta_flutter/features/shops/presentation/pages/shops_page.dart';
+import 'package:mechta_flutter/features/search/presentation/pages/search_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mechta_flutter/app/di.dart';
+import 'package:mechta_flutter/features/search/presentation/bloc/search_bloc.dart';
 
 GoRoute _productRoute() => GoRoute(
       path: RoutePaths.product,
@@ -70,6 +74,14 @@ GoRoute _filterRoute() => GoRoute(
       },
     );
 
+GoRoute _searchRoute() => GoRoute(
+      path: RoutePaths.search,
+      builder: (context, state) => BlocProvider(
+        create: (_) => sl<SearchBloc>()..add(const SearchQueryChanged('')),
+        child: const SearchPage(),
+      ),
+    );
+
 GoRoute _subcatalogRoute() => GoRoute(
       path: RoutePaths.subcatalog,
       builder: (context, state) {
@@ -83,6 +95,7 @@ GoRoute _subcatalogRoute() => GoRoute(
           orderBy: query['orderBy'],
           direction: query['direction'],
           properties: _parseProperties(state.uri),
+          query: query['query'],
         );
       },
       routes: [_productRoute(), _filterRoute()],
@@ -195,6 +208,7 @@ GoRouter createAppRouter() {
                   _subcatalogRoute(),
                   _brandRoute(),
                   _promotionDetailRoute(),
+                  _searchRoute(),
                   GoRoute(
                     path: RoutePaths.promotions,
                     name: RouteNames.promotions,
@@ -219,6 +233,7 @@ GoRouter createAppRouter() {
                   _brandRoute(),
                   _promotionDetailRoute(),
                   _productRoute(),
+                  _searchRoute(),
                 ],
               ),
             ],
@@ -236,6 +251,7 @@ GoRouter createAppRouter() {
                   _productRoute(),
                   _subcatalogRoute(),
                   _promotionDetailRoute(),
+                  _searchRoute(),
                 ],
               ),
             ],
@@ -253,6 +269,7 @@ GoRouter createAppRouter() {
                   _productRoute(),
                   _subcatalogRoute(),
                   _promotionDetailRoute(),
+                  _searchRoute(),
                 ],
               ),
             ],
@@ -272,6 +289,7 @@ GoRouter createAppRouter() {
                   _promotionDetailRoute(),
                   _bonusesRoute(),
                   _shopsRoute(),
+                  _searchRoute(),
                 ],
               ),
             ],

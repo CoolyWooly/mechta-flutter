@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:mechta_flutter/core/error/exceptions.dart';
 import 'package:mechta_flutter/features/subcatalog/data/models/category_response_model.dart';
+import 'package:mechta_flutter/features/subcatalog/data/models/search_category_response_model.dart';
 import 'package:mechta_flutter/features/subcatalog/data/models/subcatalog_response_model.dart';
 import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_subcatalog.dart';
 
 abstract class SubcatalogRemoteDataSource {
   Future<SubcatalogResponseModel> getSubcatalog(SubcatalogParams params);
   Future<CategoryResponseModel> getCategory(String slug);
+  Future<SearchCategoryResponseModel> searchCategory(String query);
 }
 
 class SubcatalogRemoteDataSourceImpl implements SubcatalogRemoteDataSource {
@@ -40,6 +42,9 @@ class SubcatalogRemoteDataSourceImpl implements SubcatalogRemoteDataSource {
           queryParameters['properties[${entry.key}][]'] = entry.value;
         }
       }
+      if (params.query != null && params.query!.isNotEmpty) {
+        queryParameters['query'] = params.query;
+      }
 
       final response = await dio.get(
         'api/v3/catalog/products',
@@ -66,6 +71,25 @@ class SubcatalogRemoteDataSourceImpl implements SubcatalogRemoteDataSource {
       );
 
       return CategoryResponseModel.fromJson(
+        response.data as Map<String, dynamic>,
+      );
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.message ?? 'Unknown error',
+        statusCode: e.response?.statusCode,
+      );
+    }
+  }
+
+  @override
+  Future<SearchCategoryResponseModel> searchCategory(String query) async {
+    try {
+      final response = await dio.get(
+        'api/v3/catalog/search',
+        queryParameters: {'query': query},
+      );
+
+      return SearchCategoryResponseModel.fromJson(
         response.data as Map<String, dynamic>,
       );
     } on DioException catch (e) {

@@ -25,3 +25,18 @@ class CategoryChildEntity extends Equatable {
   @override
   List<Object?> get props => [name, slug];
 }
+
+class AvailableCategoryEntity extends Equatable {
+  final String slug;
+  final String name;
+  final int productsCount;
+
+  const AvailableCategoryEntity({
+    required this.slug,
+    required this.name,
+    required this.productsCount,
+  });
+
+  @override
+  List<Object?> get props => [slug, name, productsCount];
+}

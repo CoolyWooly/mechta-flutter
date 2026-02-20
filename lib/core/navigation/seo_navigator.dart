@@ -32,7 +32,7 @@ class SeoNavigator {
 
   /// Resolves [path] and navigates to SubcatalogPage within the current tab.
   /// Shows a loading overlay during resolution.
-  Future<void> navigateToSection(BuildContext context, String path) async {
+  Future<void> navigateToSection(BuildContext context, String path, {String? searchQuery}) async {
     _showLoading(context);
     try {
       final category = await _resolve(path);
@@ -42,8 +42,12 @@ class SeoNavigator {
       if (category?.slug == null) return;
 
       final tabRoot = _currentTabRoot(context);
-      final query = _buildQuery(category!);
-      context.push('$tabRoot/subcatalog/${category.slug}$query');
+      var routeQuery = _buildQuery(category!);
+      if (searchQuery != null && searchQuery.isNotEmpty) {
+        final separator = routeQuery.isEmpty ? '?' : '&';
+        routeQuery += '${separator}query=${Uri.encodeComponent(searchQuery)}';
+      }
+      context.push('$tabRoot/subcatalog/${category.slug}$routeQuery');
     } catch (e) {
       if (!context.mounted) return;
       Navigator.of(context, rootNavigator: true).pop(); // dismiss loading

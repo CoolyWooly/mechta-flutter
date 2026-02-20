@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/core/navigation/app_link_handler.dart';
+import 'package:mechta_flutter/core/widgets/search_bar_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/features/catalog/domain/entities/brand_entity.dart';
 import 'package:mechta_flutter/features/home/domain/entities/popular_category_entity.dart';
@@ -66,6 +67,9 @@ class _HomeView extends StatelessWidget {
               },
               child: ListView(
                 children: [
+                  SearchBarButton(
+                    onTap: () => context.go('/home/search'),
+                  ),
                   if (state.banners.isNotEmpty)
                     _BannerPager(banners: state.banners),
                   if (state.categories.isNotEmpty)

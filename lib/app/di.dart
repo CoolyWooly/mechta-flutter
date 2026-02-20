@@ -27,7 +27,7 @@ import 'package:mechta_flutter/features/home/domain/usecases/get_popular_categor
 import 'package:mechta_flutter/features/catalog/presentation/bloc/catalog_bloc.dart';
 
 // Cart
-import 'package:mechta_flutter/features/cart/data/datasources/cart_local_data_source.dart';
+import 'package:mechta_flutter/features/cart/data/datasources/cart_remote_data_source.dart';
 import 'package:mechta_flutter/features/cart/data/repositories/cart_repository_impl.dart';
 import 'package:mechta_flutter/features/cart/domain/repositories/cart_repository.dart';
 import 'package:mechta_flutter/features/cart/domain/usecases/get_cart_items.dart';
@@ -124,6 +124,13 @@ import 'package:mechta_flutter/features/promotions/domain/usecases/get_promotion
 import 'package:mechta_flutter/features/promotions/presentation/bloc/promotion_detail_bloc.dart';
 import 'package:mechta_flutter/features/promotions/presentation/bloc/promotions_bloc.dart';
 
+// Search
+import 'package:mechta_flutter/features/search/data/datasources/search_remote_data_source.dart';
+import 'package:mechta_flutter/features/search/data/repositories/search_repository_impl.dart';
+import 'package:mechta_flutter/features/search/domain/repositories/search_repository.dart';
+import 'package:mechta_flutter/features/search/domain/usecases/search_products.dart';
+import 'package:mechta_flutter/features/search/presentation/bloc/search_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> configureDependencies() async {
@@ -157,6 +164,7 @@ Future<void> configureDependencies() async {
   _registerBonusesFeature();
   _registerBrandFeature();
   _registerPromotionsFeature();
+  _registerSearchFeature();
 }
 
 const _deviceIdKey = 'device_id';
@@ -247,14 +255,17 @@ void _registerCatalogFeature() {
 }
 
 void _registerCartFeature() {
-  sl.registerLazySingleton<CartLocalDataSource>(
-    () => CartLocalDataSourceImpl(sharedPreferences: sl()),
+  sl.registerLazySingleton<CartRemoteDataSource>(
+    () => CartRemoteDataSourceImpl(dio: sl()),
   );
   sl.registerLazySingleton<CartRepository>(
-    () => CartRepositoryImpl(localDataSource: sl()),
+    () => CartRepositoryImpl(
+      remoteDataSource: sl(),
+      authLocalDataSource: sl(),
+    ),
   );
-  sl.registerLazySingleton(() => GetCartItemsUseCase(sl()));
-  sl.registerFactory(() => CartBloc(getCartItems: sl()));
+  sl.registerLazySingleton(() => GetCartUseCase(sl()));
+  sl.registerFactory(() => CartBloc(getCart: sl(), repository: sl()));
 }
 
 void _registerFavoritesFeature() {
@@ -316,6 +327,7 @@ void _registerSubcatalogFeature() {
   sl.registerFactory(() => SubcatalogBloc(
         getSubcatalog: sl(),
         getCategoryChildren: sl(),
+        repository: sl(),
       ));
 }
 
@@ -385,4 +397,18 @@ void _registerProductFeature() {
   );
   sl.registerLazySingleton(() => GetProductUseCase(sl()));
   sl.registerFactory(() => ProductBloc(getProduct: sl()));
+}
+
+void _registerSearchFeature() {
+  sl.registerLazySingleton<SearchRemoteDataSource>(
+    () => SearchRemoteDataSourceImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<SearchRepository>(
+    () => SearchRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton(() => SearchProductsUseCase(sl()));
+  sl.registerFactory(() {
+    final cityCode = sl<CityLocalDataSource>().getCityCode() ?? 's1';
+    return SearchBloc(searchProducts: sl(), regionId: cityCode);
+  });
 }
