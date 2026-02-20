@@ -55,10 +55,7 @@ class SubcatalogRemoteDataSourceImpl implements SubcatalogRemoteDataSource {
         response.data as Map<String, dynamic>,
       );
     } on DioException catch (e) {
-      throw ServerException(
-        message: e.message ?? 'Unknown error',
-        statusCode: e.response?.statusCode,
-      );
+      throw ServerException.fromDioException(e);
     }
   }
 
@@ -74,10 +71,7 @@ class SubcatalogRemoteDataSourceImpl implements SubcatalogRemoteDataSource {
         response.data as Map<String, dynamic>,
       );
     } on DioException catch (e) {
-      throw ServerException(
-        message: e.message ?? 'Unknown error',
-        statusCode: e.response?.statusCode,
-      );
+      throw ServerException.fromDioException(e);
     }
   }
 
@@ -93,10 +87,7 @@ class SubcatalogRemoteDataSourceImpl implements SubcatalogRemoteDataSource {
         response.data as Map<String, dynamic>,
       );
     } on DioException catch (e) {
-      throw ServerException(
-        message: e.message ?? 'Unknown error',
-        statusCode: e.response?.statusCode,
-      );
+      throw ServerException.fromDioException(e);
     }
   }
 }

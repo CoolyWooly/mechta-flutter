@@ -161,7 +161,7 @@ class _SubcatalogViewState extends State<_SubcatalogView> {
       body: BlocBuilder<SubcatalogBloc, SubcatalogState>(
         builder: (context, state) {
           return switch (state.status) {
-            SubcatalogStatus.initial => _SubcatalogSkeleton(viewMode: _viewMode),
+            SubcatalogStatus.initial || SubcatalogStatus.loading when state.products.isEmpty => _SubcatalogSkeleton(viewMode: _viewMode),
             SubcatalogStatus.failure when state.products.isEmpty => Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -271,10 +271,11 @@ class _SubcatalogViewState extends State<_SubcatalogView> {
     return SliverChildBuilderDelegate(
       (context, index) {
         if (index >= state.products.length) {
-          return const Center(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: CircularProgressIndicator(),
+          return Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: SizedBox(
+              height: _viewMode == ProductCardViewMode.horizontal ? 140 : null,
+              child: ProductCardSkeleton(mode: _viewMode),
             ),
           );
         }

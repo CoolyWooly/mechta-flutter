@@ -121,9 +121,9 @@ class _CartContent extends StatelessWidget {
                 item: state.items[index],
                 l10n: l10n,
                 onTap: () {
-                  final productId = state.items[index].productId;
-                  if (productId != null) {
-                    context.go('/cart/product/$productId');
+                  final code = state.items[index].code;
+                  if (code != null) {
+                    context.go('/cart/product/$code');
                   }
                 },
               );

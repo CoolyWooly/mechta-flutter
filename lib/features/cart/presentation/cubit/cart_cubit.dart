@@ -1,11 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mechta_flutter/features/cart/domain/repositories/cart_repository.dart';
+import 'package:mechta_flutter/core/error/failures.dart';
 
 class CartCubitState {
   final Map<String, int> cartProductQuantities;
+  final List<String>? errors;
 
   const CartCubitState({
     this.cartProductQuantities = const {},
+    this.errors,
   });
 
   bool isInCart(int? productId) {
@@ -28,9 +31,11 @@ class CartCubitState {
 
   CartCubitState copyWith({
     Map<String, int>? cartProductQuantities,
+    List<String>? errors,
   }) {
     return CartCubitState(
       cartProductQuantities: cartProductQuantities ?? this.cartProductQuantities,
+      errors: errors ?? this.errors,
     );
   }
 }
@@ -63,11 +68,16 @@ class CartCubit extends Cubit<CartCubitState> {
         await repository.addToCart(productId);
         // Refresh cart quantities from local storage after successful add
         loadCartQuantities();
-      } catch (_) {
+      } catch (e) {
         // Rollback on error
         final revertedQuantities = Map<String, int>.from(state.cartProductQuantities);
         revertedQuantities.remove(productId.toString());
-        emit(state.copyWith(cartProductQuantities: revertedQuantities));
+        List<String>? newErrors;
+        if (e is ServerFailure && e.errors != null && e.errors!.isNotEmpty) {
+          newErrors = e.errors;
+        }
+        emit(state.copyWith(cartProductQuantities: revertedQuantities, errors: newErrors));
+        emit(state.copyWith(cartProductQuantities: revertedQuantities, errors: [])); // clear immediately
       }
     }
   }
@@ -80,10 +90,15 @@ class CartCubit extends Cubit<CartCubitState> {
      try {
        await repository.changeQuantity(productId, quantity);
        loadCartQuantities();
-     } catch (_) {
+     } catch (e) {
         final revertedQuantities = Map<String, int>.from(state.cartProductQuantities);
         if (revertedQuantities.containsKey(productId.toString())) {
-           emit(state.copyWith(cartProductQuantities: revertedQuantities));
+           List<String>? newErrors;
+           if (e is ServerFailure && e.errors != null && e.errors!.isNotEmpty) {
+             newErrors = e.errors;
+           }
+           emit(state.copyWith(cartProductQuantities: revertedQuantities, errors: newErrors));
+           emit(state.copyWith(cartProductQuantities: revertedQuantities, errors: []));
         }
      }
   }
@@ -96,9 +111,14 @@ class CartCubit extends Cubit<CartCubitState> {
     try {
       await repository.deleteFromCart(productId);
       loadCartQuantities();
-    } catch (_) {
+    } catch (e) {
        final revertedQuantities = Map<String, int>.from(state.cartProductQuantities);
-       emit(state.copyWith(cartProductQuantities: revertedQuantities));
+       List<String>? newErrors;
+       if (e is ServerFailure && e.errors != null && e.errors!.isNotEmpty) {
+         newErrors = e.errors;
+       }
+       emit(state.copyWith(cartProductQuantities: revertedQuantities, errors: newErrors));
+       emit(state.copyWith(cartProductQuantities: revertedQuantities, errors: []));
     }
   }
 }

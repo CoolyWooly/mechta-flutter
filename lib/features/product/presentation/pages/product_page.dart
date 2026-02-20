@@ -38,9 +38,22 @@ class _ProductView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(state.product?.name ?? ''),
+        return BlocListener<CartCubit, CartCubitState>(
+          listenWhen: (previous, current) =>
+              current.errors != null && current.errors!.isNotEmpty,
+          listener: (context, cartState) {
+            final scaffoldMessenger = ScaffoldMessenger.of(context);
+            scaffoldMessenger.clearSnackBars();
+            scaffoldMessenger.showSnackBar(
+              SnackBar(
+                content: Text(cartState.errors!.join('\n')),
+                backgroundColor: Theme.of(context).colorScheme.error,
+              ),
+            );
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(state.product?.name ?? ''),
             actions: [
               if (state.product?.id != null)
                 BlocBuilder<FavoritesCubit, FavoritesCubitState>(
@@ -88,6 +101,7 @@ class _ProductView extends StatelessWidget {
           bottomNavigationBar: state.status == ProductStatus.success
               ? _BottomBar(product: state.product!)
               : null,
+          ),
         );
       },
     );
@@ -295,25 +309,14 @@ class _ImageGallery extends StatefulWidget {
 class _ImageGalleryState extends State<_ImageGallery> {
   final _controller = PageController();
   int _current = 0;
-  Timer? _autoScrollTimer;
 
   @override
   void initState() {
     super.initState();
-    if (widget.images.length > 1) {
-      _autoScrollTimer = Timer.periodic(const Duration(seconds: 5), (_) {
-        if (!mounted) return;
-        final next = (_current + 1) % widget.images.length;
-        _controller.animateToPage(next,
-            duration: const Duration(milliseconds: 400),
-            curve: Curves.easeInOut);
-      });
-    }
   }
 
   @override
   void dispose() {
-    _autoScrollTimer?.cancel();
     _controller.dispose();
     super.dispose();
   }

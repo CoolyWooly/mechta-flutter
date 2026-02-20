@@ -15,16 +15,6 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
 
   CartRemoteDataSourceImpl({required this.dio});
 
-  List<String>? _extractErrors(DioException e) {
-    if (e.response?.data is Map<String, dynamic>) {
-      final data = e.response!.data as Map<String, dynamic>;
-      if (data['errors'] is List) {
-        return (data['errors'] as List).map((dynamic item) => item.toString()).toList();
-      }
-    }
-    return null;
-  }
-
   @override
   Future<CartResponseModel> getCart() async {
     try {
@@ -42,11 +32,7 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
       }
       return const CartResponseModel();
     } on DioException catch (e) {
-      throw ServerException(
-        message: e.message ?? 'Unknown error',
-        statusCode: e.response?.statusCode,
-        errors: _extractErrors(e),
-      );
+      throw ServerException.fromDioException(e);
     }
   }
 
@@ -73,11 +59,7 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
       }
       return const CartResponseModel();
     } on DioException catch (e) {
-      throw ServerException(
-        message: e.message ?? 'Unknown error',
-        statusCode: e.response?.statusCode,
-        errors: _extractErrors(e),
-      );
+      throw ServerException.fromDioException(e);
     }
   }
 
@@ -93,11 +75,7 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
         },
       );
     } on DioException catch (e) {
-      throw ServerException(
-        message: e.message ?? 'Unknown error',
-        statusCode: e.response?.statusCode,
-        errors: _extractErrors(e),
-      );
+      throw ServerException.fromDioException(e);
     }
   }
   @override
@@ -111,11 +89,7 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
         },
       );
     } on DioException catch (e) {
-      throw ServerException(
-        message: e.message ?? 'Unknown error',
-        statusCode: e.response?.statusCode,
-        errors: _extractErrors(e),
-      );
+      throw ServerException.fromDioException(e);
     }
   }
 
@@ -129,11 +103,7 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
         },
       );
     } on DioException catch (e) {
-      throw ServerException(
-        message: e.message ?? 'Unknown error',
-        statusCode: e.response?.statusCode,
-        errors: _extractErrors(e),
-      );
+      throw ServerException.fromDioException(e);
     }
   }
 }
