@@ -7,8 +7,8 @@ import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
 import 'package:mechta_flutter/core/domain/entities/property_entity.dart';
 import 'package:mechta_flutter/core/domain/entities/sticker_entity.dart';
 import 'package:mechta_flutter/core/utils/picture_url_converter.dart';
-import 'package:mechta_flutter/features/favorites/domain/usecases/is_favorite.dart';
-import 'package:mechta_flutter/features/favorites/domain/usecases/toggle_favorite.dart';
+import 'package:mechta_flutter/features/favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:mechta_flutter/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:mechta_flutter/features/product/presentation/bloc/product_bloc.dart';
 import 'package:mechta_flutter/l10n/app_localizations.dart';
 
@@ -29,54 +29,38 @@ class ProductPage extends StatelessWidget {
   }
 }
 
-class _ProductView extends StatefulWidget {
+class _ProductView extends StatelessWidget {
   final String slug;
 
   const _ProductView({required this.slug});
 
   @override
-  State<_ProductView> createState() => _ProductViewState();
-}
-
-class _ProductViewState extends State<_ProductView> {
-  bool _isFavorite = false;
-  String? _productId;
-
-  void _updateFavoriteState(ProductEntity product) {
-    if (_productId != product.id && product.id != null) {
-      _productId = product.id;
-      _isFavorite = sl<IsFavoriteUseCase>()(product.id!);
-    }
-  }
-
-  Future<void> _toggleFavorite() async {
-    if (_productId == null) return;
-    setState(() => _isFavorite = !_isFavorite);
-    try {
-      await sl<ToggleFavoriteUseCase>()(_productId!);
-    } catch (_) {
-      if (mounted) setState(() => _isFavorite = !_isFavorite);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
-        if (state.product != null) {
-          _updateFavoriteState(state.product!);
-        }
         return Scaffold(
           appBar: AppBar(
             title: Text(state.product?.name ?? ''),
             actions: [
               if (state.product?.id != null)
-                IconButton(
-                  icon: Icon(
-                    _isFavorite ? Icons.favorite : Icons.favorite_outline,
-                    color: _isFavorite ? Colors.red : null,
-                  ),
-                  onPressed: _toggleFavorite,
+                BlocBuilder<FavoritesCubit, FavoritesCubitState>(
+                  buildWhen: (previous, current) =>
+                      previous.isFavorite(state.product!.id) !=
+                      current.isFavorite(state.product!.id),
+                  builder: (context, favoritesState) {
+                    final isFavorite = favoritesState.isFavorite(state.product!.id);
+                    return IconButton(
+                      icon: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_outline,
+                        color: isFavorite ? Colors.red : null,
+                      ),
+                      onPressed: () {
+                        context
+                            .read<FavoritesCubit>()
+                            .toggleFavorite(state.product!.id!);
+                      },
+                    );
+                  },
                 ),
             ],
           ),
@@ -93,7 +77,7 @@ class _ProductViewState extends State<_ProductView> {
                     ElevatedButton(
                       onPressed: () => context
                           .read<ProductBloc>()
-                          .add(ProductLoadRequested(widget.slug)),
+                          .add(ProductLoadRequested(slug)),
                       child: Text(AppLocalizations.of(context)!.retry),
                     ),
                   ],
@@ -118,21 +102,36 @@ class _BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isAvailable = product.availability == 'available';
+    final l10n = AppLocalizations.of(context)!;
 
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: FilledButton(
-          onPressed: isAvailable
-              ? () {
-                  // TODO: add to cart
-                }
-              : null,
-          child: Text(
-            isAvailable
-                ? AppLocalizations.of(context)!.addToCartWithPrice(_formatPrice(product.prices?.finalPrice))
-                : AppLocalizations.of(context)!.outOfStock,
-          ),
+        child: BlocBuilder<CartCubit, CartCubitState>(
+          buildWhen: (previous, current) =>
+              previous.isInCart(product.numericId) !=
+              current.isInCart(product.numericId),
+          builder: (context, cartState) {
+            final isInCart = cartState.isInCart(product.numericId);
+
+            return FilledButton.icon(
+              onPressed: isAvailable && !isInCart
+                  ? () {
+                      if (product.numericId != null) {
+                        context.read<CartCubit>().addToCart(product.numericId!);
+                      }
+                    }
+                  : null,
+              icon: Icon(isInCart ? Icons.shopping_cart : Icons.add_shopping_cart),
+              label: Text(
+                !isAvailable
+                    ? l10n.outOfStock
+                    : isInCart
+                        ? l10n.inCart
+                        : l10n.addToCartWithPrice(_formatPrice(product.prices?.finalPrice)),
+              ),
+            );
+          },
         ),
       ),
     );

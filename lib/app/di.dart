@@ -27,11 +27,14 @@ import 'package:mechta_flutter/features/home/domain/usecases/get_popular_categor
 import 'package:mechta_flutter/features/catalog/presentation/bloc/catalog_bloc.dart';
 
 // Cart
+import 'package:mechta_flutter/features/cart/data/datasources/cart_local_data_source.dart';
 import 'package:mechta_flutter/features/cart/data/datasources/cart_remote_data_source.dart';
 import 'package:mechta_flutter/features/cart/data/repositories/cart_repository_impl.dart';
 import 'package:mechta_flutter/features/cart/domain/repositories/cart_repository.dart';
 import 'package:mechta_flutter/features/cart/domain/usecases/get_cart_items.dart';
+import 'package:mechta_flutter/features/cart/domain/usecases/is_in_cart.dart';
 import 'package:mechta_flutter/features/cart/presentation/bloc/cart_bloc.dart';
+import 'package:mechta_flutter/features/cart/presentation/cubit/cart_cubit.dart';
 
 // Favorites
 import 'package:mechta_flutter/features/favorites/data/datasources/favorites_local_data_source.dart';
@@ -42,6 +45,7 @@ import 'package:mechta_flutter/features/favorites/domain/usecases/get_favorites.
 import 'package:mechta_flutter/features/favorites/domain/usecases/is_favorite.dart';
 import 'package:mechta_flutter/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:mechta_flutter/features/favorites/presentation/bloc/favorites_bloc.dart';
+import 'package:mechta_flutter/features/favorites/presentation/cubit/favorites_cubit.dart';
 
 // Auth
 import 'package:mechta_flutter/features/auth/data/datasources/auth_local_data_source.dart';
@@ -216,7 +220,11 @@ void _registerAuthFeature() {
   );
   sl.registerLazySingleton(() => SendSmsUseCase(sl()));
   sl.registerLazySingleton(() => LoginUseCase(sl()));
-  sl.registerFactory(() => AuthBloc(sendSms: sl(), login: sl()));
+  sl.registerFactory(() => AuthBloc(
+        sendSms: sl(),
+        login: sl(),
+        cartRepository: sl(),
+      ));
 }
 
 void _registerHomeFeature() {
@@ -255,6 +263,9 @@ void _registerCatalogFeature() {
 }
 
 void _registerCartFeature() {
+  sl.registerLazySingleton<CartLocalDataSource>(
+    () => CartLocalDataSourceImpl(sharedPreferences: sl()),
+  );
   sl.registerLazySingleton<CartRemoteDataSource>(
     () => CartRemoteDataSourceImpl(dio: sl()),
   );
@@ -262,10 +273,15 @@ void _registerCartFeature() {
     () => CartRepositoryImpl(
       remoteDataSource: sl(),
       authLocalDataSource: sl(),
+      localDataSource: sl(),
     ),
   );
   sl.registerLazySingleton(() => GetCartUseCase(sl()));
-  sl.registerFactory(() => CartBloc(getCart: sl(), repository: sl()));
+  sl.registerLazySingleton(() => IsInCartUseCase(sl()));
+  sl.registerFactory(
+      () => CartBloc(getCart: sl(), repository: sl(), cartCubit: sl()));
+  
+  sl.registerLazySingleton(() => CartCubit(repository: sl()));
 }
 
 void _registerFavoritesFeature() {
@@ -287,6 +303,10 @@ void _registerFavoritesFeature() {
   sl.registerFactory(() => FavoritesBloc(
         getFavorites: sl(),
         toggleFavorite: sl(),
+      ));
+  sl.registerLazySingleton(() => FavoritesCubit(
+        repository: sl(),
+        toggleFavoriteUseCase: sl(),
       ));
 }
 
@@ -328,6 +348,7 @@ void _registerSubcatalogFeature() {
         getSubcatalog: sl(),
         getCategoryChildren: sl(),
         repository: sl(),
+        cartRepository: sl(),
       ));
 }
 

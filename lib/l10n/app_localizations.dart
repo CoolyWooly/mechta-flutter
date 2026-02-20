@@ -284,6 +284,12 @@ abstract class AppLocalizations {
   /// **'Корзина пуста'**
   String get emptyCart;
 
+  /// No description provided for @inCart.
+  ///
+  /// In ru, this message translates to:
+  /// **'В корзине'**
+  String get inCart;
+
   /// No description provided for @noFavorites.
   ///
   /// In ru, this message translates to:

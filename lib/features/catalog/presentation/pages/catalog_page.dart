@@ -6,6 +6,7 @@ import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/features/catalog/domain/entities/brand_entity.dart';
 import 'package:mechta_flutter/features/catalog/domain/entities/category_entity.dart';
 import 'package:mechta_flutter/features/catalog/presentation/bloc/catalog_bloc.dart';
+import 'package:mechta_flutter/core/widgets/skeleton.dart';
 import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class CatalogPage extends StatelessWidget {
@@ -45,8 +46,17 @@ class _CatalogView extends StatelessWidget {
             BlocBuilder<CatalogBloc, CatalogState>(
               builder: (context, state) {
                 return switch (state.status) {
-                  CatalogStatus.initial || CatalogStatus.loading =>
-                    const Center(child: CircularProgressIndicator()),
+                  CatalogStatus.initial || CatalogStatus.loading => GridView.builder(
+                    padding: const EdgeInsets.all(16),
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                    ),
+                    itemCount: 15,
+                    itemBuilder: (context, index) => const _CategoryCardSkeleton(),
+                  ),
                   CatalogStatus.failure => Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -82,8 +92,18 @@ class _CatalogView extends StatelessWidget {
             BlocBuilder<CatalogBloc, CatalogState>(
               builder: (context, state) {
                 return switch (state.status) {
-                  CatalogStatus.initial || CatalogStatus.loading =>
-                    const Center(child: CircularProgressIndicator()),
+                  CatalogStatus.initial || CatalogStatus.loading => GridView.builder(
+                    padding: const EdgeInsets.all(16),
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 12,
+                      crossAxisSpacing: 12,
+                      childAspectRatio: 2,
+                    ),
+                    itemCount: 15,
+                    itemBuilder: (context, index) => const _BrandCardSkeleton(),
+                  ),
                   CatalogStatus.failure => Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -223,6 +243,52 @@ class _BrandCard extends StatelessWidget {
                   color: colorScheme.onSurfaceVariant,
                 ),
         ),
+      ),
+    );
+  }
+}
+
+class _CategoryCardSkeleton extends StatelessWidget {
+  const _CategoryCardSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Material(
+      color: colorScheme.surfaceContainerLow,
+      borderRadius: BorderRadius.circular(12),
+      clipBehavior: Clip.antiAlias,
+      child: const Padding(
+        padding: EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Skeleton(width: 80, height: 16),
+            Spacer(),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Skeleton(width: 48, height: 48, shape: BoxShape.circle),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BrandCardSkeleton extends StatelessWidget {
+  const _BrandCardSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Material(
+      color: colorScheme.surfaceContainerLow,
+      borderRadius: BorderRadius.circular(12),
+      clipBehavior: Clip.antiAlias,
+      child: const Padding(
+        padding: EdgeInsets.all(16),
+        child: Skeleton(width: double.infinity, height: double.infinity, borderRadius: BorderRadius.zero),
       ),
     );
   }

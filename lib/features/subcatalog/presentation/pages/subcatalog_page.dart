@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/app/di.dart';
-import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
 import 'package:mechta_flutter/core/router/route_names.dart';
-import 'package:mechta_flutter/core/utils/picture_url_converter.dart';
-import 'package:mechta_flutter/features/favorites/domain/usecases/is_favorite.dart';
-import 'package:mechta_flutter/features/favorites/domain/usecases/toggle_favorite.dart';
 import 'package:mechta_flutter/features/subcatalog/domain/entities/category_entity.dart';
 import 'package:mechta_flutter/features/filter/domain/entities/filter_entity.dart';
 import 'package:mechta_flutter/features/subcatalog/presentation/bloc/subcatalog_bloc.dart';
+import 'package:mechta_flutter/core/widgets/product_card.dart';
+import 'package:mechta_flutter/core/widgets/product_card_skeleton.dart';
 import 'package:mechta_flutter/core/widgets/search_bar_button.dart';
 import 'package:mechta_flutter/l10n/app_localizations.dart';
 
@@ -63,6 +61,7 @@ class _SubcatalogView extends StatefulWidget {
 
 class _SubcatalogViewState extends State<_SubcatalogView> {
   final _scrollController = ScrollController();
+  ProductCardViewMode _viewMode = ProductCardViewMode.vertical;
 
   @override
   void initState() {
@@ -142,14 +141,27 @@ class _SubcatalogViewState extends State<_SubcatalogView> {
               );
             },
           ),
+          IconButton(
+            icon: Icon(
+              _viewMode == ProductCardViewMode.vertical
+                  ? Icons.view_list
+                  : Icons.grid_view,
+            ),
+            onPressed: () => setState(() {
+              _viewMode = _viewMode == ProductCardViewMode.vertical
+                  ? ProductCardViewMode.horizontal
+                  : ProductCardViewMode.vertical;
+            }),
+            tooltip: _viewMode == ProductCardViewMode.vertical
+                ? 'Список'
+                : 'Плитка',
+          ),
         ],
       ),
       body: BlocBuilder<SubcatalogBloc, SubcatalogState>(
         builder: (context, state) {
           return switch (state.status) {
-            SubcatalogStatus.initial => const Center(
-                child: CircularProgressIndicator(),
-              ),
+            SubcatalogStatus.initial => _SubcatalogSkeleton(viewMode: _viewMode),
             SubcatalogStatus.failure when state.products.isEmpty => Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -210,7 +222,7 @@ class _SubcatalogViewState extends State<_SubcatalogView> {
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: state.availableCategories.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 8),
+                separatorBuilder: (context, index) => const SizedBox(width: 8),
                 itemBuilder: (context, index) {
                   final cat = state.availableCategories[index];
                   final isSelected = cat.slug == state.slug;
@@ -234,30 +246,60 @@ class _SubcatalogViewState extends State<_SubcatalogView> {
         if (state.children.isNotEmpty)
           _ChildrenCategoriesSection(children: state.children),
 
-        // Product grid
+        // Product grid or list
         SliverPadding(
           padding: const EdgeInsets.all(16),
-          sliver: SliverGrid(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 0.65,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                if (index >= state.products.length) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                return _ProductCard(product: state.products[index]);
-              },
-              childCount: state.hasReachedMax
-                  ? state.products.length
-                  : state.products.length + 1,
-            ),
-          ),
+          sliver: _viewMode == ProductCardViewMode.vertical
+              ? SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 0.65,
+                  ),
+                  delegate: _buildProductDelegate(state),
+                )
+              : SliverList(
+                  delegate: _buildProductDelegate(state),
+                ),
         ),
       ],
+    );
+  }
+
+  SliverChildBuilderDelegate _buildProductDelegate(SubcatalogState state) {
+    return SliverChildBuilderDelegate(
+      (context, index) {
+        if (index >= state.products.length) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        final product = state.products[index];
+        final child = ProductCard(
+          product: product,
+          mode: _viewMode,
+          onTap: () {
+            final uri = GoRouterState.of(context).uri;
+            context.go('${uri.path}/product/${product.slug}');
+          },
+        );
+
+        if (_viewMode == ProductCardViewMode.horizontal) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: SizedBox(height: 140, child: child),
+          );
+        }
+
+        return child;
+      },
+      childCount: state.hasReachedMax
+          ? state.products.length
+          : state.products.length + 1,
     );
   }
 }
@@ -315,133 +357,44 @@ class _ChildrenCategoriesSection extends StatelessWidget {
   }
 }
 
-class _ProductCard extends StatefulWidget {
-  final ProductEntity product;
+class _SubcatalogSkeleton extends StatelessWidget {
+  final ProductCardViewMode viewMode;
 
-  const _ProductCard({required this.product});
-
-  @override
-  State<_ProductCard> createState() => _ProductCardState();
-}
-
-class _ProductCardState extends State<_ProductCard> {
-  late bool _isFavorite;
-
-  @override
-  void initState() {
-    super.initState();
-    _isFavorite = widget.product.id != null && sl<IsFavoriteUseCase>()(widget.product.id!);
-  }
-
-  Future<void> _toggleFavorite() async {
-    if (widget.product.id == null) return;
-    setState(() => _isFavorite = !_isFavorite);
-    try {
-      await sl<ToggleFavoriteUseCase>()(widget.product.id!);
-    } catch (_) {
-      if (mounted) setState(() => _isFavorite = !_isFavorite);
-    }
-  }
+  const _SubcatalogSkeleton({required this.viewMode});
 
   @override
   Widget build(BuildContext context) {
-    final product = widget.product;
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-    final hasDiscount = product.prices?.basePrice != null &&
-        product.prices?.finalPrice != null &&
-        product.prices!.basePrice! > product.prices!.finalPrice!;
-    final imageUrl = product.images.isNotEmpty ? product.images.first : null;
-
-    return Material(
-      color: colorScheme.surfaceContainerLow,
-      borderRadius: BorderRadius.circular(12),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () {
-          final uri = GoRouterState.of(context).uri;
-          context.go('${uri.path}/product/${product.slug}');
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  Center(
-                    child: imageUrl != null
-                        ? Image.network(
-                            PictureUrlConverter.getCompressed(imageUrl, 300),
-                            fit: BoxFit.contain,
-                            errorBuilder: (context, error, stackTrace) => Icon(
-                              Icons.image_not_supported_outlined,
-                              size: 48,
-                              color: colorScheme.onSurfaceVariant,
-                            ),
-                          )
-                        : Icon(
-                            Icons.image_not_supported_outlined,
-                            size: 48,
-                            color: colorScheme.onSurfaceVariant,
-                          ),
+    return CustomScrollView(
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.all(16),
+          sliver: viewMode == ProductCardViewMode.vertical
+              ? SliverGrid.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 0.65,
                   ),
-                  Positioned(
-                    top: 4,
-                    right: 4,
-                    child: IconButton(
-                      icon: Icon(
-                        _isFavorite ? Icons.favorite : Icons.favorite_outline,
-                        color: _isFavorite ? Colors.red : colorScheme.onSurfaceVariant,
-                        size: 22,
-                      ),
-                      onPressed: _toggleFavorite,
-                      style: IconButton.styleFrom(
-                        backgroundColor: colorScheme.surface.withValues(alpha: 0.8),
-                        padding: const EdgeInsets.all(6),
-                        minimumSize: const Size(34, 34),
+                  itemCount: 6,
+                  itemBuilder: (context, index) => const ProductCardSkeleton(
+                    mode: ProductCardViewMode.vertical,
+                  ),
+                )
+              : SliverList.builder(
+                  itemCount: 6,
+                  itemBuilder: (context, index) => const Padding(
+                    padding: EdgeInsets.only(bottom: 12),
+                    child: SizedBox(
+                      height: 140,
+                      child: ProductCardSkeleton(
+                        mode: ProductCardViewMode.horizontal,
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    product.name ?? '',
-                    style: textTheme.bodySmall,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  if (hasDiscount) ...[
-                    Text(
-                      '${product.prices!.basePrice!} \u20b8',
-                      style: textTheme.bodySmall?.copyWith(
-                        decoration: TextDecoration.lineThrough,
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
-                  if (product.prices?.finalPrice != null)
-                    Text(
-                      '${product.prices!.finalPrice!} \u20b8',
-                      style: textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: hasDiscount
-                            ? colorScheme.error
-                            : colorScheme.onSurface,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          ],
+                ),
         ),
-      ),
+      ],
     );
   }
 }

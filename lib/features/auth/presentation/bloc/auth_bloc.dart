@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mechta_flutter/features/auth/domain/usecases/login.dart';
 import 'package:mechta_flutter/features/auth/domain/usecases/send_sms.dart';
+import 'package:mechta_flutter/features/cart/domain/repositories/cart_repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -9,12 +10,15 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SendSmsUseCase _sendSms;
   final LoginUseCase _login;
+  final CartRepository _cartRepository;
 
   AuthBloc({
     required SendSmsUseCase sendSms,
     required LoginUseCase login,
+    required CartRepository cartRepository,
   })  : _sendSms = sendSms,
         _login = login,
+        _cartRepository = cartRepository,
         super(const AuthState()) {
     on<AuthSmsRequested>(_onSmsRequested);
     on<AuthLoginRequested>(_onLoginRequested);
@@ -43,6 +47,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(status: AuthStatus.loggingIn));
     try {
       await _login(LoginParams(phone: event.phone, otp: event.otp));
+      // Sync local guest cart items to user profile
+      await _cartRepository.syncBasketOnLogin();
       emit(state.copyWith(status: AuthStatus.success));
     } catch (e) {
       emit(state.copyWith(

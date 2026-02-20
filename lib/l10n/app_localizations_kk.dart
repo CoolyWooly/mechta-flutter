@@ -109,6 +109,9 @@ class AppLocalizationsKk extends AppLocalizations {
   String get emptyCart => 'Себет бос';
 
   @override
+  String get inCart => 'Себетте';
+
+  @override
   String get noFavorites => 'Таңдаулы тауарлар жоқ';
 
   @override

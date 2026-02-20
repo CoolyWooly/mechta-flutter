@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/app/di.dart';
+import 'package:mechta_flutter/features/favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:mechta_flutter/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:mechta_flutter/features/cart/presentation/bloc/cart_bloc.dart';
 import 'package:mechta_flutter/app/locale_bloc.dart';
 import 'package:mechta_flutter/core/router/app_router.dart';
 import 'package:mechta_flutter/core/theme/app_theme.dart';
@@ -25,8 +28,13 @@ class _MechtaAppState extends State<MechtaApp> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => LocaleBloc(prefs: sl()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => LocaleBloc(prefs: sl())),
+        BlocProvider(create: (_) => sl<FavoritesCubit>()..loadFavorites()),
+        BlocProvider(create: (_) => sl<CartCubit>()..loadCartQuantities()),
+        BlocProvider(create: (_) => sl<CartBloc>()..add(const CartLoadRequested(isSilent: true))),
+      ],
       child: BlocBuilder<LocaleBloc, LocaleState>(
         builder: (context, localeState) {
           return MaterialApp.router(

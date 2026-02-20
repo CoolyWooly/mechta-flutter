@@ -279,7 +279,7 @@ class _ShopMapCard extends StatelessWidget {
                 if (cityName != null || shop.address != null) ...[
                   const SizedBox(height: 4),
                   Text(
-                    [if (cityName != null) cityName!, if (shop.address != null) shop.address!]
+                    [?cityName, ?shop.address]
                         .join(', '),
                     style: textTheme.bodySmall
                         ?.copyWith(color: colorScheme.onSurfaceVariant),

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
+import 'package:mechta_flutter/features/cart/domain/repositories/cart_repository.dart';
 import 'package:mechta_flutter/features/subcatalog/domain/entities/category_entity.dart';
 import 'package:mechta_flutter/features/subcatalog/domain/repositories/subcatalog_repository.dart';
 import 'package:mechta_flutter/features/subcatalog/domain/usecases/get_category_children.dart';
@@ -13,19 +14,31 @@ class SubcatalogBloc extends Bloc<SubcatalogEvent, SubcatalogState> {
   final GetSubcatalogUseCase _getSubcatalog;
   final GetCategoryChildrenUseCase _getCategoryChildren;
   final SubcatalogRepository _repository;
+  final CartRepository _cartRepository;
 
   SubcatalogBloc({
     required GetSubcatalogUseCase getSubcatalog,
     required GetCategoryChildrenUseCase getCategoryChildren,
     required SubcatalogRepository repository,
+    required CartRepository cartRepository,
   })  : _getSubcatalog = getSubcatalog,
         _getCategoryChildren = getCategoryChildren,
         _repository = repository,
+        _cartRepository = cartRepository,
         super(const SubcatalogState()) {
     on<SubcatalogLoadRequested>(_onLoadRequested);
     on<SubcatalogNextPageRequested>(_onNextPageRequested);
     on<SubcatalogCategoryChildrenRequested>(_onCategoryChildrenRequested);
     on<SubcatalogSearchCategoryChanged>(_onSearchCategoryChanged);
+    on<SubcatalogAddToCartRequested>(_onAddToCartRequested);
+  }
+
+  Map<String, int> _loadCartQuantities() {
+    try {
+      return _cartRepository.getCartProductQuantities();
+    } catch (_) {
+      return {};
+    }
   }
 
   Future<void> _onLoadRequested(
@@ -77,6 +90,7 @@ class SubcatalogBloc extends Bloc<SubcatalogEvent, SubcatalogState> {
         page: event.page,
         totalCount: result.totalCount,
         hasReachedMax: result.products.length >= result.totalCount,
+        cartProductQuantities: _loadCartQuantities(),
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -159,6 +173,7 @@ class SubcatalogBloc extends Bloc<SubcatalogEvent, SubcatalogState> {
         page: 1,
         totalCount: result.totalCount,
         hasReachedMax: result.products.length >= result.totalCount,
+        cartProductQuantities: _loadCartQuantities(),
       ));
     } catch (e) {
       emit(state.copyWith(
@@ -167,4 +182,26 @@ class SubcatalogBloc extends Bloc<SubcatalogEvent, SubcatalogState> {
       ));
     }
   }
+
+  Future<void> _onAddToCartRequested(
+    SubcatalogAddToCartRequested event,
+    Emitter<SubcatalogState> emit,
+  ) async {
+    // Optimistic update
+    final updatedQuantities = Map<String, int>.from(state.cartProductQuantities);
+    updatedQuantities[event.productId.toString()] = 1;
+    emit(state.copyWith(cartProductQuantities: updatedQuantities));
+    
+    try {
+      await _cartRepository.addToCart(event.productId);
+      // Refresh cart quantities from local storage after successful add
+      emit(state.copyWith(cartProductQuantities: _loadCartQuantities()));
+    } catch (_) {
+      // Rollback on error
+      final rolledBack = Map<String, int>.from(state.cartProductQuantities);
+      rolledBack.remove(event.productId.toString());
+      emit(state.copyWith(cartProductQuantities: rolledBack));
+    }
+  }
 }
+

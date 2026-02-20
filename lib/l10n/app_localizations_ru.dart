@@ -109,6 +109,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get emptyCart => 'Корзина пуста';
 
   @override
+  String get inCart => 'В корзине';
+
+  @override
   String get noFavorites => 'Нет избранных товаров';
 
   @override

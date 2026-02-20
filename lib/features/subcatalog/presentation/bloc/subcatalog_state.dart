@@ -19,6 +19,7 @@ class SubcatalogState extends Equatable {
   final String? categoryName;
   final String? query;
   final List<AvailableCategoryEntity> availableCategories;
+  final Map<String, int> cartProductQuantities;
 
   const SubcatalogState({
     this.status = SubcatalogStatus.initial,
@@ -37,7 +38,13 @@ class SubcatalogState extends Equatable {
     this.categoryName,
     this.query,
     this.availableCategories = const [],
+    this.cartProductQuantities = const {},
   });
+
+  bool isInCart(int? numericId) {
+    if (numericId == null) return false;
+    return cartProductQuantities.containsKey(numericId.toString());
+  }
 
   SubcatalogState copyWith({
     SubcatalogStatus? status,
@@ -56,6 +63,7 @@ class SubcatalogState extends Equatable {
     String? categoryName,
     String? query,
     List<AvailableCategoryEntity>? availableCategories,
+    Map<String, int>? cartProductQuantities,
   }) {
     return SubcatalogState(
       status: status ?? this.status,
@@ -74,6 +82,7 @@ class SubcatalogState extends Equatable {
       categoryName: categoryName ?? this.categoryName,
       query: query ?? this.query,
       availableCategories: availableCategories ?? this.availableCategories,
+      cartProductQuantities: cartProductQuantities ?? this.cartProductQuantities,
     );
   }
 
@@ -95,5 +104,7 @@ class SubcatalogState extends Equatable {
         categoryName,
         query,
         availableCategories,
+        cartProductQuantities,
       ];
 }
+

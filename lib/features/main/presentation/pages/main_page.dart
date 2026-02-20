@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mechta_flutter/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class MainPage extends StatelessWidget {
@@ -34,8 +36,26 @@ class MainPage extends StatelessWidget {
             label: l10n.catalog,
           ),
           NavigationDestination(
-            icon: const Icon(Icons.shopping_cart_outlined),
-            selectedIcon: const Icon(Icons.shopping_cart),
+            icon: BlocBuilder<CartCubit, CartCubitState>(
+              builder: (context, state) {
+                final count = state.totalItems;
+                return Badge(
+                  isLabelVisible: count > 0,
+                  label: Text(count.toString()),
+                  child: const Icon(Icons.shopping_cart_outlined),
+                );
+              },
+            ),
+            selectedIcon: BlocBuilder<CartCubit, CartCubitState>(
+              builder: (context, state) {
+                final count = state.totalItems;
+                return Badge(
+                  isLabelVisible: count > 0,
+                  label: Text(count.toString()),
+                  child: const Icon(Icons.shopping_cart),
+                );
+              },
+            ),
             label: l10n.cart,
           ),
           NavigationDestination(

@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/app/di.dart';
 import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
+import 'package:mechta_flutter/core/widgets/product_card_skeleton.dart';
 import 'package:mechta_flutter/core/utils/picture_url_converter.dart';
 import 'package:mechta_flutter/features/favorites/presentation/bloc/favorites_bloc.dart';
+import 'package:mechta_flutter/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class FavoritesPage extends StatelessWidget {
@@ -31,8 +33,17 @@ class _FavoritesView extends StatelessWidget {
       body: BlocBuilder<FavoritesBloc, FavoritesState>(
         builder: (context, state) {
           return switch (state.status) {
-            FavoritesStatus.initial || FavoritesStatus.loading => const Center(
-                child: CircularProgressIndicator(),
+            FavoritesStatus.initial || FavoritesStatus.loading => GridView.builder(
+                padding: const EdgeInsets.all(16),
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  childAspectRatio: 0.65,
+                ),
+                itemCount: 6,
+                itemBuilder: (context, index) => const ProductCardSkeleton(),
               ),
             FavoritesStatus.failure => Center(
                 child: Column(
@@ -49,17 +60,23 @@ class _FavoritesView extends StatelessWidget {
                   ],
                 ),
               ),
-            FavoritesStatus.success => RefreshIndicator(
-                onRefresh: () async {
-                  context
-                      .read<FavoritesBloc>()
-                      .add(const FavoritesLoadRequested());
-                  await context
-                      .read<FavoritesBloc>()
-                      .stream
-                      .firstWhere((s) => s.status != FavoritesStatus.loading);
-                },
-                child: state.favorites.isEmpty
+            FavoritesStatus.success => BlocBuilder<FavoritesCubit, FavoritesCubitState>(
+                builder: (context, cubitState) {
+                  final activeFavorites = state.favorites
+                      .where((p) => cubitState.isFavorite(p.id))
+                      .toList();
+
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      context
+                          .read<FavoritesBloc>()
+                          .add(const FavoritesLoadRequested());
+                      await context
+                          .read<FavoritesBloc>()
+                          .stream
+                          .firstWhere((s) => s.status != FavoritesStatus.loading);
+                    },
+                    child: activeFavorites.isEmpty
                     ? ListView(
                         children: [
                           SizedBox(
@@ -91,23 +108,22 @@ class _FavoritesView extends StatelessWidget {
                           crossAxisSpacing: 12,
                           childAspectRatio: 0.65,
                         ),
-                        itemCount: state.favorites.length,
+                        itemCount: activeFavorites.length,
                         itemBuilder: (context, index) {
-                          final product = state.favorites[index];
+                          final product = activeFavorites[index];
                           return _ProductCard(
                             product: product,
-                            isFavorite:
-                                state.favoriteIds.contains(product.id),
+                            isFavorite: true,
                             onToggleFavorite: () {
                               if (product.id != null) {
-                                context.read<FavoritesBloc>().add(
-                                      FavoriteToggleRequested(product.id!),
-                                    );
+                                context.read<FavoritesCubit>().toggleFavorite(product.id!);
                               }
                             },
                           );
                         },
                       ),
+                  );
+                },
               ),
           };
         },

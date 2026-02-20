@@ -53,3 +53,13 @@ class SubcatalogSearchCategoryChanged extends SubcatalogEvent {
   @override
   List<Object?> get props => [slug];
 }
+
+class SubcatalogAddToCartRequested extends SubcatalogEvent {
+  final int productId;
+
+  const SubcatalogAddToCartRequested({required this.productId});
+
+  @override
+  List<Object?> get props => [productId];
+}
+

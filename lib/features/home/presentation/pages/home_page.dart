@@ -9,15 +9,16 @@ import 'package:mechta_flutter/core/widgets/search_bar_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mechta_flutter/features/catalog/domain/entities/brand_entity.dart';
 import 'package:mechta_flutter/features/home/domain/entities/popular_category_entity.dart';
-import 'package:mechta_flutter/core/domain/entities/product_entity.dart';
-import 'package:mechta_flutter/core/utils/picture_url_converter.dart';
+
 import 'package:mechta_flutter/features/home/domain/entities/banner_entity.dart';
 import 'package:mechta_flutter/features/home/domain/entities/news_entity.dart';
 import 'package:mechta_flutter/features/home/domain/entities/social_entity.dart';
 import 'package:mechta_flutter/features/home/domain/entities/top_category_entity.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:mechta_flutter/l10n/app_localizations.dart';
+import 'package:mechta_flutter/core/widgets/product_card.dart';
 import 'package:mechta_flutter/features/home/presentation/bloc/home_bloc.dart';
+import 'package:mechta_flutter/core/widgets/skeleton.dart';
+import 'package:mechta_flutter/l10n/app_localizations.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -43,9 +44,7 @@ class _HomeView extends StatelessWidget {
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           return switch (state.status) {
-            HomeStatus.initial || HomeStatus.loading => const Center(
-              child: CircularProgressIndicator(),
-            ),
+            HomeStatus.initial || HomeStatus.loading => const _HomeSkeleton(),
             HomeStatus.failure => Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -433,122 +432,32 @@ class _TopCategoryBlock extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         SizedBox(
-          height: 260,
+          height: 140,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 16),
             itemCount: topCategory.products.length,
             separatorBuilder: (_, _) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
-              return _ProductCard(product: topCategory.products[index]);
+              final product = topCategory.products[index];
+              return SizedBox(
+                width: 280,
+                child: ProductCard(
+                  product: product,
+                  mode: ProductCardViewMode.horizontal,
+                  onTap: () {
+                    if (product.slug != null) {
+                      context.go('/home/product/${product.slug}');
+                    }
+                  },
+                ),
+              );
             },
           ),
         ),
         const SizedBox(height: 16),
       ],
     );
-  }
-}
-
-class _ProductCard extends StatelessWidget {
-  final ProductEntity product;
-
-  const _ProductCard({required this.product});
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final hasDiscount = product.prices?.basePrice != null &&
-        product.prices?.finalPrice != null &&
-        product.prices!.basePrice! > product.prices!.finalPrice!;
-
-    return SizedBox(
-      width: 150,
-      child: Material(
-        color: colorScheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(12),
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: () {
-            if (product.slug != null) {
-              context.go('/home/product/${product.slug}');
-            }
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.network(
-                  PictureUrlConverter.getCompressed(
-                    product.images.isNotEmpty ? product.images.first : null,
-                    300,
-                  ),
-                  width: 150,
-                  height: 150,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    width: 150,
-                    height: 150,
-                    color: colorScheme.surfaceContainerHighest,
-                    child: Center(
-                      child: Icon(
-                        Icons.image_not_supported_outlined,
-                        size: 32,
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (product.prices?.finalPrice != null)
-                      Text(
-                        '${_formatPrice(product.prices!.finalPrice!)} ₸',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleSmall
-                            ?.copyWith(fontWeight: FontWeight.w700),
-                      ),
-                    if (hasDiscount)
-                      Text(
-                        '${_formatPrice(product.prices!.basePrice!)} ₸',
-                        style:
-                            Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  color: colorScheme.onSurfaceVariant,
-                                  decoration: TextDecoration.lineThrough,
-                                ),
-                      ),
-                    const SizedBox(height: 4),
-                    Text(
-                      product.name ?? '',
-                      style: Theme.of(context).textTheme.labelSmall,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  String _formatPrice(int price) {
-    final str = price.toString();
-    final buffer = StringBuffer();
-    for (var i = 0; i < str.length; i++) {
-      if (i > 0 && (str.length - i) % 3 == 0) buffer.write(' ');
-      buffer.write(str[i]);
-    }
-    return buffer.toString();
   }
 }
 
@@ -725,6 +634,75 @@ class _SocialsSection extends StatelessWidget {
           child: Icon(Icons.link, color: colorScheme.onSurfaceVariant),
         ),
       ),
+    );
+  }
+}
+
+class _HomeSkeleton extends StatelessWidget {
+  const _HomeSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        const SizedBox(height: 16),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Skeleton(width: double.infinity, height: 48), // Search Bar
+        ),
+        const SizedBox(height: 24),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Skeleton(width: double.infinity, height: 180), // Banner
+        ),
+        const SizedBox(height: 32),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Skeleton(width: 200, height: 24), // Categories Title
+              const SizedBox(height: 16),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(
+                    4,
+                    (index) => Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: Container(
+                        width: 90,
+                        height: 110,
+                        decoration: BoxDecoration(
+                          color: colorScheme.surfaceContainerLow,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Skeleton(width: 60, height: 14),
+                              Spacer(),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Skeleton(width: 40, height: 40, shape: BoxShape.circle),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 32),
+      ],
     );
   }
 }
